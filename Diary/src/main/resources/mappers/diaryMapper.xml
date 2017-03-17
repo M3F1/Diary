@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 일정 처리 SQL -->
+<mapper namespace="com.diary.smart.dao.DiaryDAO">
+
+	<!-- 일정 정보 저장 -->
+	<insert id="insertDiary" parameterType="Diary">
+		insert into ID_SC_TB
+		(sc_no_pk,
+
+		) values (#{id}, #{password}, #{name})
+	</insert>
+
+	<!-- 일정 삭제 -->
+	<!-- 실제 삭제가아닌 수정으로 삭제플래그만 수정!!!! -->
+	<update id="deleteDiary" parameterType="int">
+
+	</update>
+
+
+	<!-- 일정 수정 -->
+	<update id="updateDiary" parameterType="int">
+
+	</update>
+
+
+	<!-- 일정 조회 -->
+	<select id="selectDiary" resultType="Diary">
+
+	</select>
+
+</mapper> 

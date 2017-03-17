@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 회원정보 처리 SQL -->
+<mapper namespace="com.diary.smart.dao.MemberDAO">
+
+	<!-- 회원 정보 저장 -->
+	<insert id="joinMember" parameterType="Member">
+		insert into ID_USER_TB
+		(user_no_pk,
+		user_id,
+		user_pw,
+		user_nm,
+		user_birth,
+		user_phone,
+		user_jodt,
+		user_dflag,
+		user_mvseat,
+		user_transeat,
+		user_add1,
+		user_add2,
+		user_add3,
+		user_ddt
+		)
+		values
+		(#{id}, #{password}, #{name})
+	</insert>
+
+
+
+	<!-- 회원 정보 수정 -->
+	<update id="updateMember" parameterType="Member">
+
+	</update>
+
+
+	<!-- 회원 탈퇴 -->
+	<!-- 진짜 삭제가아니라 탈퇴플래그 수정만해주는거임!!!!! -->
+	<update id="deleteMember" parameterType="int">
+
+	</update>
+
+
+	<!-- 회원의 친구리스트 조회 -->
+	<select id="selectFriendMember" resultType="Member">
+
+	</select>
+
+
+	<!-- 단일 회원 조회(id중복조회나 등등에 사용) -->
+	<select id="selectMember" parameterType="String">
+
+	</select>
+
+</mapper> 
