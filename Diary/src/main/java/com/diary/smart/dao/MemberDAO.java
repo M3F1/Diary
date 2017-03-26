@@ -1,6 +1,7 @@
 package com.diary.smart.dao;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.apache.ibatis.session.SqlSession;
 import org.slf4j.Logger;
@@ -93,13 +94,25 @@ public class MemberDAO {
 	 */
 	public Member selectMember(String id) {
 		MemberMapper mapper = sqlSession.getMapper(MemberMapper.class);
-		Member result = null;
+		Member result = new Member();
 		try {
 			result = mapper.selectMember(id);
+			System.out.println(result);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return result;
+	}
+	
+	public Member login(String id){
+		MemberMapper mapper = sqlSession.getMapper(MemberMapper.class);
+		Member member = null;
+		try {
+			member = mapper.selectMember(id);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return member;
 	}
 
 }

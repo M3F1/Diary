@@ -4,28 +4,18 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <!-- 회원정보 처리 SQL -->
-<mapper namespace="com.diary.smart.dao.MemberDAO">
+<mapper namespace="com.diary.smart.dao.MemberMapper">
 
 	<!-- 회원 정보 저장 -->
 	<insert id="joinMember" parameterType="Member">
 		insert into ID_USER_TB
-		(user_no_pk,
-		user_id,
-		user_pw,
-		user_nm,
-		user_birth,
-		user_phone,
-		user_jodt,
-		user_dflag,
-		user_mvseat,
-		user_transeat,
-		user_add1,
-		user_add2,
-		user_add3,
-		user_ddt
-		)
+		(user_no_pk, user_id, user_pw, user_nm, user_birth, user_phone,
+		user_add1)
 		values
-		(#{id}, #{password}, #{name})
+		(SEQ_ID_USER_TB_user_no_pk.nextval, #{user_id},
+		#{user_pw},
+		#{user_nm}, sysdate,
+		#{user_phone}, #{user_add1})
 	</insert>
 
 
@@ -50,8 +40,11 @@
 
 
 	<!-- 단일 회원 조회(id중복조회나 등등에 사용) -->
-	<select id="selectMember" parameterType="String">
-
+	<select id="selectMember" parameterType="String" resultType="Member">
+		select *  
+		from ID_USER_TB
+		where
+		user_id = #{user_id}
 	</select>
 
 </mapper> 

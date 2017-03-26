@@ -9,12 +9,12 @@
 <body>
 <h1>메인</h1>
 
-<form method="get" action="login">
-id<input type="text" name="id">
-pw<input type="text" name="pw">
+<form action="login" method="post">
+id<input type="text" name="user_id" id="user_id">
+pw<input type="password" name="user_pw" id="user_pw">
+<input type="submit" id="btn" value="로그인">
 <br>
-<a href="">로그인</a>
-<a href="">회원가입</a>
+<a href="signUpForm">회원가입</a>
 </form>
 </body>
 </html>
