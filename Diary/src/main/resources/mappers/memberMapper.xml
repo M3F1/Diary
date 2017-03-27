@@ -14,7 +14,7 @@
 		values
 		(SEQ_ID_USER_TB_user_no_pk.nextval, #{user_id},
 		#{user_pw},
-		#{user_nm}, sysdate,
+		#{user_nm}, #{user_birth}, 
 		#{user_phone}, #{user_add1})
 	</insert>
 

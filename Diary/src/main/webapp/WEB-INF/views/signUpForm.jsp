@@ -9,9 +9,7 @@
 <meta http-equiv="X-UA-Compatible" content="ie=edge">
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-<link rel="stylesheet" href="resources/css/style.css">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-<script src="resources/js/signUpForm.js"></script>
+<script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
 <title>회원가입</title>
 </head>
 <body>
@@ -22,8 +20,10 @@
 		<form action="signUp" method="post" class="col-xs-offset-2 col-xs-8"
 			onsubmit="return validationCheck()">
 			<div class="form-group">
-				<label for="id">아이디</label><div id="idLabel"></div> <input type="text" class="form-control"
-					name="user_id" id="user_id" placeholder="아이디를 입력하세요">
+				<label for="id">아이디</label>
+				<div id="idLabel"></div>
+				<input type="text" class="form-control" name="user_id" id="user_id"
+					placeholder="아이디를 입력하세요">
 			</div>
 			<div class="form-group">
 				<label for="user_pw">비밀번호</label> <input type="password"
@@ -39,8 +39,8 @@
 					name="user_nm" id="user_nm" placeholder="이름을 입력하세요">
 			</div>
 			<div class="form-group">
-				<label for="birth">생년월일</label> <input
-					type="text" class="form-control" name="user_birth" id="user_birth"
+				<label for="birth">생년월일</label> <input type="text"
+					class="form-control" name="user_birth" id="user_birth"
 					placeholder="주민등록번호 앞번호 6자리를 입력하세요">
 			</div>
 			<div class="form-group">
@@ -48,17 +48,16 @@
 					class="form-control" name="user_phone" id="user_phone"
 					placeholder="휴대전화 번호를  -없이 입력하세요">
 			</div>
-			<div class="form-group">
-				<label for="address1">주소</label> <input type="text"
-					class="form-control" name="user_add1" id="user_add1"
-					placeholder="주소를 입력하세요">
-			</div>
-			<br>
-			<div class="form-group">
-				<input type="submit" class="form-control" value="가입">
-			</div>
+			<label for="phone">주소</label><br> <input type="text"
+				id="sample6_postcode" placeholder="우편번호"> <input
+				type="button" onclick="sample6_execDaumPostcode()" value="우편번호 찾기"><br>
+			<input type="text" name="user_add1" id="user_add1" placeholder="주소"><br>
+			<br> <input type="submit" class="form-control" value="가입">
 		</form>
 	</div>
+	<script
+		src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+	<script src="resources/js/signUpForm.js"></script>
 </body>
 
 </html>
