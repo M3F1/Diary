@@ -1,12 +1,19 @@
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles"%>
+<!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-	<title>Diary</title>
+<title>Main</title>
 </head>
 <body>
+<<<<<<< HEAD
+	<tiles:insertDefinition name="defaultTemplate">
+		<tiles:putAttribute name="body">
+			<h1>This is body.</h1>
+		</tiles:putAttribute>
+	</tiles:insertDefinition>
+=======
 <h1>메인</h1>
 
 <form action="login" method="post">
@@ -16,5 +23,6 @@ pw<input type="password" name="user_pw" id="user_pw">
 <br>
 <a href="signUpForm">회원가입</a>
 </form>
+>>>>>>> branch 'master' of https://github.com/M3F1/Diary.git
 </body>
 </html>
