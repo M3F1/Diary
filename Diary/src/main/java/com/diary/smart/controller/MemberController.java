@@ -11,7 +11,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -110,10 +109,10 @@ public class MemberController {
 		model.addAttribute("member", upMember);
 		return "";
 	}
-	
-	@RequestMapping(value="deleteMember", method=RequestMethod.POST)
-	public String deleteMember(int idno, Model model, HttpSession session){
-		
+
+	@RequestMapping(value = "deleteMember", method = RequestMethod.POST)
+	public String deleteMember(int idno, Model model, HttpSession session) {
+
 		int result = dao.deleteMember(idno);
 		if (result > 0) {
 			session.removeAttribute("user_id");

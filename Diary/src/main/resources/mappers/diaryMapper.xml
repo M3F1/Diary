@@ -46,20 +46,20 @@
 
 
 	<!-- 결제 완료 -->
-	<update id="" parameterType="int">
+	<!-- <update id="" parameterType="int">
 		update ID_SC_TB set
 		sc_fin = 'Y'
 		where sc_no_pk = #{sc_no_pk}
-	</update>
+	</update> -->
 
 
 	<!-- 일정 조회 -->
-	<select id="" resultType="Diary">
+	<!-- <select id="selectDiaryList" parameterType="int" resultType="Diary">
 		select *
 		from ID_SC_TB
 		where
 		sc_no_pk = #{sc_no_pk}
-	</select>
+	</select> -->
 	
 	<select id="selectDiary" resultType="Diary">
 		select c_no_pk
@@ -73,9 +73,9 @@
 	
 	
 	<!-- 동행 친구 등록 -->
-	<insert id="" parameterType="">
+	<!-- <insert id="" parameterType="">
 		insert into ID_SCFRNO_TB values
 		(#{sc_no_fk}, #{sc_frno})
-	</insert>
+	</insert> -->
 
 </mapper> 

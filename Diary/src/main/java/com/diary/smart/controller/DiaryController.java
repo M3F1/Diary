@@ -21,63 +21,68 @@ import com.diary.smart.vo.Member;
 @Controller
 public class DiaryController {
 	private static final Logger logger = LoggerFactory.getLogger(DiaryController.class);
-	
+
 	@Autowired
 	private DiaryDAO dao;
 	private MemberDAO mdao;
-	
+
+	@RequestMapping(value = "diary", method = RequestMethod.GET)
+	public String diary() {
+		return "diary";
+	}
+
 	@ResponseBody
-	@RequestMapping(value = "insertDiary", method=RequestMethod.GET)
-	public String insertDiary(Diary diary, Model model, HttpSession session){
-		
+	@RequestMapping(value = "insertDiary", method = RequestMethod.GET)
+	public String insertDiary(Diary diary, Model model, HttpSession session) {
+
 		int result = dao.insertDiary(diary);
 		if (result > 0) {
-	
+
 		} else {
-			
+
 		}
 		return "";
 	}
-	
-	@RequestMapping(value="selectDiary", method=RequestMethod.POST)
-	public String selectDiary(int sc_no_pk, Model model){
-		
+
+	@RequestMapping(value = "selectDiary", method = RequestMethod.POST)
+	public String selectDiary(int sc_no_pk, Model model) {
+
 		Diary diary = dao.selectDiary(sc_no_pk);
 		model.addAttribute("diary", diary);
-		
+
 		return "";
 	}
-	
-	@RequestMapping(value = "selectDiaryList", method=RequestMethod.POST)
-	public String selectDiaryList(Model model, HttpSession session){
-		
+
+	@RequestMapping(value = "selectDiaryList", method = RequestMethod.POST)
+	public String selectDiaryList(Model model, HttpSession session) {
+
 		String id = (String) session.getAttribute("user_id");
 		Member member = mdao.selectMember(id);
-		
+
 		int user_no_pk = member.getUser_no_pk();
 		ArrayList<Diary> diaryList = dao.selectDiaryList(user_no_pk);
 		model.addAttribute("diaryList", diaryList);
-		
+
 		return "";
 	}
-	
-	@RequestMapping(value="updateDiary", method=RequestMethod.POST)
-	public String updateDiary(Model model, Diary diary){
-		
+
+	@RequestMapping(value = "updateDiary", method = RequestMethod.POST)
+	public String updateDiary(Model model, Diary diary) {
+
 		Diary nDiary = dao.updateDiary(diary);
 		model.addAttribute("diary", nDiary);
-		
+
 		return "";
-	
+
 	}
-	
-	@RequestMapping(value="deleteDiary", method=RequestMethod.POST)
-	public String deleteDiary(int sc_no_pk, Model model){
-		
+
+	@RequestMapping(value = "deleteDiary", method = RequestMethod.POST)
+	public String deleteDiary(int sc_no_pk, Model model) {
+
 		int result = dao.deleteDiary(sc_no_pk);
 
 		return null;
 
 	}
-	
+
 }

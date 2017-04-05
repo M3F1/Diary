@@ -13,7 +13,7 @@
 <header class="header" id="header">
 	<section class="container">
 		<!-- LOGO START -->
-		<a href="/" class="site-logo"> <img alt="Logo" src="assets/img/logo.png">
+		<a href="/smart" class="site-logo"> <img alt="Logo" src="assets/img/logo.png">
 		</a>
 		<!-- LOGO END -->
 
