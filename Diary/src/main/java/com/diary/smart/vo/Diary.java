@@ -4,96 +4,127 @@ import java.util.ArrayList;
 
 public class Diary {
 
-	private int scid; // 일정의 일정번호
-	private int id; // 회원의 회원번호
-	private String scdate; // 일정의 날짜 YYMMDD HH24MISS
-	private String content; // 일정 내용 정보 (장소, 시간, 목적 등)
-	private String weather; // 날씨 정보 SU:맑음, CL:흐림, RA:비, SN:눈, DU:미세먼지
-	private String finish; // 결제완료 정보 컬럼 완료시 Y 아니면 N
-	private String inputdate; // 최조 등록일자 YYMMDD HH24MISS
-	private String updatedate; // 수정날짜 YYMMDD HH24MISS
+	private int sc_no_pk; // 일정의 일정번호
+	private int user_no_fk; // 회원의 회원번호
+	private String sc_stdt; // 일정이 시작하는 날짜 YYMMDD HH24MISS
+	private String sc_endt; // 일정이 끝나는 날짜
+	private String sc_con; // 일정 내용 정보 (장소, 시간, 목적 등)
+	private String sc_wt; // 날씨 정보 SU:맑음, CL:흐림, RA:비, SN:눈, DU:미세먼지
+	private String sc_fin; // 결제완료 정보 컬럼 완료시 Y 아니면 N
+	private String sc_insdt; // 최조 등록일자 YYMMDD HH24MISS
+	private String sc_dflag;
+	private String sc_updt; // 수정날짜 YYMMDD HH24MISS
+	private String sc_ddt;
 	private ArrayList<Integer> scfriendno; // 일정에 동행하는 친구 번호 정보.
 
 	public Diary() {
-		super();
+		// TODO Auto-generated constructor stub
 	}
 
-	public Diary(int scid, int id, String scdate, String content, String weather, String finish, String inputdate,
-			String updatedate, ArrayList<Integer> scfriendno) {
+	public Diary(int sc_no_pk, int user_no_fk, String sc_stdt, String sc_endt, String sc_con, String sc_wt,
+			String sc_fin, String sc_insdt, String sc_dflag, String sc_updt, String sc_ddt,
+			ArrayList<Integer> scfriendno) {
 		super();
-		this.scid = scid;
-		this.id = id;
-		this.scdate = scdate;
-		this.content = content;
-		this.weather = weather;
-		this.finish = finish;
-		this.inputdate = inputdate;
-		this.updatedate = updatedate;
+		this.sc_no_pk = sc_no_pk;
+		this.user_no_fk = user_no_fk;
+		this.sc_stdt = sc_stdt;
+		this.sc_endt = sc_endt;
+		this.sc_con = sc_con;
+		this.sc_wt = sc_wt;
+		this.sc_fin = sc_fin;
+		this.sc_insdt = sc_insdt;
+		this.sc_dflag = sc_dflag;
+		this.sc_updt = sc_updt;
+		this.sc_ddt = sc_ddt;
 		this.scfriendno = scfriendno;
 	}
 
-	public int getScid() {
-		return scid;
+	public int getSc_no_pk() {
+		return sc_no_pk;
 	}
 
-	public void setScid(int scid) {
-		this.scid = scid;
+	public void setSc_no_pk(int sc_no_pk) {
+		this.sc_no_pk = sc_no_pk;
 	}
 
-	public int getId() {
-		return id;
+	public int getUser_no_fk() {
+		return user_no_fk;
 	}
 
-	public void setId(int id) {
-		this.id = id;
+	public void setUser_no_fk(int user_no_fk) {
+		this.user_no_fk = user_no_fk;
 	}
 
-	public String getScdate() {
-		return scdate;
+	public String getSc_stdt() {
+		return sc_stdt;
 	}
 
-	public void setScdate(String scdate) {
-		this.scdate = scdate;
+	public void setSc_stdt(String sc_stdt) {
+		this.sc_stdt = sc_stdt;
 	}
 
-	public String getContent() {
-		return content;
+	public String getSc_endt() {
+		return sc_endt;
 	}
 
-	public void setContent(String content) {
-		this.content = content;
+	public void setSc_endt(String sc_endt) {
+		this.sc_endt = sc_endt;
 	}
 
-	public String getWeather() {
-		return weather;
+	public String getSc_con() {
+		return sc_con;
 	}
 
-	public void setWeather(String weather) {
-		this.weather = weather;
+	public void setSc_con(String sc_con) {
+		this.sc_con = sc_con;
 	}
 
-	public String getFinish() {
-		return finish;
+	public String getSc_wt() {
+		return sc_wt;
 	}
 
-	public void setFinish(String finish) {
-		this.finish = finish;
+	public void setSc_wt(String sc_wt) {
+		this.sc_wt = sc_wt;
 	}
 
-	public String getInputdate() {
-		return inputdate;
+	public String getSc_fin() {
+		return sc_fin;
 	}
 
-	public void setInputdate(String inputdate) {
-		this.inputdate = inputdate;
+	public void setSc_fin(String sc_fin) {
+		this.sc_fin = sc_fin;
 	}
 
-	public String getUpdatedate() {
-		return updatedate;
+	public String getSc_insdt() {
+		return sc_insdt;
 	}
 
-	public void setUpdatedate(String updatedate) {
-		this.updatedate = updatedate;
+	public void setSc_insdt(String sc_insdt) {
+		this.sc_insdt = sc_insdt;
+	}
+
+	public String getSc_dflag() {
+		return sc_dflag;
+	}
+
+	public void setSc_dflag(String sc_dflag) {
+		this.sc_dflag = sc_dflag;
+	}
+
+	public String getSc_updt() {
+		return sc_updt;
+	}
+
+	public void setSc_updt(String sc_updt) {
+		this.sc_updt = sc_updt;
+	}
+
+	public String getSc_ddt() {
+		return sc_ddt;
+	}
+
+	public void setSc_ddt(String sc_ddt) {
+		this.sc_ddt = sc_ddt;
 	}
 
 	public ArrayList<Integer> getScfriendno() {
@@ -106,9 +137,10 @@ public class Diary {
 
 	@Override
 	public String toString() {
-		return "Diary [scid=" + scid + ", id=" + id + ", scdate=" + scdate + ", content=" + content + ", weather="
-				+ weather + ", finish=" + finish + ", inputdate=" + inputdate + ", updatedate=" + updatedate
-				+ ", scfriendno=" + scfriendno + "]";
+		return "Diary [sc_no_pk=" + sc_no_pk + ", user_no_fk=" + user_no_fk + ", sc_stdt=" + sc_stdt + ", sc_endt="
+				+ sc_endt + ", sc_con=" + sc_con + ", sc_wt=" + sc_wt + ", sc_fin=" + sc_fin + ", sc_insdt=" + sc_insdt
+				+ ", sc_dflag=" + sc_dflag + ", sc_updt=" + sc_updt + ", sc_ddt=" + sc_ddt + ", scfriendno="
+				+ scfriendno + "]";
 	}
 
 }

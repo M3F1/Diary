@@ -34,7 +34,7 @@ public interface MemberMapper {
 	 * @param idno 친구리스트를 가져올 회원의 회원번호
 	 * @return 친구 리스트
 	 */
-	public ArrayList<Member> selectFriendMember(int idno);	// 멤버의 친구리스트를 조회한다.
+	public ArrayList<HashMap<String, Object>> selectFriendMember(int idno);	// 멤버의 친구리스트를 조회한다.
 	
 	
 	/**

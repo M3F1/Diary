@@ -14,37 +14,79 @@
 		values
 		(SEQ_ID_USER_TB_user_no_pk.nextval, #{user_id},
 		#{user_pw},
-		#{user_nm}, #{user_birth}, 
+		#{user_nm}, #{user_birth},
 		#{user_phone}, #{user_add1})
 	</insert>
 
 
-
 	<!-- 회원 정보 수정 -->
 	<update id="updateMember" parameterType="Member">
-
+		update ID_USER_TB set 
+		user_pw = #{user_pw}        //비밀번호는 대소문자 및 특수문자 포함이다.(최소 6자 이상 16자 이하)
+		, user_nm = #{user_nm}       //회원의 이름
+		, user_birth = #{user_birth}      //회원의 생년월일 정보 (형식은 YYMMDD 6자)
+		, user_phone = #{user_phone}		   //핸드폰 번호 ex)01011111111 (only number)
+		, user_mvseat = #{user_mvseat}    //영화관 좌석 설정정보 가운데 기준으로..
+		, user_transeat = #{user_transeat}   //교통 좌석 정보  창측 : W 내측 : I
+		, user_add1 = #{user_add1}   //첫번째 주소 정보(시,군,구)
+		, user_add2 = #{user_add2}   //두번째 주소 정보(시,군,구)
+		, user_add3 = #{user_add3}   //세번째 주소 정보(시,군,구)
+		where user_id = #{user_id}
 	</update>
 
 
 	<!-- 회원 탈퇴 -->
 	<!-- 진짜 삭제가아니라 탈퇴플래그 수정만해주는거임!!!!! -->
 	<update id="deleteMember" parameterType="int">
-
+		update ID_USER_TB set 
+		user_dflag = 'Y' 
+		where user_no_pk = #{user_no_pk}
 	</update>
 
-
 	<!-- 회원의 친구리스트 조회 -->
-	<select id="selectFriendMember" resultType="Member">
-
+	<select id="selectFriendMember" parameterType="int" resultType="HashMap">
+		select f.user_frno, u.user_id, u.user_nm, u.user_phone
+		from ID_USER_TB
+		u, ID_USERFRNO_TB f
+		where f.user_no_fk = u.user_no_pk
+		and
+		u.user_no_pk =
+		#{u.user_no_pk}
 	</select>
-
 
 	<!-- 단일 회원 조회(id중복조회나 등등에 사용) -->
 	<select id="selectMember" parameterType="String" resultType="Member">
-		select *  
+		select *
 		from ID_USER_TB
 		where
 		user_id = #{user_id}
 	</select>
+
+	<!-- 모든 친구 번호 정보 조회 -->
+	<select id="" parameterType="int" resultType="HashMap">
+		select u.user_nm,
+		u.user_phone
+		from ID_USERFRNO_TB f, ID_USER_TB u
+		where f.user_frno =
+		u.user_no_pk
+		and f.user_no_fk = #{f.user_no_fk}
+	</select>
+
+	<!-- 동행 친구 번호 정보 조회 -->
+	<select id="" parameterType="int" resultType="HashMap">
+		select u.user_nm,
+		u.user_phone
+		from id_user_tb u, id_scfrno_tb s
+		where u.user_no_pk =
+		s.sc_frno
+		and s.sc_no_fk = #{s.sc_no_fk}
+	</select>
+
+	<!-- 친구 id로 검색 후 저장 -->
+	<insert id="" parameterType="Member">
+		insert into ID_USERFRNO_TB
+		(user_no_fk,
+		user_frno) values (#{user_no_fk}, #{user_frno})
+	</insert>
 
 </mapper> 

@@ -57,12 +57,25 @@ public class DiaryDAO {
 	 *            수정된 일정정보
 	 * @return 수정된 데이터의 개수
 	 */
-	public int updateDiary(Diary diary) {
+	public Diary updateDiary(Diary diary) {
 		DiaryMapper mapper = sqlSession.getMapper(DiaryMapper.class);
-		int result = 0;
+		Diary result = null;
 		
 		try {
 			result = mapper.updateDiary(diary);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+	
+	
+	public Diary selectDiary(int scno){
+		DiaryMapper mapper = sqlSession.getMapper(DiaryMapper.class);
+		Diary result = null;
+		
+		try {
+	    result = mapper.selectDiary(scno);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -76,12 +89,12 @@ public class DiaryDAO {
 	 *            회원아이디
 	 * @return 특정회원에 대한 일정 출력
 	 */
-	public ArrayList<Diary> selectDiary(int idno) {
+	public ArrayList<Diary> selectDiaryList(int idno) {
 		DiaryMapper mapper = sqlSession.getMapper(DiaryMapper.class);
 		ArrayList<Diary> result = null;
 
 		try {
-			result = mapper.selectDiary(idno);
+			result = mapper.selectDiaryList(idno);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

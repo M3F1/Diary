@@ -74,9 +74,9 @@ public class MemberDAO {
 	 *            친구리스트를 가져올 회원의 회원번호
 	 * @return 친구 리스트
 	 */
-	public ArrayList<Member> selectFriendMember(int idno) {
+	public ArrayList<HashMap<String, Object>> selectFriendMember(int idno) {
 		MemberMapper mapper = sqlSession.getMapper(MemberMapper.class);
-		ArrayList<Member> result = null;
+		ArrayList<HashMap<String, Object>> result = null;
 
 		try {
 			result = mapper.selectFriendMember(idno);
@@ -103,8 +103,8 @@ public class MemberDAO {
 		}
 		return result;
 	}
-	
-	public Member login(String id){
+
+	public Member login(String id) {
 		MemberMapper mapper = sqlSession.getMapper(MemberMapper.class);
 		Member member = null;
 		try {

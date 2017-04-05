@@ -2,10 +2,76 @@
 SELECT * FROM v$PARAMETERS;
 
 SELECT * FROM ID_USER_TB;
+SELECT * FROM ID_USERFRNO_TB;
+SELECT * FROM ID_SC_TB;
+SELECT * FROM ID_SCFRNO_TB;
 
 DESC ID_USER_TB;
 
+INSERT INTO ID_SCFRNO_TB(
+sc_no_fk, 
+sc_frno)
+VALUES (1, 8);
 
+update ID_SC_TB set sc_dflag = 'N' where sc_no_pk = 1;
+
+insert into ID_SC_TB (
+		sc_no_pk, user_no_fk, sc_stdt, sc_con, sc_wt,
+		sc_fin, sc_insdt, sc_dflag)
+		values (
+		1
+		, 3
+		, '170404'
+		, '명동_19시_영화'
+		, 'CL'
+		, 'N'
+		, '170404'
+		, 'Y');
+		
+insert into ID_SC_TB (
+		sc_no_pk, user_no_fk, sc_stdt, sc_endt, sc_con, sc_wt,
+		sc_fin, sc_insdt, sc_dflag)
+		values (
+		2
+		, 2
+		, '170404'
+		, '170404'
+		, '명동_20시_영화'
+		, 'CL'
+		, 'N'
+		, '170404'
+		, 'Y');	
+		
+SELECT s.sc_no_pk, s.user_no_fk, u.user_nm, sc_stdt, sc_con, sc_wt,
+		sc_fin, sc_insdt, sc_dflag 
+FROM ID_SC_TB s, ID_USER_TB u
+WHERE s.user_no_fk = u.user_no_pk
+AND s.sc_no_pk = 2;
+		
+
+insert into ID_USERFRNO_TB values ();
+
+insert into ID_SCFRNO_TB values (1, 11);
+
+select f.user_frno, u.user_id, u.user_nm, u.user_phone
+		from ID_USER_TB
+		u, ID_USERFRNO_TB f
+		where f.user_no_fk = u.user_no_pk
+		and
+		u.user_no_pk = 11;
+
+select u.user_nm, u.user_phone
+		from ID_USERFRNO_TB f, ID_USER_TB u
+		where f.user_frno = u.user_no_pk
+		and f.user_no_fk = 11;
+
+select u.user_nm, u.user_phone 
+		from id_user_tb u, id_scfrno_tb s 
+		where u.user_no_pk = s.sc_frno
+		and s.sc_no_fk = 
+
+alter table ID_SCFRNO_TB rename column sc_no_pk to sc_no_fk;
+		
 /* Drop Tables */
 
 DROP TABLE ID_SCFRNO_TB CASCADE CONSTRAINTS;
@@ -38,8 +104,9 @@ CREATE TABLE ID_SCFRNO_TB      -- 일정에 동행하는 친구정보 테이블
 CREATE TABLE ID_SC_TB						 	 -- 일정 테이블
 (
 	sc_no_pk number NOT NULL,        		 	 -- 일정의 일정번호
-	user_no_fk number NOT NULL,      		 	 -- 회원의 회원번호
-	sc_dt date NOT NULL,             		 	 -- 일정의 날짜  YYMMDD HH24MISS
+	user_no_fk number NOT NULL,      		 	 -- 회원의 회원번호   
+	sc_stdt date NOT NULL,             		 	 -- 일정의 날짜  YYMMDD HH24MISS
+	sc_endt date,
 	sc_con varchar2(4000) NOT NULL,  		 	 -- 일정 내용 정보 (장소, 시간, 목적 등)
 	sc_wt varchar2(20) NOT NULL,     	         -- 날씨 정보  SU:맑음, CL:흐림, RA:비, SN:눈, DU:미세먼지
 	sc_fin varchar2(20) DEFAULT 'N' NOT NULL,    -- 결제완료 정보 컬럼  완료시 Y 아니면 N
@@ -47,7 +114,7 @@ CREATE TABLE ID_SC_TB						 	 -- 일정 테이블
 	sc_dflag varchar2(20) DEFAULT 'Y' NOT NULL,  -- 삭제플래그 삭제는 N 아니면 Y
 	sc_updt date DEFAULT SYSDATE, 				 -- 수정날짜  YYMMDD HH24MISS
 	sc_ddt date,  				 			     -- 일정 삭제 날짜  YYMMDD HH24MISS
-	PRIMARY KEY (sc_no_pk)
+	PRIMARY KEY (sc_no_pk, user_no_fk)
 );
 
 
@@ -55,6 +122,7 @@ CREATE TABLE ID_USERFRNO_TB		 -- 회원의 친구정보 테이블
 (
 	user_no_fk number NOT NULL,  -- 회원의 회원번호
 	user_frno number UNIQUE      -- 친구 아이디 번호
+	
 );
 
 
@@ -80,19 +148,22 @@ CREATE TABLE ID_USER_TB								-- 회원 테이블
 
 /* Create Foreign Keys */
 
-ALTER TABLE ID_SCFRNO_TB
-	ADD FOREIGN KEY (sc_no_fk)
-	REFERENCES ID_SC_TB (sc_no_pk)
-;
-
+ALTER TABLE ID_SCFRNO_TB ADD
+CONSTRAINT ID_SCFRNO_TB_FK FOREIGN KEY (sc_no_fk, sc_frno)
+REFERENCES ID_SC_TB (sc_no_pk, user_no_fk);
 
 ALTER TABLE ID_SC_TB
 	ADD FOREIGN KEY (user_no_fk)
 	REFERENCES ID_USER_TB (user_no_pk)
 ;
 
-
 ALTER TABLE ID_USERFRNO_TB
 	ADD FOREIGN KEY (user_no_fk)
 	REFERENCES ID_USER_TB (user_no_pk)
 ;
+
+ALTER TABLE ID_SCFRNO_TB DROP CONSTRAINT sc_no_pk;
+
+ALTER TABLE ID_SC_TB DROP PRIMARY KEY;
+ 
+ALTER TABLE ID_SC_TB ADD PRIMARY KEY (sc_no_pk, user_no_fk);

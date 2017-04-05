@@ -21,7 +21,6 @@ public class Member {
 	private String user_ddt;
 	private ArrayList<Integer> friendno;  //회원의 친구 번호 정보.
 		   			
-	
 	public Member() {
 		// TODO Auto-generated constructor stub
 	}

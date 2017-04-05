@@ -25,13 +25,18 @@ public interface DiaryMapper {
 	 * @param diary 수정된 일정정보
 	 * @return 수정된 데이터의 개수
 	 */
-	public int updateDiary(Diary diary);			// 일정 수정
+	public Diary updateDiary(Diary diary);			// 일정 수정
+
+	
+	
+	
+	public Diary selectDiary(int scno);
 	
 	
 	/**
 	 * @param idno 회원아이디
 	 * @return 특정회원에 대한 일정 출력
 	 */
-	public ArrayList<Diary> selectDiary(int idno);	// 특정회원에 대한 일정 가져오기.
+	public ArrayList<Diary> selectDiaryList(int idno);	// 특정회원에 대한 일정 가져오기.
 	
 }

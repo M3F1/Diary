@@ -8,28 +8,74 @@
 
 	<!-- 일정 정보 저장 -->
 	<insert id="insertDiary" parameterType="Diary">
-		insert into ID_SC_TB
-		(sc_no_pk,
-
-		) values (#{id}, #{password}, #{name})
+		insert into ID_SC_TB (
+		sc_no_pk, user_no_fk, sc_stdt, sc_endt, sc_con, sc_wt,
+		sc_fin,
+		sc_insdt, sc_dflag)
+		values (
+		SEQ_ID_SC_TB_sc_no_pk.nextval
+		,
+		#{user_no_fk}
+		, #{sc_stdt}
+		, #{sc_endt}
+		, #{sc_con}
+		, #{sc_wt}
+		, #{sc_fin}
+		, #{sc_insdt}
+		, #{sc_dflag})
 	</insert>
 
 	<!-- 일정 삭제 -->
 	<!-- 실제 삭제가아닌 수정으로 삭제플래그만 수정!!!! -->
 	<update id="deleteDiary" parameterType="int">
-
+		update ID_SC_TB set
+		sc_dflag = 'Y' where sc_no_pk = #{sc_no_pk}
 	</update>
 
 
 	<!-- 일정 수정 -->
 	<update id="updateDiary" parameterType="int">
+		update ID_SC_TB set
+		sc_stdt = #{sc_stdt}
+		, sc_endt = #{sc_endt}
+		, sc_con = #{sc_con}
+		,
+		sc_updt = #{sc_updt}
+		where sc_no_pk = #{sc_no_pk}
+	</update>
 
+
+	<!-- 결제 완료 -->
+	<update id="" parameterType="int">
+		update ID_SC_TB set
+		sc_fin = 'Y'
+		where sc_no_pk = #{sc_no_pk}
 	</update>
 
 
 	<!-- 일정 조회 -->
-	<select id="selectDiary" resultType="Diary">
-
+	<select id="" resultType="Diary">
+		select *
+		from ID_SC_TB
+		where
+		sc_no_pk = #{sc_no_pk}
 	</select>
+	
+	<select id="selectDiary" resultType="Diary">
+		select c_no_pk
+	    , sc_stdt
+	    , sc_endt
+	    , sc_con
+	    , sc_wt
+		from ID_SC_TB 
+		where user_no_fk = #{user_no_fk}
+	</select>
+	
+	
+	<!-- 동행 친구 등록 -->
+	<insert id="" parameterType="">
+		insert into ID_SCFRNO_TB values
+		(#{sc_no_fk}, #{sc_frno})
+	</insert>
 
 </mapper> 
