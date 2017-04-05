@@ -13,6 +13,10 @@ public interface DiaryMapper {
 	 */
 	public int insertDiary(Diary diary);			// 일정 입력
 	
+	
+	public int insertCompagnie(int sc_frno);
+	
+	
 	/**
 	 * @param scno 삭제할 일정번호
 	 * @return 삭제된 일정의 개수 (실제 삭제가아닌 업데이트로 삭제플래그를 바꾸기 때문에 업데이트 된 개수)

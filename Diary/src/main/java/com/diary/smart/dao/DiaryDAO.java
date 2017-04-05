@@ -17,9 +17,9 @@ public class DiaryDAO {
 	SqlSession sqlSession;
 	private static final Logger logger = LoggerFactory.getLogger(DiaryDAO.class);
 
-	
 	/**
-	 * @param diary 입력할 일정 정보
+	 * @param diary
+	 *            입력할 일정 정보
 	 * @return 입력된 일정의 개수
 	 */
 	public int insertDiary(Diary diary) {
@@ -34,9 +34,21 @@ public class DiaryDAO {
 		return result;
 	}
 
-	
+	public int insertCompagnie(int sc_frno) {
+		DiaryMapper mapper = sqlSession.getMapper(DiaryMapper.class);
+		int result = 0;
+
+		try {
+			result = mapper.insertCompagnie(sc_frno);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+
 	/**
-	 * @param scno 삭제할 일정번호
+	 * @param scno
+	 *            삭제할 일정번호
 	 * @return 삭제된 일정의 개수 (실제 삭제가아닌 업데이트로 삭제플래그를 바꾸기 때문에 업데이트 된 개수)
 	 */
 	public int deleteDiary(int scno) {
@@ -51,7 +63,6 @@ public class DiaryDAO {
 		return result;
 	}
 
-	
 	/**
 	 * @param diary
 	 *            수정된 일정정보
@@ -60,7 +71,7 @@ public class DiaryDAO {
 	public Diary updateDiary(Diary diary) {
 		DiaryMapper mapper = sqlSession.getMapper(DiaryMapper.class);
 		Diary result = null;
-		
+
 		try {
 			result = mapper.updateDiary(diary);
 		} catch (Exception e) {
@@ -68,22 +79,19 @@ public class DiaryDAO {
 		}
 		return result;
 	}
-	
-	
-	public Diary selectDiary(int scno){
+
+	public Diary selectDiary(int scno) {
 		DiaryMapper mapper = sqlSession.getMapper(DiaryMapper.class);
 		Diary result = null;
-		
+
 		try {
-	    result = mapper.selectDiary(scno);
+			result = mapper.selectDiary(scno);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return result;
 	}
 
-	
-	
 	/**
 	 * @param idno
 	 *            회원아이디

@@ -38,7 +38,7 @@ public class MemberController {
 		System.out.println(member);
 
 		int result = dao.joinMember(member);
-		if (result == 1) {
+		if (result > 0) {
 			return "home";
 		} else {
 			return "redirect:signUpForm";

@@ -28,14 +28,11 @@ public class DiaryController {
 	
 	@ResponseBody
 	@RequestMapping(value = "insertDiary", method=RequestMethod.GET)
-	public String insertDiary(Diary diary, Model model, HttpSession session){
+	public String insertDiary(Diary diary, int sc_frno){
 		
 		int result = dao.insertDiary(diary);
-		if (result > 0) {
-	
-		} else {
-			
-		}
+		int result2 = dao.insertCompagnie(sc_frno);
+		
 		return "";
 	}
 	
