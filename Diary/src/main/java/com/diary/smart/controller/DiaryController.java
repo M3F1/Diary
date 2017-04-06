@@ -26,6 +26,11 @@ public class DiaryController {
 	private DiaryDAO dao;
 	private MemberDAO mdao;
 	
+	@RequestMapping(value = "diary", method = RequestMethod.GET)
+	public String diary() {
+		return "diary";
+	}
+	
 	@ResponseBody
 	@RequestMapping(value = "insertDiary", method=RequestMethod.GET)
 	public String insertDiary(Diary diary, int sc_frno){

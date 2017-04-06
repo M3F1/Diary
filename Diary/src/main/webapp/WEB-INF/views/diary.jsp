@@ -9,35 +9,32 @@
 <body>
 	<tiles:insertDefinition name="defaultTemplate">
 		<tiles:putAttribute name="body">
-			<div class="container">
-				<!--<form id="input" onsubmit="return inputSchedule();">-->
-				<div class="col-xs-offset-1 col-xs-10" id="iconList">
-					<a href="javascript:movieList()"><i class="fa fa-film fa-3x" aria-hidden="true"></i></a>
-					<a href="javascript:inputSchedule('버스')"><i class="fa fa-bus fa-3x" aria-hidden="true"></i></a>
-					<a href="javascript:inputSchedule('기차')"><i class="fa fa-train fa-3x" aria-hidden="true"></i></a>
-					<a href="javascript:inputSchedule('직접 작성')"><i class="fa fa-keyboard-o fa-3x" aria-hidden="true"></i></a>
-					<!--<button class="btn btn-default" id="scheduleSearch">스케쥴 검색</button>-->
-					<input type="text" class="form-control" id="write"><br> <span
-						id="written"></span>
-				</div>
-				<!--</form>-->
-				<br>
-				<br>
-				<h2 class="text-center">
-					<div class="row">
-						<div class="col-xs-2">
-							<a href="javascript:lastMonth();" id="lastMonth">&lt;</a>
-						</div>
-						<div class="col-xs-8">
-							<span id="yearSearch"></span>년 <span id="monthSearch"></span>월
-						</div>
-						<div class="col-xs-2">
-							<a href="javascript:nextMonth();" id="nextMonth">&gt;</a>
-						</div>
-					</div>
-				</h2>
-				<div id="calendar"></div>
+			<!-- icon 선택 및 input text part -->
+			<div class="col-xs-offset-1 col-xs-10" id="iconList">
+				<a href="javascript:movieList()"><i class="fa fa-film fa-3x" aria-hidden="true"></i></a>
+				<a href="javascript:inputSchedule('버스')"><i class="fa fa-bus fa-3x" aria-hidden="true"></i></a>
+				<a href="javascript:inputSchedule('기차')"><i class="fa fa-train fa-3x" aria-hidden="true"></i></a>
+				<a href="javascript:inputSchedule('직접 작성')"><i class="fa fa-keyboard-o fa-3x" aria-hidden="true"></i></a>
+				<!-- <input type="text" class="form-control" id="write"><br> <span id="written"></span> -->
 			</div>
+			<br>
+			<br>
+			
+			<!-- calendar part -->
+			<h2 class="text-center">
+				<a class="left carousel-control left-slider-arrow" href="javascript:lastMonth();" id="lastMonth">
+					<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+					<span class="sr-only">Previous</span>
+				</a>
+			
+				<span id="yearSearch"></span>년 <span id="monthSearch"></span>월
+			
+				<a class="left carousel-control right-slider-arrow" href="javascript:nextMonth();" id="nextMonth">
+					<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+					<span class="sr-only">Next</span>
+				</a>
+			</h2>
+			<div id="calendar"></div>
 		</tiles:putAttribute>
 	</tiles:insertDefinition>
 </body>
