@@ -52,7 +52,7 @@
 				id="sample6_postcode" placeholder="우편번호"> <input
 				type="button" onclick="sample6_execDaumPostcode()" value="우편번호 찾기"><br>
 			<input type="text" name="user_add1" id="user_add1" placeholder="주소"><br>
-			<br> <input type="submit" class="form-control" value="가입">
+			<br> <input type="submit" class="form-control" id="joinBtn" value="가입">
 		</form>
 	</div>
 	<script

@@ -70,8 +70,9 @@ public class MemberController {
 				model.addAttribute("member", member);
 				session.setAttribute("user_id", member.getUser_id());
 				return "home";
-			} else
+			} else {
 				return "redirect:/";
+			}
 		}
 	}
 
@@ -110,10 +111,10 @@ public class MemberController {
 		model.addAttribute("member", upMember);
 		return "";
 	}
-	
-	@RequestMapping(value="deleteMember", method=RequestMethod.POST)
-	public String deleteMember(int idno, Model model, HttpSession session){
-		
+
+	@RequestMapping(value = "deleteMember", method = RequestMethod.POST)
+	public String deleteMember(int idno, Model model, HttpSession session) {
+
 		int result = dao.deleteMember(idno);
 		if (result > 0) {
 			session.removeAttribute("user_id");

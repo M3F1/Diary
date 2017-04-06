@@ -15,7 +15,7 @@
 	</tiles:insertDefinition>
 =======
 <h1>메인</h1>
-
+<h2>${sessionScope.user_id}님 안녕!</h2>
 <form action="login" method="post">
 id<input type="text" name="user_id" id="user_id">
 pw<input type="password" name="user_pw" id="user_pw">
