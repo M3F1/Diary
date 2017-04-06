@@ -22,15 +22,15 @@
 	<!-- 회원 정보 수정 -->
 	<update id="updateMember" parameterType="Member">
 		update ID_USER_TB set 
-		user_pw = #{user_pw}     
-		, user_nm = #{user_nm}   
-		, user_birth = #{user_birth} 
+		user_pw = #{user_pw}
+		, user_nm = #{user_nm}
+		, user_birth = #{user_birth}
 		, user_phone = #{user_phone}
-		, user_mvseat = #{user_mvseat} 
+		, user_mvseat = #{user_mvseat}
 		, user_transeat = #{user_transeat}
-		, user_add1 = #{user_add1}  
-		, user_add2 = #{user_add2} 
-		, user_add3 = #{user_add3} 
+		, user_add1 = #{user_add1}
+		, user_add2 = #{user_add2}
+		, user_add3 = #{user_add3}
 		where user_id = #{user_id}
 	</update>
 
@@ -72,8 +72,8 @@
 		and f.user_no_fk = #{f.user_no_fk}
 	</select> -->
 
-	<!-- 동행 친구 번호 정보 조회 -->
-<!-- 	<select id="aaa" parameterType="int" resultType="HashMap">
+
+<!-- 	<select id="asd" parameterType="int" resultType="HashMap">
 		select u.user_nm,
 		u.user_phone
 		from id_user_tb u, id_scfrno_tb s
@@ -82,11 +82,13 @@
 		and s.sc_no_fk = #{s.sc_no_fk}
 	</select> -->
 
+
 	<!-- 친구 id로 검색 후 저장 -->
-<!-- 	<insert id="aaa" parameterType="Member">
+<!-- 	<insert id="ads" parameterType="Member">
 		insert into ID_USERFRNO_TB
 		(user_no_fk,
 		user_frno) values (#{user_no_fk}, #{user_frno})
 	</insert>
  -->
+
 </mapper> 
