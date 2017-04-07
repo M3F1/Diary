@@ -7,22 +7,13 @@
 <title>Main</title>
 </head>
 <body>
-<<<<<<< HEAD
 	<tiles:insertDefinition name="defaultTemplate">
 		<tiles:putAttribute name="body">
-			<h1>This is body.</h1>
+			<a href="diary" class="text-center">dairy 보기</a>
+			<br /><br /><br /><br /><br /><br /><br /><br /><br />
+			<h1 class="text-center">This is body.</h1>
+			<br /><br /><br /><br /><br /><br /><br /><br /><br />
 		</tiles:putAttribute>
 	</tiles:insertDefinition>
-=======
-<h1>메인</h1>
-<h2>${sessionScope.user_id}님 안녕!</h2>
-<form action="login" method="post">
-id<input type="text" name="user_id" id="user_id">
-pw<input type="password" name="user_pw" id="user_pw">
-<input type="submit" id="btn" value="로그인">
-<br>
-<a href="signUpForm">회원가입</a>
-</form>
->>>>>>> branch 'master' of https://github.com/M3F1/Diary.git
 </body>
 </html>

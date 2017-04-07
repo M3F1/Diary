@@ -19,7 +19,7 @@ $(function () {
 		$(".carousel .carousel-indicators li:first").addClass("active");
 		$(".carousel .carousel-inner .item:first").addClass("active");
 		$(".carousel").carousel({
-			interval: 4000
+			interval: false
 		});
 
 		/*---------- FIXED HEADER ----------*/

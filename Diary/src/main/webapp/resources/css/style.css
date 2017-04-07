@@ -1032,8 +1032,8 @@ a.site-logo img {
 }
 
 .slider-area {
-	height:768px;
-	min-height:768px !important;
+	height:256px;
+	min-height:256px !important;
 }
 
 .slider-area .slider-bg-img {
