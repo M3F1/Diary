@@ -23,7 +23,7 @@
 <title>Diary</title>
 </head>
 <body>
-	<header class="header fixed-header navbar-fixed-top" id="header">
+	<header class="header fixed-header navbar-fixed-top" id="calHeader">
 		<section class="container">
 			<!-- LOGO START -->
 			<a href="/smart" class="site-logo"> <img alt="Logo" src="resources/img/logo.png">
@@ -86,8 +86,9 @@
 	</div>
 </div>
 <!-- LOGIN MODAL END -->
-<a href="#" class="slider-down"><i class="fa fa-angle-down"></i></a>
+<a href="javascript:showHeader()" class="slider-down"><i class="fa fa-angle-down"></i></a>
 <!-- calendar part -->
+<div class="container calendar">
 <section class="slider-area">
 	<section id="carousel-example-generic" class="carousel slide" data-interval="false" data-ride="carousel">
 		<!-- SLIDE LIST START -->
@@ -112,26 +113,6 @@
 					</div>
 					
 					<div id="calendar" class="animated fadeInLeftBig"></div>
-					<!--SLIDE INFO START -->
-					<!--<div class="slider-post-information animated fadeInDown">
-						<span class="category">Sport</span>
-						<span>//</span>
-						<span class="date">22.03.2015</span>
-					</div>-->
-					<!-- SLIDE INFO END -->
-					<!-- SLIDE TITLE START -->
-					<!--<div class="slider-post-title">
-						<span class="slider-post-title-top animated fadeInLeftBig">For a New</span>
-						<span class="slider-post-title-bottom animated fadeInRightBig">Adventure</span>
-					</div>-->
-					<!-- SLIDE TITLE END -->
-					<!-- SLIDE EXCERPT START -->
-					<!--<p class="animated fadeInUpBig">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque a pretium nunc, eget ornare nisi. Pellentesque
-						vel nisi facilisis, blandit neque in, convallis nibh ellentesque a pretium nun.</p>-->
-					<!-- SLIDE EXCERPT END -->
-					<!-- SLIDE MORE BUTTON START -->
-					<!--<a href="single.html" class="more animated fadeInUpBig"><i class="fa fa-chevron-right"></i> More</a>-->
-					<!-- SLIDE MORE BUTTON END -->
 				</div>
 				<!-- SLIDE CAPTION END -->
 			</div>
@@ -182,5 +163,6 @@
 		<!-- <a href="#header" class="slider-down"><i class="fa fa-angle-down"></i></a> -->
 	</section>
 </section>
+</div>
 </body>
 </html>

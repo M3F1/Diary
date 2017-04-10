@@ -26,6 +26,19 @@ $(document).ready(function () {
 			inputSchedule();
 		}
 	});
+	
+	// 아무데나 클릭 시 header 숨기기
+	$(".slider-area").on("click", hideHeader);
+	
+	// slider-down mouseenter 시 bounce 추가
+	$(".slider-down").on("mouseenter", function() {
+		$(".slider-down>i").removeClass().addClass("fa fa-angle-down bounce");
+	});
+	
+	// slider-down mouseleave 시 bounce 제거
+	$(".slider-down").on("mouseleave", function() {
+		$(".slider-down>i").removeClass().addClass("fa fa-angle-down");
+	});
 
 	// 달력 이동 효과
 	// $("#lastMonth").on("mousedown", function () {
@@ -48,6 +61,17 @@ $(document).ready(function () {
 	// 스케쥴 검색 버튼 활성화
 	// scheduleSearch();
 });
+
+/**************************** Header 보이기/숨기기 ****************************/
+function showHeader() {
+	$("#calHeader").css("top", "0px");
+}
+
+function hideHeader() {
+	$("#calHeader").css("top", "-88px");
+}
+
+
 /****************************** 스케쥴 입력 부분 ******************************/
 // 영화 목록 보여주는 function
 function movieList() {
@@ -173,7 +197,9 @@ function calendarView(dt) {
 	while (dt.getMonth() == temp) {
 		// 각 칸에 날짜 정보 저장
 		var dateForm = (dt.getMonth() + 1) + "-" + dt.getDate() + "-" + dt.getFullYear();
-		html += "<td id='" + dateForm + "' onclick=selectedDate('" + dateForm + "')>" + dt.getDate() + "</td>";
+		html += "<td id='" + dateForm + "' onclick=selectedDate('" + dateForm + "')>" +
+				"<a href='#'><div style='height: 100%; width: 100%'>" + dt.getDate() + 
+				"</div></a></td>";
 
 		if (dt.getDay() == 6) {
 			html += "</tr><tr>";
@@ -193,8 +219,9 @@ function calendarView(dt) {
 	$("#calendar").html(html);
 
 	// 토요일은 파란색, 일요일은 숫자를 빨간색으로 표시
-	$("#calendar > table > tbody > tr > td:nth-child(1)").css("color", "gray");
-	$("#calendar > table > tbody > tr > td:nth-child(7)").css("color", "gray");
+//	$("#calendar > table > tbody > tr > td:nth-child(1)").css("color", "gray");
+//	$("#calendar > table > tbody > tr > td:nth-child(7)").css("color", "gray");
+	$("#calendar > table > tbody > tr > td").css("color", "white");
 
 	// 오늘 날짜는 배경색을 노란색으로 표시
 	$("#" + (today.getMonth() + 1) + "-" + today.getDate() + "-" + today.getFullYear())
