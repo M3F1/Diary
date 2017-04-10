@@ -128,7 +128,7 @@ function calendarView(dt) {
 	$("#yearSearch").html(dt.getFullYear());
 	$("#monthSearch").html(padDigits((dt.getMonth() + 1), 2));
 
-	var html = "<table class='table table-bordered'>";
+	var html = "<table class='table borderless'>";
 	html += "<tr class='text-center'>";
 	html += "<td>일</td><td>월</td><td>화</td><td>수</td><td>목</td><td>금</td><td>토</td>";
 	html += "</tr>";
@@ -193,8 +193,8 @@ function calendarView(dt) {
 	$("#calendar").html(html);
 
 	// 토요일은 파란색, 일요일은 숫자를 빨간색으로 표시
-	$("#calendar > table > tbody > tr > td:nth-child(1)").css("color", "red");
-	$("#calendar > table > tbody > tr > td:nth-child(7)").css("color", "blue");
+	$("#calendar > table > tbody > tr > td:nth-child(1)").css("color", "gray");
+	$("#calendar > table > tbody > tr > td:nth-child(7)").css("color", "gray");
 
 	// 오늘 날짜는 배경색을 노란색으로 표시
 	$("#" + (today.getMonth() + 1) + "-" + today.getDate() + "-" + today.getFullYear())

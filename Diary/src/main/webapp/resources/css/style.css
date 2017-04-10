@@ -1045,7 +1045,7 @@ a.site-logo img {
 
 .slider-area .carousel-inner>.item {
 	height:100%;
-	min-height:768px !important;
+	min-height:192px !important;
 }
 
 .slider-area ul , .slider-area ul li {
@@ -1068,12 +1068,12 @@ a.site-logo img {
 
 .slider-area .carousel {
 	height:100%;
-	min-height: 768px !important;
+	min-height: 512px !important;
 }
 
 .slider-area .carousel-inner {
 	height:100%;
-	min-height: 768px !important;
+	min-height: 512px !important;
 }
 
 .slider-area .carousel-fade .carousel-inner .item {
@@ -1195,8 +1195,9 @@ a.slider-down i {
 }
 
 .slider-area .carousel-caption {
-	top: 30%;
-	text-align:right;
+	top: 15%;
+	text-align: left;
+	line-height: 5em;
 }
 
 .slider-area .carousel-caption .slider-post-information {
@@ -3898,6 +3899,10 @@ nav.category-navigation {
 
 /********************************* calendarFrom *********************************/
 
+/******************* table *******************/
+.table td {
+	border-top: none !important;
+}
 
 /******************* 아이콘 *******************/
 
@@ -3906,14 +3911,12 @@ nav.category-navigation {
 	letter-spacing: 0.5em;
 }
 
-#iconList>a>img {
-	height: 10%;
-	width: 10%;
+#iconList>a>i {
+	color: white;
 }
 
-#iconList>a:nth-child(4)>img {
-	height: 14%;
-	width: 14%;
+#iconList>a:hover>i {
+	color: antiquewhite;
 }
 
 

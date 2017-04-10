@@ -10,9 +10,25 @@
 	<tiles:insertDefinition name="defaultTemplate">
 		<tiles:putAttribute name="body">
 			<a href="diary" class="text-center">dairy 보기</a>
-			<br /><br /><br /><br /><br /><br /><br /><br /><br />
+			<br />
+			<br />
+			<br />
+			<br />
+			<br />
+			<br />
+			<br />
+			<br />
+			<br />
 			<h1 class="text-center">This is body.</h1>
-			<br /><br /><br /><br /><br /><br /><br /><br /><br />
+			<br />
+			<br />
+			<br />
+			<br />
+			<br />
+			<br />
+			<br />
+			<br />
+			<br />
 		</tiles:putAttribute>
 	</tiles:insertDefinition>
 </body>
