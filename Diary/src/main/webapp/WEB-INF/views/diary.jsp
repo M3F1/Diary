@@ -107,12 +107,18 @@
 						<a href="javascript:inputSchedule('직접 작성')"><i class="fa fa-keyboard-o fa-3x" aria-hidden="true"></i></a>
 						<!-- <input type="text" class="form-control" id="write"><br> <span id="written"></span> -->
 					</div>
-					
+					<div class="form-group col-xs-offset-1 col-xs-10" id="tooltip">
+						<span id="tooltiptext"></span>
+						<!--<button class="btn btn-default" id="scheduleSearch">스케쥴 검색</button>-->
+						<input type="text" class="form-control" id="write"><br>
+						<span id="written"></span>
+					</div>
+					<br /><br />
 					<div class="text-center">
 						<h1><span id="yearSearch"></span>.<span id="monthSearch"></span></h1>
 					</div>
 					
-					<div id="calendar" class="animated fadeInLeftBig"></div>
+					<div id="calendar" class="animated fadeInUpBig"></div>
 				</div>
 				<!-- SLIDE CAPTION END -->
 			</div>

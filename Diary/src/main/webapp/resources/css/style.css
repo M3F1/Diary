@@ -52,14 +52,13 @@ body {
 }
 
 a, a:visited {
-	color: white;
+	color:#666666;
 }
 
 a:hover, a:focus {
 	text-decoration:none;
 	color:#666666;
 }
-
 
 h1, h2, h3, h4, h5, h6, h7 {
 	font-family:'Yanone Kaffeesatz';
@@ -1199,7 +1198,6 @@ a.slider-down i {
 .slider-area .carousel-caption {
 	top: 10%;
 	text-align: center;
-	line-height: 5em;
 }
 
 .slider-area .carousel-caption .slider-post-information {
@@ -3916,12 +3914,17 @@ nav.category-navigation {
 /******************* table *******************/
 .table td {
 	border-top: none !important;
+	color: white;
 }
 
+.table>tbody>tr>td>a {
+	color: white;
+}
 
 /******************* 아이콘 *******************/
 
 #iconList {
+	display: none;
 	text-align: center;
 	letter-spacing: 0.5em;
 }
@@ -3937,26 +3940,30 @@ nav.category-navigation {
 
 /******************* 말풍선 *******************/
 
+#write, #written>input[type=text] {
+	padding-top: 8px;
+	padding-bottom: 8px;
+}
+
 #tooltip {
 	position: relative;
-	display: inline-block;
-	visibility: hidden;
+	display: none;
 }
 
 #tooltip #tooltiptext {
 	visibility: hidden;
-	width: 250px;
 	background-color: #555;
 	color: #fff;
 	text-align: center;
 	border-radius: 6px;
-	padding: 5px 0;
-	position: absolute;
-	z-index: 1;
-	bottom: 125%;
-	left: 43%;
-	margin-left: -60px;
+	padding: 5px 5px;
+	position: relative;
+	bottom: 10px;
 	opacity: 0;
+}
+
+#tooltiptext {
+	font-size: medium;
 }
 
 #tooltip #tooltiptext::after {
