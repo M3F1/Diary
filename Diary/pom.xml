@@ -183,6 +183,44 @@
 			<artifactId>tiles-core</artifactId>
 			<version>3.0.5</version>
 		</dependency>
+    	
+    	<!-- chrome-driver -->
+		<dependency>
+		    <groupId>org.seleniumhq.selenium</groupId>
+		    <artifactId>selenium-chrome-driver</artifactId>
+		    <version>3.3.1</version>
+		</dependency>
+		<!-- selenium-server -->
+		<dependency>
+		    <groupId>org.seleniumhq.selenium</groupId>
+		    <artifactId>selenium-server</artifactId>
+		    <version>3.3.1</version>
+		</dependency>
+		<!-- selenium-java -->
+		<dependency>
+		    <groupId>org.seleniumhq.selenium</groupId>
+		    <artifactId>selenium-java</artifactId>
+		    <version>3.3.1</version>
+		</dependency>
+		<!-- selenium-api -->
+		<dependency>
+		    <groupId>org.seleniumhq.selenium</groupId>
+		    <artifactId>selenium-api</artifactId>
+		    <version>3.3.1</version>
+		</dependency>
+		<!-- htmlunit-driver -->
+		<dependency>
+		    <groupId>org.seleniumhq.selenium</groupId>
+		    <artifactId>htmlunit-driver</artifactId>
+		    <version>2.25</version>
+		</dependency>
+		<!--selenium-remote-driver -->
+		<dependency>
+		    <groupId>org.seleniumhq.selenium</groupId>
+		    <artifactId>selenium-remote-driver</artifactId>
+		    <version>3.3.1</version>
+		</dependency>
+		
     
 	</dependencies>
 	
