@@ -6,12 +6,19 @@ SELECT * FROM ID_USERFRNO_TB;
 SELECT * FROM ID_SC_TB;
 SELECT * FROM ID_SCFRNO_TB;
 
+delete from ID_USER_TB where user_no_pk = 3;
+select user_no_pk, user_id, user_nm from id_user_tb where user_nm = '한진수';
+update id_user_tb set user_aflag = 1 where user_nm = '이뿡치';
+ALTER TABLE ID_USER_TB modify (user_aflag number DEFAULT 0);
+
 DESC ID_USER_TB;
 
 INSERT INTO ID_SCFRNO_TB(
 sc_no_fk, 
 sc_frno)
 VALUES (1, 8);
+
+select * from ID_USER_TB where user_no_pk = 1;
 
 update ID_SC_TB set sc_dflag = 'N' where sc_no_pk = 1;
 
@@ -117,6 +124,15 @@ CREATE TABLE ID_SC_TB						 	 -- 일정 테이블
 	PRIMARY KEY (sc_no_pk, user_no_fk)
 );
 
+select user_no_pk, user_id, user_nm, user_phone
+from id_user_tb
+where user_no_pk in (select user_frno
+from id_userfrno_tb
+where user_no_fk = 1);
+
+select f.user_frno, u.user_id, u.user_nm, u.user_phone from id_user_tb u, id_userfrno_tb f 
+where u.user_no_pk = f.user_frno
+and f.user_no_fk = 1;
 
 CREATE TABLE ID_USERFRNO_TB		 -- 회원의 친구정보 테이블
 (
@@ -125,10 +141,10 @@ CREATE TABLE ID_USERFRNO_TB		 -- 회원의 친구정보 테이블
 	
 );
 
-
 CREATE TABLE ID_USER_TB								-- 회원 테이블
 (
 	user_no_pk number NOT NULL,  			 		-- 회원의 회원번호
+    user_aflag number DEFAULT '0' NOT NULL,
 	user_id varchar2(50) NOT NULL UNIQUE,  			-- 회원의 아이디 아이디는 현존하는 이메일주소로 한다.(50자 미만)
 	user_pw varchar2(16) NOT NULL,  				-- 비밀번호는 대소문자 및 특수문자 포함이다.(최소 6자 이상 16자 이하)
 	user_nm varchar2(20) NOT NULL,  				-- 회원의 이름

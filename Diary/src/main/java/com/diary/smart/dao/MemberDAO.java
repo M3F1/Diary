@@ -74,12 +74,12 @@ public class MemberDAO {
 	 *            친구리스트를 가져올 회원의 회원번호
 	 * @return 친구 리스트
 	 */
-	public ArrayList<HashMap<String, Object>> selectFriendMember(int idno) {
+	public ArrayList<HashMap<String, Object>> friendList(int idno) {
 		MemberMapper mapper = sqlSession.getMapper(MemberMapper.class);
 		ArrayList<HashMap<String, Object>> result = null;
 
 		try {
-			result = mapper.selectFriendMember(idno);
+			result = mapper.friendList(idno);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -103,6 +103,17 @@ public class MemberDAO {
 		}
 		return result;
 	}
+	
+	public int addFriend(int user_no_fk, int user_frno){
+		MemberMapper mapper = sqlSession.getMapper(MemberMapper.class);
+		int result = 0;
+		try {
+		result = mapper.addFriend(user_no_fk, user_frno);
+		} catch (Exception e) {
+		   e.printStackTrace();
+		}
+		return result;
+	}
 
 	public Member login(String id) {
 		MemberMapper mapper = sqlSession.getMapper(MemberMapper.class);
@@ -113,6 +124,18 @@ public class MemberDAO {
 			e.printStackTrace();
 		}
 		return member;
+	}
+	
+	public int authenticated(String id){
+		MemberMapper mapper = sqlSession.getMapper(MemberMapper.class);
+		int result = 0;
+		
+		try {
+		result = mapper.authenticated(id);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return result;
 	}
 
 }

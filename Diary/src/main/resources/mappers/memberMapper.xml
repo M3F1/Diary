@@ -21,37 +21,35 @@
 
 	<!-- 회원 정보 수정 -->
 	<update id="updateMember" parameterType="Member">
-		update ID_USER_TB set 
+		update ID_USER_TB set
 		user_pw = #{user_pw}
 		, user_nm = #{user_nm}
 		, user_birth = #{user_birth}
 		, user_phone = #{user_phone}
 		, user_mvseat = #{user_mvseat}
-		, user_transeat = #{user_transeat}
+		,
+		user_transeat = #{user_transeat}
 		, user_add1 = #{user_add1}
-		, user_add2 = #{user_add2}
-		, user_add3 = #{user_add3}
-		where user_id = #{user_id}
+		, user_add2
+		= #{user_add2}
+		, user_add3 = #{user_add3} where user_id = #{user_id}
 	</update>
 
 
 	<!-- 회원 탈퇴 -->
 	<!-- 진짜 삭제가아니라 탈퇴플래그 수정만해주는거임!!!!! -->
 	<update id="deleteMember" parameterType="int">
-		update ID_USER_TB set 
-		user_dflag = 'Y' 
+		update ID_USER_TB set
+		user_dflag = 'Y'
 		where user_no_pk = #{user_no_pk}
 	</update>
 
 	<!-- 회원의 친구리스트 조회 -->
-	<select id="selectFriendMember" parameterType="int" resultType="HashMap">
-		select f.user_frno, u.user_id, u.user_nm, u.user_phone
-		from ID_USER_TB
-		u, ID_USERFRNO_TB f
-		where f.user_no_fk = u.user_no_pk
-		and
-		u.user_no_pk =
-		#{u.user_no_pk}
+	<select id="friendList" parameterType="int" resultType="HashMap">
+		select f.user_frno, u.user_id, u.user_nm, u.user_phone 
+		from id_user_tb u, id_userfrno_tb f
+		where u.user_no_pk = f.user_frno
+		and f.user_no_fk = #{f.user_no_fk}
 	</select>
 
 	<!-- 단일 회원 조회(id중복조회나 등등에 사용) -->
@@ -62,33 +60,26 @@
 		user_id = #{user_id}
 	</select>
 
+	<!-- 인증된 회원 flag 변경 -->
+	<update id="authenticated" parameterType="String">
+		update ID_USER_TB set
+		user_aflag = 1
+		where user_id = #{user_id}
+	</update>
+
 	<!-- 모든 친구 번호 정보 조회 -->
-<!-- 	<select id="aaa" parameterType="int" resultType="HashMap">
-		select u.user_nm,
-		u.user_phone
-		from ID_USERFRNO_TB f, ID_USER_TB u
-		where f.user_frno =
-		u.user_no_pk
-		and f.user_no_fk = #{f.user_no_fk}
-	</select> -->
-
-
-<!-- 	<select id="asd" parameterType="int" resultType="HashMap">
-		select u.user_nm,
-		u.user_phone
-		from id_user_tb u, id_scfrno_tb s
-		where u.user_no_pk =
-		s.sc_frno
-		and s.sc_no_fk = #{s.sc_no_fk}
-	</select> -->
+<!-- <select id="aaa" parameterType="int" resultType="HashMap"> select u.user_nm, 
+		u.user_phone from ID_USERFRNO_TB f, ID_USER_TB u where f.user_frno = u.user_no_pk 
+		and f.user_no_fk = #{f.user_no_fk} </select> 동행 번호 조회 <select id="asd" parameterType="int" 
+		resultType="HashMap"> select u.user_nm, u.user_phone from id_user_tb u, id_scfrno_tb 
+		s where u.user_no_pk = s.sc_frno and s.sc_no_fk = #{s.sc_no_fk} </select> -->
 
 
 	<!-- 친구 id로 검색 후 저장 -->
-<!-- 	<insert id="ads" parameterType="Member">
+	<insert id="addFriend" parameterType="int">
 		insert into ID_USERFRNO_TB
-		(user_no_fk,
-		user_frno) values (#{user_no_fk}, #{user_frno})
+		(user_no_fk, user_frno) values (#{0},
+		#{1})
 	</insert>
- -->
 
 </mapper> 
