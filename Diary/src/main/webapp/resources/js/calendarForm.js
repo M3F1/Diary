@@ -1,6 +1,6 @@
 var dt = new Date(); // Date 객체
 var today = new Date(); // 오늘 날짜 객체
-var q = [ "언제?", "어디서?", "어떻게?" ]; // 입력창 질문
+var q = [ "몇시?", "어디서?", "어떻게?" ]; // 입력창 질문
 var i = 0;
 var text = "";
 
