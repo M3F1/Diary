@@ -15,7 +15,6 @@ public class Member {
 							   //NE:오른쪽뒤 NW:왼쪽뒤 SE:오른쪽앞 SW:오른쪽뒤  8군데
 	private String user_jodt;   //가입날짜 YYMMDD HH24MISS
 	private String user_dflag;
-	private String user_transeat;   //교통 좌석 정보  창측 : W 내측 : I
 	private String user_add1;   //첫번째 주소 정보(시,군,구)
 	private String user_add2;   //두번째 주소 정보(시,군,구)
 	private String user_add3;   //세번째 주소 정보(시,군,구)
@@ -27,7 +26,7 @@ public class Member {
 	}
 
 	public Member(int user_no_pk, int user_aflag, String user_id, String user_pw, String user_nm, String user_birth, String user_phone,
-			String user_mvseat, String user_jodt, String user_dflag, String user_transeat, String user_add1, String user_add2,
+			String user_mvseat, String user_jodt, String user_dflag, String user_add1, String user_add2,
 			String user_add3, String user_ddt, ArrayList<Integer> friendno) {
 		super();
 		this.user_no_pk = user_no_pk;
@@ -38,7 +37,6 @@ public class Member {
 		this.user_phone = user_phone;
 		this.user_mvseat = user_mvseat;
 		this.user_jodt = user_jodt;
-		this.user_transeat = user_transeat;
 		this.user_add1 = user_add1;
 		this.user_add2 = user_add2;
 		this.user_add3 = user_add3;
@@ -118,14 +116,6 @@ public class Member {
 		this.user_dflag = user_dflag;
 	}
 
-	public String getUser_transeat() {
-		return user_transeat;
-	}
-
-	public void setUser_transeat(String user_transeat) {
-		this.user_transeat = user_transeat;
-	}
-
 	public String getUser_add1() {
 		return user_add1;
 	}
@@ -178,8 +168,8 @@ public class Member {
 	public String toString() {
 		return "Member [user_no_pk=" + user_no_pk + ", user_id=" + user_id + ", user_pw=" + user_pw + ", user_nm="
 				+ user_nm + ", user_birth=" + user_birth + ", user_phone=" + user_phone + ", user_mvseat=" + user_mvseat
-				+ ", user_jodt=" + user_jodt + ", user_dflag= " + user_dflag + ", user_transeat=" + user_transeat + ", user_add1=" + user_add1
-				+ ", user_add2=" + user_add2 + ", user_add3=" + user_add3 + ", suser_ddt=" + user_ddt + ", friendno=" + friendno + "]";
+				+ ", user_jodt=" + user_jodt + ", user_dflag= " + user_dflag + ", user_transeat=" + ", user_add1=" + user_add1
+				+ ", user_add2=" + user_add2 + ", user_add3=" + user_add3 + ", user_ddt=" + user_ddt + ", friendno=" + friendno + "]";
 	}
 	
 }

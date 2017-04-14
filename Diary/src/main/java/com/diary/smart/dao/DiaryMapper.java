@@ -1,6 +1,8 @@
 package com.diary.smart.dao;
 
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 
 import com.diary.smart.vo.Diary;
 
@@ -41,6 +43,6 @@ public interface DiaryMapper {
 	 * @param idno 회원아이디
 	 * @return 특정회원에 대한 일정 출력
 	 */
-	public ArrayList<Diary> selectDiaryList(int idno);	// 특정회원에 대한 일정 가져오기.
+	public ArrayList<HashMap<String, Object>> selectDiaryList(int user_no_fk , String sc_stdt);	// 특정회원에 대한 일정 가져오기.
 	
 }

@@ -1,6 +1,8 @@
 package com.diary.smart.dao;
 
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 
 import org.apache.ibatis.session.SqlSession;
 import org.slf4j.Logger;
@@ -97,12 +99,12 @@ public class DiaryDAO {
 	 *            회원아이디
 	 * @return 특정회원에 대한 일정 출력
 	 */
-	public ArrayList<Diary> selectDiaryList(int idno) {
+	public ArrayList<HashMap<String, Object>> selectDiaryList(int user_no_fk, String sc_stdt) {
 		DiaryMapper mapper = sqlSession.getMapper(DiaryMapper.class);
-		ArrayList<Diary> result = null;
+		ArrayList<HashMap<String, Object>> result = null;
 
 		try {
-			result = mapper.selectDiaryList(idno);
+			result = mapper.selectDiaryList(user_no_fk, sc_stdt);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

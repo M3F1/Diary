@@ -6,19 +6,61 @@ SELECT * FROM ID_USERFRNO_TB;
 SELECT * FROM ID_SC_TB;
 SELECT * FROM ID_SCFRNO_TB;
 
-delete from ID_USER_TB where user_no_pk = 3;
+delete from ID_SC_TB where sc_no_pk = 21;
+
+
 select user_no_pk, user_id, user_nm from id_user_tb where user_nm = '한진수';
 update id_user_tb set user_aflag = 1 where user_nm = '이뿡치';
 ALTER TABLE ID_USER_TB modify (user_aflag number DEFAULT 0);
+	
+ALTER TABLE ID_USER_TB DROP COLUMN user_transeat;
 
 DESC ID_USER_TB;
+
+
+select sc_no_pk
+		,
+		user_no_fk
+		, to_char(sc_stdt, 'YYYY/MM/DD') as sc_stdt 
+		, to_char(sc_endt, 'YYYY/MM/DD') as sc_endt 
+		, sc_con 
+		, sc_fin
+		, sc_insdt
+		, CASE WHEN sc_wt='SU' THEN 'SUNNY'
+					  WHEN sc_wt='CL' THEN 'CLOUDED'
+					  WHEN sc_wt='RA' THEN 'RAINY'
+					  WHEN sc_wt='SN' THEN 'SNOWY' 
+					  WHEN sc_wt='DU' THEN 'FINE_DUST'
+					  END AS sc_wt  
+		from ID_SC_TB
+		where
+		user_no_fk = 2
+		and
+		sc_stdt = '2017-04-04';
+				
+		select sc_no_pk
+		,
+		user_no_fk
+		, sc_stdt
+		, sc_endt
+		, sc_con
+		, sc_wt
+		, sc_fin
+		, sc_insdt
+		from ID_SC_TB
+		where
+		user_no_fk = 2
+		and
+		sc_stdt = '2017-04-13';
 
 INSERT INTO ID_SCFRNO_TB(
 sc_no_fk, 
 sc_frno)
-VALUES (1, 8);
+VALUES (2, 2);
 
-select * from ID_USER_TB where user_no_pk = 1;
+select sc_no_fk, sc_frno from ID_SCFRNO_TB where sc_no_fk = 1;
+
+select * from ID_USER_TB where user_no_pk = 2;
 
 update ID_SC_TB set sc_dflag = 'N' where sc_no_pk = 1;
 
@@ -26,13 +68,13 @@ insert into ID_SC_TB (
 		sc_no_pk, user_no_fk, sc_stdt, sc_con, sc_wt,
 		sc_fin, sc_insdt, sc_dflag)
 		values (
-		1
-		, 3
-		, '170404'
-		, '명동_19시_영화'
+		SEQ_ID_SC_TB_sc_no_pk.nextval
+		, 2
+		, '170413'
+		, '부산_히토리타비'
 		, 'CL'
 		, 'N'
-		, '170404'
+		, '170414'
 		, 'Y');
 		
 insert into ID_SC_TB (
@@ -56,7 +98,7 @@ WHERE s.user_no_fk = u.user_no_pk
 AND s.sc_no_pk = 2;
 		
 
-insert into ID_USERFRNO_TB values ();
+insert into ID_USERFRNO_TB values (8, 11);
 
 insert into ID_SCFRNO_TB values (1, 11);
 
@@ -134,12 +176,14 @@ select f.user_frno, u.user_id, u.user_nm, u.user_phone from id_user_tb u, id_use
 where u.user_no_pk = f.user_frno
 and f.user_no_fk = 1;
 
+
 CREATE TABLE ID_USERFRNO_TB		 -- 회원의 친구정보 테이블
 (
 	user_no_fk number NOT NULL,  -- 회원의 회원번호
-	user_frno number UNIQUE      -- 친구 아이디 번호
-	
+	user_frno number,         	 -- 친구 아이디 번호
+	PRIMARY KEY (user_no_fk, user_frno)
 );
+
 
 CREATE TABLE ID_USER_TB								-- 회원 테이블
 (
@@ -153,7 +197,6 @@ CREATE TABLE ID_USER_TB								-- 회원 테이블
 	user_mvseat varchar2(20),  						-- 영화관 좌석 설정정보 L:왼쪽 R:오른쪽 M:가운데
 	user_jodt date DEFAULT SYSDATE NOT NULL,  		-- 가입날짜  YYMMDD HH24MISS
 	user_dflag varchar2(20) DEFAULT 'Y' NOT NULL,   -- 탈퇴플래그 탈퇴회원은 N 현재 회원은 Y
-	user_transeat varchar2(20), 					-- 교통 좌석 정보  창측 : W 내측 : I
 	user_add1 varchar2(120) NOT NULL,  						-- 첫번째 주소 정보(시,군,구)
 	user_add2 varchar2(120),  					    -- 2번째 주소정보(시,군,구)
 	user_add3 varchar2(120),  					    -- 3번째 주소정보(시,군,구)
@@ -174,8 +217,8 @@ ALTER TABLE ID_SC_TB
 ;
 
 ALTER TABLE ID_USERFRNO_TB
-	ADD FOREIGN KEY (user_no_fk)
-	REFERENCES ID_USER_TB (user_no_pk)
+	ADD CONSTRAINT ID_USERFRNO_TB_FK FOREIGN KEY (user_no_fk)
+REFERENCES ID_USER_TB (user_no_pk)
 ;
 
 ALTER TABLE ID_SCFRNO_TB DROP CONSTRAINT sc_no_pk;
@@ -183,3 +226,5 @@ ALTER TABLE ID_SCFRNO_TB DROP CONSTRAINT sc_no_pk;
 ALTER TABLE ID_SC_TB DROP PRIMARY KEY;
  
 ALTER TABLE ID_SC_TB ADD PRIMARY KEY (sc_no_pk, user_no_fk);
+
+ALTER TABLE ID_USERFRNO_TB DROP CONSTRAINT user_frno;

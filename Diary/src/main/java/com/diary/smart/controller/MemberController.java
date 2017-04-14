@@ -121,7 +121,7 @@ public class MemberController {
 
 		Member member = dao.selectMember(user_id);
 		int aflag = member.getUser_aflag();
-		System.out.println(aflag);
+		System.out.println(aflag++);
 
 		if (aflag == 0)
 			return "redirect:/";
@@ -132,6 +132,7 @@ public class MemberController {
 			if (user_pw.equals(member.getUser_pw())) {
 				model.addAttribute("member", member);
 				session.setAttribute("user_id", member.getUser_id());
+				System.out.println(member.getUser_id());
 				return "mypage";
 			} else {
 				return "redirect:/";

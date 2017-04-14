@@ -22,6 +22,10 @@
 </style>
 
 <script type="text/javascript" src="resources/js/autoReservation.js"></script>
+';'
+.'/
+'/
+'/
 
 <title>Insert title here</title>
 </head>
