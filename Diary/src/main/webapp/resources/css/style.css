@@ -3920,6 +3920,12 @@ nav.category-navigation {
 	top: -88px;
 }
 
+/******************* write *******************/
+.write {
+	padding-top: 6px !important;
+	padding-bottom: 6px !important;
+}
+
 
 /******************* table *******************/
 .table td {

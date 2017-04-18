@@ -34,10 +34,12 @@ $(document).ready(function () {
 	// sliderButton 활성화
 	$("a[data-slide=prev]").on("click", function () {
 		lastMonth();
+		dateInitialize();
 	});
 
 	$("a[data-slide=next]").on("click", function () {
 		nextMonth();
+		dateInitialize();
 	});
 });
 
@@ -49,15 +51,15 @@ function eventActive() {
 	});
 
 	// 스케쥴 입력창 blur
-	// $(".write").on("blur", function () {
-	// 	$(".tooltiptext").css("visibility", "hidden");
-	// 	$(".tooltiptext").css("opacity", "0");
-	// });
+	 $(".write").on("blur", function () {
+	 	$(".tooltiptext").css("visibility", "hidden");
+	 	$(".tooltiptext").css("opacity", "0");
+	 });
 
 	// 스케쥴 입력창 enter key 동작하게 하기
-	$(".write:focus").on("keydown", function (e) {
+	$(".write").on("keydown", function (e) {
 		if (e.keyCode == 13 || e.which == 13) {
-			if ($(".write:focus").val() == "") {
+			if ($(".active .write").val() == "") {
 				alert("내용을 입력하세요");
 			} else {
 				inputText();
@@ -99,8 +101,9 @@ function hideTextBlock() {
 
 /** ******************** textBlock() 밑에 입력한 값 추가하기 ********************* */
 function inputText() {
-	var html = "<input type='text' value='" + $("	").val() +
-		"' size='" + $(".write").val().length + "'>" + "&nbsp;";
+//	var html = "<input type='text' value='" + $(".write").val() +
+//		"' size='" + $(".write").val().length + "'>" + "&nbsp;";
+	var html = $(".write").val() + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
 	$(".written").html($(".written").html() + html);
 
 	$(".write").val("");
@@ -242,6 +245,13 @@ function search() {
 }
 
 /** ******************************* 달력 부분 ******************************** */
+
+function dateInitialize() {
+	i = 0;
+	$(".table > tbody > tr > td").css("outline", "");
+	$(".iconList").css("display", "none");
+	$(".textBlock").css("display", "none");
+}
 
 // 지난달
 function lastMonth() {
@@ -404,22 +414,21 @@ function makePopover() {
 		
 		p.attr("data-html", "true");
 		p.attr("data-placement", "top");
-		p.attr("data-trigger", "hover");
-//		p.popover()
-//			.on("mouseenter", function() {
-//				var _this = this;
-//				$(this).popover("show");
-//				$(this).find(".popover").on("mouseleave", function() {
-//					$(_this).popover("hide");
-//				});
-//			}).on("mouseleave", function() {
-//				var _this = this;
-//				setTimeout(function() {
-//					if (!$(this).find(".popover:hover").length) {
-//						$(_this).popover("hide");
-//					}
-//				}, 300);
-//			});
+		p.attr("data-trigger", "manual");
+		p.popover().on("mouseenter", function() {
+			var _this = this;
+			$(this).popover("show");
+			$(this).siblings(".popover").on("mouseleave", function() {
+				$(_this).popover("hide");
+			});
+			}).on("mouseleave", function() {
+				var _this = this;
+				setTimeout(function() {
+					if (!$(".popover:hover").length) {
+						$(_this).popover("hide");
+					}
+				}, 10);
+		});
 	}
 }
 
