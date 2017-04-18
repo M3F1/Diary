@@ -33,6 +33,6 @@
 			<attribute name="owner.project.facets" value="java"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/user/Downloads/javamail1_4_7/javamail-1.4.7/lib/smtp.jar"/>
+	<classpathentry kind="lib" path="C:/Users/kita/git/Diary/lib/smtp.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
