@@ -21,5 +21,11 @@ public class HomeController {
 
 		return "home";
 	}
+	
+	@RequestMapping(value = "aboutUS", method = RequestMethod.GET)
+	public String aboutUs() {
+
+		return "aboutUS";
+	}
 
 }
