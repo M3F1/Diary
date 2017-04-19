@@ -1,6 +1,7 @@
 package com.diary.smart.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.servlet.http.HttpSession;
 
@@ -24,11 +25,17 @@ public class DiaryController {
 
 	@Autowired
 	private DiaryDAO dao;
+	@Autowired
 	private MemberDAO mdao;
 
 	@RequestMapping(value = "diary", method = RequestMethod.GET)
 	public String diary() {
 		return "diary";
+	}
+	
+	@RequestMapping(value="calendar", method=RequestMethod.GET)
+	public String calendar(){
+		return "calendar";
 	}
 
 	@ResponseBody
@@ -50,17 +57,21 @@ public class DiaryController {
 		return "";
 	}
 
-	@RequestMapping(value = "selectDiaryList", method = RequestMethod.POST)
-	public String selectDiaryList(Model model, HttpSession session) {
-
+	@ResponseBody
+	@RequestMapping(value = "searchSchedule", method = RequestMethod.POST)
+	public ArrayList<HashMap<String, Object>> selectDiaryList(String sc_stdt, HttpSession session) {
+		
+		System.out.println(sc_stdt);
 		String id = (String) session.getAttribute("user_id");
+		System.out.println(id);
 		Member member = mdao.selectMember(id);
+		int user_no_fk = member.getUser_no_pk();
+		System.out.println(member.getUser_no_pk());
+		
+		ArrayList<HashMap<String, Object>> scheduleList = dao.selectDiaryList(user_no_fk, sc_stdt);
+		System.out.println(scheduleList);
 
-		int user_no_pk = member.getUser_no_pk();
-		ArrayList<Diary> diaryList = dao.selectDiaryList(user_no_pk);
-		model.addAttribute("diaryList", diaryList);
-
-		return "";
+		return scheduleList;
 	}
 
 	@RequestMapping(value = "updateDiary", method = RequestMethod.POST)

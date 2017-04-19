@@ -1,64 +1,82 @@
 var dt = new Date(); // Date 객체
 var today = new Date(); // 오늘 날짜 객체
-var q = [ "몇시?", "어디서?", "어떻게?" ]; // 입력창 질문
+var tooltiptext; // tooltiptext 배열
+var process; // 선택된 icon의 절차 배열
 var i = 0;
-var text = "";
 
-$(document).ready(function() {
-	calendarView(dt);
-	$("#tooltiptext").html(q[i]);
-
-	// 스케쥴 입력창 focus
-	$("#write").on("focus", function() {
-		$("#tooltiptext").css("visibility", "visible");
-		$("#tooltiptext").css("opacity", "1");
-	});
-
-	// 스케쥴 입력창 blur
-	$("#write").on("blur", function() {
-		$("#tooltiptext").css("visibility", "hidden");
-		$("#tooltiptext").css("opacity", "0");
-	});
-
-	// 스케쥴 입력창 enter key 동작하게 하기
-	$("#write").on("keydown", function(e) {
-		if (e.keyCode == 13 || e.which == 13) {
-			inputSchedule();
-		}
-	});
+$(document).ready(function () {
+	// 달력 출력
+	$("#calendar").html(calendarHtml(dt));
+	// 달력 아이디 바꿔주기
+	$("#calendar").attr("id", today.getFullYear() + "-" + (today.getMonth() + 1));
+	// 일자에 popover 설정하기
+	makePopover();
+//	for (var i = 0; i < 10; i++) {
+//		console.log($("#" + dt.getFullYear() + "-" + (dt.getMonth() + 1) + "> table > tbody > tr > td div").eq(0).html());
+//	}
+//	console.log($("#" + dt.getFullYear() + "-" + (dt.getMonth() + 1) + "> table > tbody > tr > td div").eq(0).attr("id", "1"));
+	
+	eventActive();
 
 	// 아무데나 클릭 시 header 숨기기
 	$(".slider-area").on("click", hideHeader);
 
 	// slider-down mouseenter 시 bounce 추가
-	$(".slider-down").on("mouseenter", function() {
+	$(".slider-down").on("mouseenter", function () {
 		$(".slider-down>i").removeClass().addClass("fa fa-angle-down bounce");
 	});
 
 	// slider-down mouseleave 시 bounce 제거
-	$(".slider-down").on("mouseleave", function() {
+	$(".slider-down").on("mouseleave", function () {
 		$(".slider-down>i").removeClass().addClass("fa fa-angle-down");
 	});
 
-	// 달력 이동 효과
-	// $("#lastMonth").on("click", function () {
-	// $("#calendar").hide();
-	// });
+	// sliderButton 활성화
+	$("a[data-slide=prev]").on("click", function () {
+		lastMonth();
+		dateInitialize();
+	});
 
-	// $("#lastMonth").on("click", function () {
-	// $("#calendar").animate({
-
-	// }, 100);
-	// });
-
-	/** ******* 검색 부분 ******** */
-	// 연도 hover 활성화
-	// yearSearch();
-	// 월 hover 활성화
-	// monthSearch();
-	// 스케쥴 검색 버튼 활성화
-	// scheduleSearch();
+	$("a[data-slide=next]").on("click", function () {
+		nextMonth();
+		dateInitialize();
+	});
 });
+
+function eventActive() {
+	// 스케쥴 입력창 focus
+	$(".write").on("focus", function () {
+		$(".tooltiptext").css("visibility", "visible");
+		$(".tooltiptext").css("opacity", "1");
+	});
+
+	// 스케쥴 입력창 blur
+	 $(".write").on("blur", function () {
+	 	$(".tooltiptext").css("visibility", "hidden");
+	 	$(".tooltiptext").css("opacity", "0");
+	 });
+
+	// 스케쥴 입력창 enter key 동작하게 하기
+	$(".write").on("keydown", function (e) {
+		if (e.keyCode == 13 || e.which == 13) {
+			if ($(".active .write").val() == "") {
+				alert("내용을 입력하세요");
+			} else {
+				inputText();
+			}
+		}
+	});
+
+	// 영화 목록 가져오기
+	movieList();
+
+	// iconList 버튼 활성화
+	for (var index = 2; index < 6; index++) {
+		$(".iconList > a:nth-child(" + index + ")").on("click", function () {
+			showTextBlock();
+		});
+	}
+}
 
 /** ************************** Header 보이기/숨기기 *************************** */
 function showHeader() {
@@ -69,87 +87,264 @@ function hideHeader() {
 	$("#calHeader").css("top", "-88px");
 }
 
-/** **************************** 스케쥴 입력 부분 ***************************** */
-// 영화 목록 보여주는 function
-function movieList() {
-
-	$("#iconList > a:nth-child(1) > i").attr("data-toggle", "popover");
-	$("#iconList > a:nth-child(1) > i").attr("title", "영화 목록");
-	$("#iconList > a:nth-child(1) > i").attr("data-content", "영화1");
-	$("#iconList > a:nth-child(1) > i").attr("data-html", "true");
-	$("#iconList > a:nth-child(1) > i").attr("data-placement", "right");
-
-	$("[data-toggle='popover']").popover();
+/** ************************ textBlock() 보이기/숨기기 ************************* */
+function showTextBlock() {
+	$(".iconList").css("display", "none");
+	$(".textBlock").css("display", "block");
+	$(".write").focus();
 }
 
-// Schedule 입력 처리 부분(단어 블록 단위로 만들기 해결 X)
-function inputSchedule(icon) {
-	if (icon == "직접 작성") {
-		$("#tooltiptext").html("다이어리에 들어갈 내용을 작성하세요");
-		$("#iconList").css("display", "none");
-		$("#tooltip").css("display", "block");
-		$("#write").focus();
-		i = 2;
+function hideTextBlock() {
+	$(".iconList").css("display", "block");
+	$(".textBlock").css("display", "none");
+}
+
+/** ******************** textBlock() 밑에 입력한 값 추가하기 ********************* */
+function inputText() {
+//	var html = "<input type='text' value='" + $(".write").val() +
+//		"' size='" + $(".write").val().length + "'>" + "&nbsp;";
+	var html = $(".write").val() + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+	$(".written").html($(".written").html() + html);
+
+	$(".write").val("");
+
+	if (process.length == ++i) {
+		i = 0;
+		$(".written").html("");
+		hideTextBlock();
 	} else {
-		i == 2 ? i = 0 : i++;
-		// i == 0 ? iconList() : iconSelect();
-		if (i == 0) {
-			$("#iconList").css("display", "block");
-			$("#tooltip").css("display", "none");
-		} else {
-			$("#iconList").css("display", "none");
-			$("#tooltip").css("display", "block");
-			$("#write").focus();
-		}
-
-		if (i == 1) {
-			text = "";
-			text += icon;
-		} else {
-			$("#tooltiptext").html(q[i]);
-			text += "<input type='text' class='clearable' value='"
-					+ $("#write").val() + "' /> ";
-			// 삭제 아이콘
-			// text += "<i class='glyphicon glyphicon-remove'></i>";
-			// text += $("#write").val();
-		}
-		$("#written").html(text);
-
-		// $("#written > input[type=text]").css("width", $(this).val().length);
-		for (var index = 0; index < i - 1; index++) {
-			var select = "#written > input[type=text]:nth-child(" + (index + 1)
-					+ ")";
-			$(select).css("width", "10%");
-			$(select).attr("size", $(select).val().length + 3);
-		}
-		// alert($("#written > input[type=text]:nth-child(2)").val().length);
-		$("#write").val("");
+		$(".tooltiptext").html(tooltiptext[i]);
+		process[i]();
 	}
 }
 
+/** ******************************** 영화 목록 ********************************* */
+function movieList() {
+	var html = "<a href='#'>영화1</a>";
+
+	/* 영화 목록 받는 부분 */
+
+	// 영화 목록 띄우는 popover 설정
+	$(".iconList > a:nth-child(1)").attr("data-toggle", "popover");
+	$(".iconList > a:nth-child(1)").attr("title", "영화 목록");
+	$(".iconList > a:nth-child(1)").attr("data-content", html);
+	$(".iconList > a:nth-child(1)").attr("data-html", "true");
+	$(".iconList > a:nth-child(1)").attr("data-placement", "right");
+	$(".iconList > a:nth-child(1)").popover();
+}
+
+/** ******************************** 영화 예매 ********************************* */
+function movie() {
+	tooltiptext = ["영화관은?", "시간은?", "몇 명?"];
+
+	// 영화 선택 후 처리 부분
+	console.log("movie selected.");
+
+	// 영화관 선택 후 처리 부분
+	var movieTime = function () {
+		console.log("movieTheater selected.");
+	}
+
+	// 영화 시간 선택 후 처리 부분
+	var moviePerson = function () {
+		console.log("movieTime selected.");
+	}
+
+	var movieFinish = function () {
+		console.log("moviePerson selected.");
+	}
+
+	process = ["", movieTime, moviePerson, movieFinish];
+}
+
+
+/** ******************************** 버스 예매 ********************************* */
+function bus() {
+	tooltiptext = ["출발지는?", "도착지는?", "시간은?", "몇 명?"];
+	$(".tooltiptext").html(tooltiptext[i]);
+
+	// 버스 출발지 선택 시 처리 부분
+	console.log("busDepart");
+
+	// 버스 출발지 선택 후 처리 부분
+	var busDest = function () {
+		console.log("busDepart selected.");
+	}
+
+	// 버스 도착지 선택 후 처리 부분
+	var busTime = function () {
+		console.log("busDest selected.");
+	}
+
+	// 버스 시간 선택 후 처리 부분
+	var busPerson = function () {
+		console.log("busTime selected.");
+	}
+
+	var busFinish = function () {
+		console.log("busPerson selected.");
+	}
+
+	process = ["", busDest, busTime, busPerson, busFinish];
+}
+
+/** ******************************** 기차 예매 ********************************* */
+function train() {
+	tooltiptext = ["출발지는?", "도착지는?", "시간은?", "몇 명?"];
+	$(".tooltiptext").html(tooltiptext[i]);
+
+	// 기차 출발지 선택 시 처리 부분
+	console.log("trainDepart");
+
+	// 기차 도착지 선택 시 처리 부분
+	var trainDest = function () {
+		console.log("trainDepart selected.");
+	}
+
+	// 기차 시간 선택 시 처리 부분
+	var trainTime = function () {
+		console.log("trainDest selected.");
+	}
+
+	// 기차 인원 선택 시 처리 부분
+	var trainPerson = function () {
+		console.log("trainTime selected.");
+	}
+
+	var trainFinish = function () {
+		console.log("trainPerson selected.");
+	}
+
+	process = ["", trainDest, trainTime, trainPerson, trainFinish];
+}
+
+/** ******************************** 직접 작성 ********************************* */
+function write() {
+	tooltiptext = ["일정을 입력하세요"];
+	$(".tooltiptext").html(tooltiptext[i]);
+
+	// 직접 일정 입력 시 처리 부분
+	var scheduleWrite = function () {
+		alert("written");
+	}
+
+	process = [scheduleWrite];
+}
+
+/** ******************************** 일정 검색 ********************************* */
+function search() {
+	tooltiptext = ["검색할 일정을 입력하세요"];
+	$(".tooltiptext").html(tooltiptext[i]);
+
+	// 일정 검색 시 처리 부분
+	var scheduleSearch = function () {
+		alert("searched");
+	}
+
+	process = [scheduleSearch];
+}
+
 /** ******************************* 달력 부분 ******************************** */
-// 이전달을 보여주는 function
+
+function dateInitialize() {
+	i = 0;
+	$(".table > tbody > tr > td").css("outline", "");
+	$(".iconList").css("display", "none");
+	$(".textBlock").css("display", "none");
+}
+
+// 지난달
 function lastMonth() {
-	dt.setMonth(dt.getMonth() - 2);
-	calendarView(dt);
+	var tempYear = dt.getFullYear();
+	var tempMonth = dt.getMonth();
+
+	dt.setMonth(dt.getMonth() - 1);
+	var html = $(".item:first-child").html();
+	
+	// div id 연도 바꾸기
+	html = html.replace('<div id="' + tempYear + '-' + (tempMonth + 1) + '"', '<div id="'
+			+ dt.getFullYear() + "-" + (dt.getMonth() + 1) + '"');
+
+	// table 부분 지난달로 바꾸기
+	html = html.replace(html.slice(html.search("<table"), html.search("</table>") + 8), calendarHtml(dt));
+
+	// 년 바꾸기
+	html = html.replace('<span id="' + tempYear + '">' + tempYear + '</span>',
+		'<span id="' + dt.getFullYear() + '">' + dt.getFullYear() + '</span>');
+
+	// 월 바꾸기
+	html = html.replace('<span id="' + padDigits((tempMonth + 1), 2) + '">' + padDigits((tempMonth + 1), 2) + '</span>',
+		'<span id="' + padDigits((dt.getMonth() + 1), 2) + '">' + padDigits((dt.getMonth() + 1), 2) + '</span>');
+
+	html = "<div class='item'>" + html + "</div>";
+
+	// 현재 item에서 앞에 item이 존재하지 않는 경우
+	if ($(".item.active").index(".item") == 0) {
+		$(".item:first-child").before(html);
+		makePopover();
+
+		eventActive();
+	}
+
+	// 현재 item이 세 개인 경우 한 개 삭제
+	if ($(".item").length == 3) {
+		$(".item:last-child").remove();
+	}
+	
+	$(".item>div:last-child>div:last-child").removeClass().addClass("animated fadeInLeftBig");
 }
 
-// 다음달을 보여주는 function
+// 다음달
 function nextMonth() {
-	dt.setMonth(dt.getMonth());
-	calendarView(dt);
+	var tempYear = dt.getFullYear();
+	var tempMonth = dt.getMonth();
+
+	dt.setMonth(dt.getMonth() + 1);
+	var html = $(".item:last-child").html();
+	
+	// div id 연도 바꾸기
+	html = html.replace('<div id="' + tempYear + '-' + (tempMonth + 1) + '"', '<div id="'
+			+ dt.getFullYear() + "-" + (dt.getMonth() + 1) + '"');
+
+	// table 부분 다음달로 바꾸기
+	html = html.replace(html.slice(html.search("<table"), html.search("</table>") + 8), calendarHtml(dt));
+
+	// 년 바꾸기
+	html = html.replace('<span id="' + tempYear + '">' + tempYear + '</span>',
+		'<span id="' + dt.getFullYear() + '">' + dt.getFullYear() + '</span>');
+
+	// // 월 바꾸기
+	html = html.replace('<span id="' + padDigits((tempMonth + 1), 2) + '">' + padDigits((tempMonth + 1), 2) + '</span>',
+		'<span id="' + padDigits((dt.getMonth() + 1), 2) + '">' + padDigits((dt.getMonth() + 1), 2) + '</span>');
+
+	html = "<div class='item'>" + html + "</div>";
+
+	// 현재 item에서 앞에 item이 존재하지 않는 경우
+	if ($(".item.active").index(".item") == $(".item").length - 1) {
+		$(".item:last-child").after(html);
+		makePopover();
+
+		eventActive();
+	}
+
+	// 현재 item이 세 개인 경우 한 개 삭제
+	if ($(".item").length == 3) {
+		$(".item:first-child").remove();
+	}
+	
+	$(".item>div:last-child>div:last-child").removeClass().addClass("animated fadeInRightBig");
 }
 
-// ##format으로 맞춰주는 function
 function padDigits(number, digits) {
-	return Array(Math.max(digits - String(number).length + 1, 0)).join(0)
-			+ number;
+	return Array(Math.max(digits - String(number).length + 1, 0)).join(0) +
+		number;
 }
 
-function calendarView(dt) {
-	// h2부분에 연도랑 월 넣기
-	$("#yearSearch").html(dt.getFullYear());
-	$("#monthSearch").html(padDigits((dt.getMonth() + 1), 2));
+function calendarHtml(date) {
+	$("#year").attr("id", date.getFullYear());
+	$("#month").attr("id", padDigits((date.getMonth() + 1), 2));
+	$("#" + date.getFullYear()).html(date.getFullYear());
+	$("#" + padDigits((date.getMonth() + 1), 2)).html(padDigits((date.getMonth() + 1), 2));
 
 	var html = "<table class='table borderless'>";
 	html += "<tr class='text-center'>";
@@ -158,53 +353,34 @@ function calendarView(dt) {
 
 	// 우선은 오늘 날짜 기준으로 설정
 	// 매개변수로 받을 예정
-	// var dt = new Date(date);
-	var temp = dt.getMonth();
+	// var date = new Date(date);
+	var temp = date.getMonth();
 
 	// 날짜를 현재 달의 1일로 설정
 	var cnt = 1;
-	dt.setDate(cnt);
+	date.setDate(cnt);
 
-	/* 첫 번째 방법 */
-	// for (var i = 0; i < 5; i++) {
-	// html += "<tr>";
-	// // 첫 번째날로 설정
-	// if (i == 0) {
-	// for (var j = 0; j < dt.getDay(); j++) {
-	// html += "<td></td>";
-	// }
-	// for (var j = dt.getDay(); j < 7; j++) {
-	// html += "<td>" + cnt++ + "</td>";
-	// }
-	// } else {
-	// for (var j = 0; j < 7; j++) {
-	// html += "<td>" + cnt++ + "</td>";
-	// }
-	// }
-	// html += "</tr>";
-	// }
-	/* 두 번째 방법 */
 	html += "<tr>";
-	for (var i = 0; i < dt.getDay(); i++) {
+	for (var i = 0; i < date.getDay(); i++) {
 		html += "<td></td>";
 	}
 
-	while (dt.getMonth() == temp) {
+	while (date.getMonth() == temp) {
 		// 각 칸에 날짜 정보 저장
-		var dateForm = (dt.getMonth() + 1) + "-" + dt.getDate() + "-"
-				+ dt.getFullYear();
-		html += "<td id='" + dateForm + "' onclick=selectedDate('" + dateForm
-				+ "')>" + "<a href='#'><div style='height: 100%; width: 100%'>"
-				+ dt.getDate() + "</div></a></td>";
+		var dateForm = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" +
+			date.getDate();
+		html += "<td id='" + dateForm + "' onclick=selectedDate('" + dateForm +
+			"')>" + "<a href='#'><div style='height: 100%; width: 100%'>" +
+			date.getDate() + "</div></a></td>";
 
-		if (dt.getDay() == 6) {
+		if (date.getDay() == 6) {
 			html += "</tr><tr>";
 		}
-		dt.setDate(++cnt);
+		date.setDate(++cnt);
 	}
 
-	if (dt.getDay() != 0) {
-		for (var i = 6 - dt.getDay(); i >= 0; i--) {
+	if (date.getDay() != 0) {
+		for (var i = 6 - date.getDay(); i >= 0; i--) {
 			html += "<td></td>";
 		}
 	}
@@ -212,71 +388,48 @@ function calendarView(dt) {
 	html += "</tr>";
 
 	html += "</table>";
-	$("#calendar").html(html);
 
-	// 토요일은 파란색, 일요일은 숫자를 빨간색으로 표시
-	// $("#calendar > table > tbody > tr > td:nth-child(1)").css("color",
-	// "gray");
-	// $("#calendar > table > tbody > tr > td:nth-child(7)").css("color",
-	// "gray");
-	$("#calendar > table > tbody > tr > td").css("color", "white");
+	date.setMonth(date.getMonth() - 1);
+	console.log(date);
 
-	// 오늘 날짜는 배경색을 노란색으로 표시
-	$(
-			"#" + (today.getMonth() + 1) + "-" + today.getDate() + "-"
-					+ today.getFullYear()).css("background-color", "chocolate");
+	return html;
 }
 
-// 날짜 클릭 시 테두리로 표시하는 function
-function selectedDate(dt) {
-	$("#calendar > table > tbody > tr > td").css("outline", "");
-	$("#" + dt).css("outline", "steelblue solid 2px");
-	$("#iconList").addClass("animated fadeInDown");
-	$("#iconList").css("display", "block");
+// 날짜 선택
+function selectedDate(date) {
+	$(".table > tbody > tr > td").css("outline", "");
+	$("#" + date).css("outline", "steelblue solid 2px");
+	$(".iconList").addClass("animated fadeInDown");
+	$(".iconList").css("display", "block");
 }
 
-/** ***************************** 날짜 이동 부분 ****************************** */
-/*
- * function yearSearch() { $("#yearSearch").on("mouseenter", function () {
- * $("#yearSearch").css("font-size", "90%");
- * 
- * var html = ""; var year = $("#yearSearch").html(); html += "<select
- * id='year'>"; for (var index = 2000; index < year; index++) { html += "<option>" +
- * index + "</option>";
- *  } html += "<option selected='selected'>" + year + "</option>"; for (var
- * index = parseInt(year) + 1; index < 2051; index++) { html += "<option>" +
- * index + "</option>"; } html += "</select>"; $("#yearSearch").html(html);
- *  // $("#year").off().on("change", function () { // alert($("#yearSearch >
- * select > option:selected").html()); // calendarView(new
- * Date(parseInt($("#monthSearch").html()) + // "-1-" + $("#year >
- * option:selected").html())); // yearSearch(); // }); });
- * 
- * $("#yearSearch").on("mouseleave", function () {
- * $("#yearSearch").css("font-size", "100%"); var year = $("#yearSearch > select >
- * option:selected").html(); $("#yearSearch").html(year); }); }
- */
-
-/*
- * function monthSearch() { $("#monthSearch").on("mouseenter", function () {
- * $("#monthSearch").css("font-size", "90%");
- * 
- * var html = ""; var month = $("#monthSearch").html(); html += "<select
- * id='month'>"; for (var index = 1; index < parseInt(month); index++) { html += "<option>" +
- * padDigits(index, 2) + "</option>"; } html += "<option selected='selected'>" +
- * month + "</option>"; for (var index = parseInt(month) + 1; index < 13;
- * index++) { html += "<option>" + padDigits(index, 2) + "</option>"; } html += "</select>";
- * $("#monthSearch").html(html);
- *  // $("#month").off().on("change", function () { // alert($("#month >
- * option:selected").html()); // calendarView(new Date(parseInt($("#month >
- * option:selected").html()) + // "-1-" + $("#yearSearch").html())); //
- * monthSearch(); // }); });
- * 
- * $("#monthSearch").on("mouseleave", function () {
- * $("#monthSearch").css("font-size", "100%"); var month = $("#monthSearch >
- * select > option:selected").html(); $("#monthSearch").html(month); }); }
- */
-
-/** ******************************* 검색 부분 ******************************** */
-function scheduleSearch() {
-
+function makePopover() {
+	for (var i = 0; i < $("#" + dt.getFullYear() + "-" + (dt.getMonth() + 1) + " > table > tbody > tr > td div").length; i++) {
+		var p = $("#" + dt.getFullYear() + "-" + (dt.getMonth() + 1) + "> table > tbody > tr > td div").eq(i);
+		p.attr("data-toggle", "popover");
+		p.attr("title", dt.getFullYear() + "년 " + (dt.getMonth() + 1) + "월 " + p.html() + "일 일정");
+		
+		/* 일정 가져오는 부분 */
+		p.attr("data-content", "오늘의 일정");
+		
+		p.attr("data-html", "true");
+		p.attr("data-placement", "top");
+		p.attr("data-trigger", "manual");
+		p.popover().on("mouseenter", function() {
+			var _this = this;
+			$(this).popover("show");
+			$(this).siblings(".popover").on("mouseleave", function() {
+				$(_this).popover("hide");
+			});
+			}).on("mouseleave", function() {
+				var _this = this;
+				setTimeout(function() {
+					if (!$(".popover:hover").length) {
+						$(_this).popover("hide");
+					}
+				}, 10);
+		});
+	}
 }
+
+

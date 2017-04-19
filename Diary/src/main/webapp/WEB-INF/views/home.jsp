@@ -11,6 +11,8 @@
 		<tiles:putAttribute name="body">
 			<div class="container home">
 				<a href="diary" class="text-center">dairy 보기</a> <br /> <br /> <br /> <br />
+				<a href="mypage">mypage</a><br>
+				<a href="calendar">calendar</a>
 				<br /> <br /> <br /> <br /> <br />
 				<!-- 문구가 들어갈 부분 -->
 				<br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br />

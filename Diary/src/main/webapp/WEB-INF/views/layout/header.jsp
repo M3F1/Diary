@@ -61,14 +61,14 @@
 				<h4 class="modal-title" id="myModalLabel">Login</h4>
 			</div>
 			<div class="modal-body">
-				<form action="">
+				<form action="login" method="POST">
 					<div class="form-group">
-						<label for="id">ID</label> <input type="text" class="form-control" id="id"
-							name="id">
+						<label for="id">ID</label> <input type="text" class="form-control" id="user_id"
+							name="user_id">
 					</div>
 					<div class="form-group">
 						<label for="id">Password</label> <input type="password" class="form-control"
-							id="password" name="password">
+							id="user_pw" name="user_pw">
 					</div>
 					<div class="form-group">
 						<input type="submit" class="form-control" value="로그인">

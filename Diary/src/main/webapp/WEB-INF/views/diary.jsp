@@ -90,70 +90,40 @@
 <!-- calendar part -->
 <div class="container calendar">
 <section class="slider-area">
-	<section id="carousel-example-generic" class="carousel slide" data-interval="false" data-ride="carousel">
+	<section id="carousel-example-generic" class="carousel slide" data-wrap="false" data-interval="false" data-ride="carousel">
 		<!-- SLIDE LIST START -->
 		<div class="carousel-inner" role="listbox">
 			<!-- SLIDE LIST ITEM START -->
 			<div class="item active">
 				<!-- SLIDE BACKGROUND START -->
-				<div class="slider-bg-img" style="background-image:url(assets/img/slider1.jpg);"></div>
+<!-- 				<div class="slider-bg-img" style="background-image:url(assets/img/slider1.jpg);"></div> -->
+				<div class="slider-bg-img"></div>
 				<!-- SLIDE BACKGROUND END -->
 				<!-- SLIDE CAPTION START -->
 				<div class="carousel-caption">
-					<div class="col-xs-offset-1 col-xs-10" id="iconList">
-						<a href="javascript:movieList()"><i class="fa fa-film fa-3x" aria-hidden="true"></i></a>
-						<a href="javascript:inputSchedule('버스')"><i class="fa fa-bus fa-3x" aria-hidden="true"></i></a>
-						<a href="javascript:inputSchedule('기차')"><i class="fa fa-train fa-3x" aria-hidden="true"></i></a>
-						<a href="javascript:inputSchedule('직접 작성')"><i class="fa fa-keyboard-o fa-3x" aria-hidden="true"></i></a>
+					<div class="col-xs-offset-1 col-xs-10 iconList">
+						<a href="javascript:movie();"><i class="fa fa-film fa-3x" aria-hidden="true"></i></a>
+						<a href="javascript:bus();"><i class="fa fa-bus fa-3x" aria-hidden="true"></i></a>
+						<a href="javascript:train();"><i class="fa fa-train fa-3x" aria-hidden="true"></i></a>
+						<a href="javascript:write();"><i class="fa fa-keyboard-o fa-3x" aria-hidden="true"></i></a>
 						<!-- <input type="text" class="form-control" id="write"><br> <span id="written"></span> -->
 					</div>
-					<div class="form-group col-xs-offset-1 col-xs-10" id="tooltip">
-						<span id="tooltiptext"></span>
+					<br />
+					<div class="form-group col-xs-offset-1 col-xs-10 textBlock">
+						<span class="tooltiptext"></span>
 						<!--<button class="btn btn-default" id="scheduleSearch">스케쥴 검색</button>-->
-						<input type="text" class="form-control" id="write"><br>
-						<span id="written"></span>
+						<input type="text" class="form-control write"><br>
+						<span class="written"></span>
 					</div>
 					<br /><br />
 					<div class="text-center">
-						<h1><span id="yearSearch"></span>.<span id="monthSearch"></span></h1>
+						<h1><span id="year"></span>.<span id="month"></span></h1>
 					</div>
 					
 					<div id="calendar" class="animated fadeInUpBig"></div>
 				</div>
 				<!-- SLIDE CAPTION END -->
 			</div>
-			<!-- SLIDE LIST ITEM END -->
-			<!-- SLIDE LIST ITEM START -->
-			<div class="item">
-				<!-- SLIDE BACKGROUND START -->
-				<div class="slider-bg-img" style="background-image:url(assets/img/slider2.jpg);"></div>
-				<!-- SLIDE BACKGROUND END -->
-				<!-- SLIDE CAPTION START -->
-				<div class="carousel-caption">
-					<!-- SLIDE INFO START -->
-					<div class="slider-post-information animated fadeInDown">
-						<span class="category">Sport</span>
-						<span>//</span>
-						<span class="date">22.03.2015</span>
-					</div>
-					<!-- SLIDE INFO END -->
-					<!-- SLIDE TITLE START -->
-					<div class="slider-post-title">
-						<span class="slider-post-title-top animated fadeInLeftBig">For a New</span>
-						<span class="slider-post-title-bottom animated fadeInRightBig">Adventure</span>
-					</div>
-					<!-- SLIDE TITLE END -->
-					<!-- SLIDE EXCERPT START -->
-					<p class="animated fadeInUpBig">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque a pretium nunc, eget ornare nisi. Pellentesque
-						vel nisi facilisis, blandit neque in, convallis nibh ellentesque a pretium nun.</p>
-					<!-- SLIDE EXCERPT END -->
-					<!-- SLIDE MORE BUTTON START -->
-					<a href="single.html" class="more animated fadeInUpBig"><i class="fa fa-chevron-right"></i> More</a>
-					<!-- SLIDE MORE BUTTON END -->
-				</div>
-				<!-- SLIDE CAPTION END -->
-			</div>
-			<!-- SLIDE LIST ITEM END -->
 		</div>
 		<!-- SLIDE LIST END -->
 		<!-- SLIDER CONTROL START -->

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 public class Member {
 	private int user_no_pk;		   //회원번호
+	private int user_aflag;			//인증된 회원 구분 (인증된 회원:1)
 	private String user_id;         //회원의 아이디 아이디는 현존하는 이메일주소로 한다.(50자 미만)
 	private String user_pw;         //비밀번호는 대소문자 및 특수문자 포함이다.(최소 6자 이상 16자 이하)
 	private String user_nm;       //회원의 이름
@@ -14,7 +15,6 @@ public class Member {
 							   //NE:오른쪽뒤 NW:왼쪽뒤 SE:오른쪽앞 SW:오른쪽뒤  8군데
 	private String user_jodt;   //가입날짜 YYMMDD HH24MISS
 	private String user_dflag;
-	private String user_transeat;   //교통 좌석 정보  창측 : W 내측 : I
 	private String user_add1;   //첫번째 주소 정보(시,군,구)
 	private String user_add2;   //두번째 주소 정보(시,군,구)
 	private String user_add3;   //세번째 주소 정보(시,군,구)
@@ -25,8 +25,8 @@ public class Member {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Member(int user_no_pk, String user_id, String user_pw, String user_nm, String user_birth, String user_phone,
-			String user_mvseat, String user_jodt, String user_dflag, String user_transeat, String user_add1, String user_add2,
+	public Member(int user_no_pk, int user_aflag, String user_id, String user_pw, String user_nm, String user_birth, String user_phone,
+			String user_mvseat, String user_jodt, String user_dflag, String user_add1, String user_add2,
 			String user_add3, String user_ddt, ArrayList<Integer> friendno) {
 		super();
 		this.user_no_pk = user_no_pk;
@@ -37,10 +37,10 @@ public class Member {
 		this.user_phone = user_phone;
 		this.user_mvseat = user_mvseat;
 		this.user_jodt = user_jodt;
-		this.user_transeat = user_transeat;
 		this.user_add1 = user_add1;
 		this.user_add2 = user_add2;
 		this.user_add3 = user_add3;
+		this.user_aflag = user_aflag;
 		this.friendno = friendno;
 	}
 
@@ -116,14 +116,6 @@ public class Member {
 		this.user_dflag = user_dflag;
 	}
 
-	public String getUser_transeat() {
-		return user_transeat;
-	}
-
-	public void setUser_transeat(String user_transeat) {
-		this.user_transeat = user_transeat;
-	}
-
 	public String getUser_add1() {
 		return user_add1;
 	}
@@ -155,6 +147,14 @@ public class Member {
 	public void setUser_ddt(String user_ddt){
 		this.user_ddt = user_ddt;
 	}
+	
+	public int getUser_aflag() {
+		return user_aflag;
+	}
+
+	public void setUser_aflag(int user_aflag) {
+		this.user_aflag = user_aflag;
+	}
 
 	public ArrayList<Integer> getFriendno() {
 		return friendno;
@@ -168,8 +168,8 @@ public class Member {
 	public String toString() {
 		return "Member [user_no_pk=" + user_no_pk + ", user_id=" + user_id + ", user_pw=" + user_pw + ", user_nm="
 				+ user_nm + ", user_birth=" + user_birth + ", user_phone=" + user_phone + ", user_mvseat=" + user_mvseat
-				+ ", user_jodt=" + user_jodt + ", user_dflag= " + user_dflag + ", user_transeat=" + user_transeat + ", user_add1=" + user_add1
-				+ ", user_add2=" + user_add2 + ", user_add3=" + user_add3 + ", suser_ddt=" + user_ddt + ", friendno=" + friendno + "]";
+				+ ", user_jodt=" + user_jodt + ", user_dflag= " + user_dflag + ", user_transeat=" + ", user_add1=" + user_add1
+				+ ", user_add2=" + user_add2 + ", user_add3=" + user_add3 + ", user_ddt=" + user_ddt + ", friendno=" + friendno + "]";
 	}
 	
 }

@@ -23,7 +23,7 @@
 				<label for="id">아이디</label>
 				<div id="idLabel"></div>
 				<input type="text" class="form-control" name="user_id" id="user_id"
-					placeholder="아이디를 입력하세요">
+					placeholder="아이디를 입력하세요"> <br>
 			</div>
 			<div class="form-group">
 				<label for="user_pw">비밀번호</label> <input type="password"
@@ -52,7 +52,8 @@
 				id="sample6_postcode" placeholder="우편번호"> <input
 				type="button" onclick="sample6_execDaumPostcode()" value="우편번호 찾기"><br>
 			<input type="text" name="user_add1" id="user_add1" placeholder="주소"><br>
-			<br> <input type="submit" class="form-control" id="joinBtn" value="가입">
+			<br> <input type="submit" class="form-control" id="joinBtn"
+				value="가입">
 		</form>
 	</div>
 	<script

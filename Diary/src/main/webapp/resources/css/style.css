@@ -3920,6 +3920,12 @@ nav.category-navigation {
 	top: -88px;
 }
 
+/******************* write *******************/
+.write {
+	padding-top: 6px !important;
+	padding-bottom: 6px !important;
+}
+
 
 /******************* table *******************/
 .table td {
@@ -3933,34 +3939,34 @@ nav.category-navigation {
 
 /******************* 아이콘 *******************/
 
-#iconList {
+.iconList {
 	display: none;
 	text-align: center;
 	letter-spacing: 0.5em;
 }
 
-#iconList>a>i {
+.iconList>a>i {
 	color: white;
 }
 
-#iconList>a:hover>i {
+.iconList>a:hover>i {
 	color: antiquewhite;
 }
 
 
 /******************* 말풍선 *******************/
 
-#write, #written>input[type=text] {
-	padding-top: 8px;
-	padding-bottom: 8px;
+.textBlock, .written>input[type=text] {
+/* 	padding-top: 8px; */
+/* 	padding-bottom: 8px; */
 }
 
-#tooltip {
+.textBlock {
 	position: relative;
 	display: none;
 }
 
-#tooltip #tooltiptext {
+.textBlock .tooltiptext {
 	visibility: hidden;
 	background-color: #555;
 	color: #fff;
@@ -3972,11 +3978,11 @@ nav.category-navigation {
 	opacity: 0;
 }
 
-#tooltiptext {
+.tooltiptext {
 	font-size: medium;
 }
 
-#tooltip #tooltiptext::after {
+.textBlock .tooltiptext::after {
 	content: "";
 	position: absolute;
 	top: 100%;
@@ -3987,6 +3993,10 @@ nav.category-navigation {
 	border-color: #555 transparent transparent transparent;
 }
 
+/******************* popover *******************/
+.popover {
+	color: black;
+}
 
 /**********************************************/
 /*******************************************************************************/
