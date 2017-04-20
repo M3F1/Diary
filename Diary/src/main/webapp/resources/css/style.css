@@ -172,12 +172,12 @@ blockquote {
 .boxed-grid-content article:hover .boxed-grid-item a:before,
 .tree-grid-content article:hover .tree-grid-item a:before,
 .two-grid-content article a:hover .two-grid-image:before {
-	background: -moz-linear-gradient(left,  rgba(0,204,148,0.5) 0%, rgba(40,90,155,0.77) 100%); /* FF3.6+ */
+	background: -moz-linear-gradient(left,  rgba(0,0,0,0.5) 0%, rgba(40,90,155,0.77) 100%); /* FF3.6+ */
 	background: -webkit-gradient(linear, left top, right top, color-stop(0%,rgba(0,204,148,0.5)), color-stop(100%,rgba(40,90,155,0.77))); /* Chrome,Safari4+ */
-	background: -webkit-linear-gradient(left,  rgba(0,204,148,0.5) 0%,rgba(40,90,155,0.77) 100%); /* Chrome10+,Safari5.1+ */
-	background: -o-linear-gradient(left,  rgba(0,204,148,0.5) 0%,rgba(40,90,155,0.77) 100%); /* Opera 11.10+ */
-	background: -ms-linear-gradient(left,  rgba(0,204,148,0.5) 0%,rgba(40,90,155,0.77) 100%); /* IE10+ */
-	background: linear-gradient(to right,  rgba(0,204,148,0.5) 0%,rgba(40,90,155,0.77) 100%); /* W3C */
+	background: -webkit-linear-gradient(left,  rgba(0,0,0,0.5) 0%,rgba(40,90,155,0.77) 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(left,  rgba(0,0,0,0.5) 0%,rgba(40,90,155,0.77) 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(left,  rgba(0,0,0,0.5) 0%,rgba(40,90,155,0.77) 100%); /* IE10+ */
+	background: linear-gradient(to right,  rgba(0,0,0,0.5) 0%,rgba(40,90,155,0.77) 100%); /* W3C */
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#8000cc94', endColorstr='#c4285a9b',GradientType=1 ); /* IE6-9 */
 }
 
@@ -1654,7 +1654,7 @@ section.boxed-grid-content {
 }
 
 .boxed-grid-content .boxed-grid-item:hover .boxed-grid-item-content .full-grid-title h2 {
-	background:#09A3C4;
+	background: steelblue;
 	-webkit-transition: 0.3s;
 	-moz-transition: 0.3s;
 	-o-transition: 0.3s;
@@ -3894,12 +3894,40 @@ nav.category-navigation {
 
 /************************************* home *************************************/
 .home {
-	background-image: url(../img/home-bg.jpg);
 	background-size: 100%;
 	width: 100%;
 	margin-left: 0px;
 	margin-right: 0px;
 }
+
+.title {
+	position: relative;
+	top: 34%;
+	text-align: center;
+}
+
+.btnGroup {
+	position: relative;
+	top: 38%;
+	z-index: 1;
+	text-align: center;
+}
+
+.btnGroup>a {
+	position: relative;
+	background-color: steelblue;
+	outline: none;
+	padding: 1% 3%;
+	color: white !important;
+	transition: background-color 1s ease, border 1s ease, color 500ms ease;
+}
+
+.btnGroup>a:hover {
+	background-color: white;
+	outline: 2.5px solid steelblue;
+	color: steelblue !important;
+}
+
 
 /********************************** signUpForm **********************************/
 
@@ -3931,6 +3959,7 @@ nav.category-navigation {
 .table td {
 	border-top: none !important;
 	color: white;
+	text-align: center;
 }
 
 .table>tbody>tr>td>a {
@@ -3943,6 +3972,7 @@ nav.category-navigation {
 	display: none;
 	text-align: center;
 	letter-spacing: 0.5em;
+	z-index: 10;
 }
 
 .iconList>a>i {

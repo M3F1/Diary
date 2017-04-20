@@ -30,7 +30,7 @@ $(document).ready(function () {
 	$(".slider-down").on("mouseleave", function () {
 		$(".slider-down>i").removeClass().addClass("fa fa-angle-down");
 	});
-
+	
 	// sliderButton 활성화
 	$("a[data-slide=prev]").on("click", function () {
 		lastMonth();
@@ -103,7 +103,7 @@ function hideTextBlock() {
 function inputText() {
 //	var html = "<input type='text' value='" + $(".write").val() +
 //		"' size='" + $(".write").val().length + "'>" + "&nbsp;";
-	var html = $(".write").val() + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+	var html = $(".write").val() + "&nbsp;/&nbsp;";
 	$(".written").html($(".written").html() + html);
 
 	$(".write").val("");
@@ -421,15 +421,38 @@ function makePopover() {
 			$(this).siblings(".popover").on("mouseleave", function() {
 				$(_this).popover("hide");
 			});
-			}).on("mouseleave", function() {
-				var _this = this;
-				setTimeout(function() {
-					if (!$(".popover:hover").length) {
-						$(_this).popover("hide");
-					}
-				}, 10);
+		}).on("mouseleave", function() {
+			var _this = this;
+			setTimeout(function() {
+				if (!$(".popover:hover").length) {
+					$(_this).popover("hide");
+				}
+			}, 10);
 		});
+		
+		// hover 시 날짜 숫자색 변경
+		p.on("hover", function() {
+			p.css("color", "red");
+		});
+		
+		// 일정 있는 날 동그라미 그리는 부분
+		if (i % 7 == 3) {
+			markCircle(p);
+		}
+		
+		
 	}
+	
+	markToday();
 }
 
+function markToday() {
+	$("#" + today.getFullYear() + "-" + (today.getMonth() + 1) + "-" + today.getDate()).css("color", "yellow");
+}
 
+function markCircle(p) {
+	p.css("border-radius", "50%");
+	p.css("background", "rgba(0,204,148,0.5)");
+	p.css("width", "40%");
+	p.css("margin", "auto");
+}

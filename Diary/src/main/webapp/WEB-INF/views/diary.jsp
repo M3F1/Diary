@@ -96,7 +96,7 @@
 			<!-- SLIDE LIST ITEM START -->
 			<div class="item active">
 				<!-- SLIDE BACKGROUND START -->
-<!-- 				<div class="slider-bg-img" style="background-image:url(assets/img/slider1.jpg);"></div> -->
+				<div class="slider-bg-img" style="background-image:url(resources/img/diary-bg.jpg);"></div>
 				<div class="slider-bg-img"></div>
 				<!-- SLIDE BACKGROUND END -->
 				<!-- SLIDE CAPTION START -->

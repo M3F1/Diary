@@ -40,8 +40,8 @@
 					<li><a href="signUpForm">Sign Up</a></li>
 					<li><a href="#" id="loginBtn" data-toggle="modal"
 						data-target="#loginModal">Login</a></li>
-					<li><a href="about.html">About Us</a></li>
-					<li><a href="contact.html">Contact</a></li>
+					<li><a href="howTo">How To</a></li>
+					<li><a href="aboutUS">About Us</a></li>
 				</ul>
 			</div>
 			<!-- MENU LIST END -->
