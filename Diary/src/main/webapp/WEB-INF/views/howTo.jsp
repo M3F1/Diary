@@ -2,7 +2,7 @@
 <%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles"%>
 <!DOCTYPE html>
 <html lang="en">
-	<body class="home">
+	<body>
 		<tiles:insertDefinition name="defaultTemplate">
 		<tiles:putAttribute name="title">
 			How Diary use?

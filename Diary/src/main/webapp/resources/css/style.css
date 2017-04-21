@@ -3900,8 +3900,8 @@ nav.category-navigation {
 	margin-right: 0px;
 }
 
-.slider-bg-img:after {
-	background: transparent !important;
+.home .slider-bg-img:after {
+	background: transparent;
 }
 
 .title {
