@@ -20,7 +20,7 @@
 <script src="resources/js/calendarForm.js"></script>
 <!-- <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script> -->
 <!-- JAVASCRIPT END -->
-<title>Diary</title>
+<title>My Diary</title>
 </head>
 <body>
 	<header class="header fixed-header navbar-fixed-top" id="calHeader">
@@ -47,8 +47,8 @@
 						<li><a href="signUpForm">Sign Up</a></li>
 						<li><a href="#" id="loginBtn" data-toggle="modal"
 							data-target="#loginModal">Login</a></li>
-						<li><a href="about.html">About Us</a></li>
-						<li><a href="contact.html">Contact</a></li>
+						<li><a href="howTo">How To</a></li>
+					<li><a href="aboutUS">About Us</a></li>
 					</ul>
 				</div>
 				<!-- MENU LIST END -->

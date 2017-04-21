@@ -13,12 +13,8 @@
 <!--타이틀이 null인 경우에는 무시한다-->
 </head>
 <body>
-	<div class="page">
-		<tiles:insertAttribute name="header" />
-		<div class="content">
-			<tiles:insertAttribute name="body" />
-		</div>
-		<tiles:insertAttribute name="footer" />
-	</div>
+	<tiles:insertAttribute name="header" />
+	<tiles:insertAttribute name="body" />
+	<tiles:insertAttribute name="footer" />
 </body>
 </html>

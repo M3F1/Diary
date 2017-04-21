@@ -27,5 +27,11 @@ public class HomeController {
 
 		return "aboutUS";
 	}
+	
+	@RequestMapping(value = "howTo", method = RequestMethod.GET)
+	public String howTo() {
+		
+		return "howTo";
+	}
 
 }

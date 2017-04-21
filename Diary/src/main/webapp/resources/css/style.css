@@ -128,8 +128,8 @@ select
 	border: 1px solid #CBCBCB;
 	box-shadow: none;
 	border-radius: 0px;
-	padding-top: 15px;
-	padding-bottom: 15px;
+	padding-top: 6px;
+	padding-bottom: 6px;
 	line-height: normal;
 	height: auto;
 }
@@ -1417,8 +1417,8 @@ a.slider-down i {
 }
 
 .full-grid-content article .full-grid-item {
-	margin: 0 25% 0;
-	width: 50%;
+	margin: 0 15% 0;
+	width: 75%;
 	max-width:100%;
 	-webkit-transition: 1.0s;
 	-moz-transition: 1.0s;
@@ -1428,7 +1428,7 @@ a.slider-down i {
 }
 
 .full-grid-content article:hover .full-grid-item {
-	margin-left:35%;
+	margin-left:25%;
 	-webkit-transition: 1.0s;
 	-moz-transition: 1.0s;
 	-o-transition: 1.0s;
@@ -3900,6 +3900,10 @@ nav.category-navigation {
 	margin-right: 0px;
 }
 
+.slider-bg-img:after {
+	background: transparent !important;
+}
+
 .title {
 	position: relative;
 	top: 34%;
@@ -3949,14 +3953,16 @@ nav.category-navigation {
 }
 
 /******************* write *******************/
-.write {
-	padding-top: 6px !important;
-	padding-bottom: 6px !important;
-}
+/* .write { */
+/* 	padding-top: 6px !important; */
+/* 	padding-bottom: 6px !important; */
+/* } */
 
 
 /******************* table *******************/
 .table td {
+	padding-top: 2% !important;
+	padding-bottom: 2% !important;
 	border-top: none !important;
 	color: white;
 	text-align: center;
@@ -3985,11 +3991,6 @@ nav.category-navigation {
 
 
 /******************* 말풍선 *******************/
-
-.textBlock, .written>input[type=text] {
-/* 	padding-top: 8px; */
-/* 	padding-bottom: 8px; */
-}
 
 .textBlock {
 	position: relative;

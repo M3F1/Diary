@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles"%>
 <!DOCTYPE html>
 <html>
@@ -9,8 +8,7 @@
 			<!-- SITE CONTENT START -->
 			<section class="site-content-wrapper">
 				<!-- PAGE BANNER START -->
-				<section class="content-full-banner"
-					style="background-image: url(assets/img/pagebanner1.jpg);">
+				<section class="content-full-banner">
 					<section class="container">
 						<h1>
 							<span>About</span> Us
@@ -143,8 +141,8 @@
 						<div class="clearfix"></div>
 						<span class="boxed-grid-border"></span>
 						
-		</section>
-		<!-- SITE CONTENT END -->
+				</section>
+				<!-- SITE CONTENT END -->
 			</section>
 			<!-- SITE CONTENT END -->
 		</tiles:putAttribute>

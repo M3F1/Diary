@@ -452,7 +452,7 @@ function markToday() {
 
 function markCircle(p) {
 	p.css("border-radius", "50%");
-	p.css("background", "rgba(0,204,148,0.5)");
+	p.css("background", "steelblue");
 	p.css("width", "40%");
 	p.css("margin", "auto");
 }
