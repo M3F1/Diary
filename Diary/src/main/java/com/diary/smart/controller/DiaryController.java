@@ -34,7 +34,7 @@ public class DiaryController {
 	}
 	
 	@RequestMapping(value="calendar", method=RequestMethod.GET)
-	public String calendar(){
+	public String calendar() {
 		return "calendar";
 	}
 
@@ -67,7 +67,7 @@ public class DiaryController {
 		Member member = mdao.selectMember(id);
 		int user_no_fk = member.getUser_no_pk();
 		System.out.println(member.getUser_no_pk());
-		
+
 		ArrayList<HashMap<String, Object>> scheduleList = dao.selectDiaryList(user_no_fk, sc_stdt);
 		System.out.println(scheduleList);
 

@@ -26,7 +26,7 @@
 	<header class="header fixed-header navbar-fixed-top" id="calHeader">
 		<section class="container">
 			<!-- LOGO START -->
-			<a href="/smart" class="site-logo"> <img alt="Logo" src="resources/img/logo.png">
+			<a href="diary" class="site-logo"> <img alt="Logo" src="resources/img/logo.png">
 			</a>
 			<!-- LOGO END -->
 	
@@ -44,9 +44,8 @@
 				<!-- MENU LIST START -->
 				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 					<ul class="nav navbar-nav">
-						<li><a href="signUpForm">Sign Up</a></li>
-						<li><a href="#" id="loginBtn" data-toggle="modal"
-							data-target="#loginModal">Login</a></li>
+						<li><a href="myPage">My Page</a></li>
+						<li><a href="logout">Logout</a></li>
 						<li><a href="howTo">How To</a></li>
 					<li><a href="aboutUS">About Us</a></li>
 					</ul>
