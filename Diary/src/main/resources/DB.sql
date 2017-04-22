@@ -8,15 +8,16 @@ SELECT * FROM ID_SCFRNO_TB;
 
 delete from ID_SC_TB where sc_no_pk = 21;
 
-
 select user_no_pk, user_id, user_nm from id_user_tb where user_nm = '한진수';
 update id_user_tb set user_aflag = 1 where user_nm = '이뿡치';
 ALTER TABLE ID_USER_TB modify (user_aflag number DEFAULT 0);
-	
+
+ALTER TABLE ID_SC_TB modify (sc_endt NOT NULL);
 ALTER TABLE ID_USER_TB DROP COLUMN user_transeat;
 
-DESC ID_USER_TB;
+DELETE ID_SC_TB WHERE SC_NO_PK = 22;
 
+DESC ID_USER_TB;
 
 select sc_no_pk
 		,
@@ -65,16 +66,17 @@ select * from ID_USER_TB where user_no_pk = 2;
 update ID_SC_TB set sc_dflag = 'N' where sc_no_pk = 1;
 
 insert into ID_SC_TB (
-		sc_no_pk, user_no_fk, sc_stdt, sc_con, sc_wt,
+		sc_no_pk, user_no_fk, sc_stdt, sc_endt, sc_con, sc_wt,
 		sc_fin, sc_insdt, sc_dflag)
 		values (
 		SEQ_ID_SC_TB_sc_no_pk.nextval
 		, 2
-		, '170413'
-		, '부산_히토리타비'
-		, 'CL'
+		, '17-6-5'
+		, '17-6-8'
+		, '대전역,결혼식,성심당'
+		, 'SU'
 		, 'N'
-		, '170414'
+		, '170422'
 		, 'Y');
 		
 insert into ID_SC_TB (

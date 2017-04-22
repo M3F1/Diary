@@ -3,6 +3,7 @@ package com.diary.smart.dao;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
 import org.slf4j.Logger;
@@ -82,12 +83,12 @@ public class DiaryDAO {
 		return result;
 	}
 
-	public Diary selectDiary(int scno) {
+	public Diary selectSchedule(int scno) {
 		DiaryMapper mapper = sqlSession.getMapper(DiaryMapper.class);
 		Diary result = null;
 
 		try {
-			result = mapper.selectDiary(scno);
+			result = mapper.selectSchedule(scno);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -99,12 +100,24 @@ public class DiaryDAO {
 	 *            회원아이디
 	 * @return 특정회원에 대한 일정 출력
 	 */
-	public ArrayList<HashMap<String, Object>> selectDiaryList(int user_no_fk, String sc_stdt) {
+	public List<HashMap<String, Object>> selectDiaryList(int user_no) {
 		DiaryMapper mapper = sqlSession.getMapper(DiaryMapper.class);
-		ArrayList<HashMap<String, Object>> result = null;
+		List<HashMap<String, Object>> result = null;
 
 		try {
-			result = mapper.selectDiaryList(user_no_fk, sc_stdt);
+			result = mapper.selectDiaryList(user_no);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+	
+	public List<Diary> todaySchedule(int user_no, String sc_stdt) {
+		DiaryMapper mapper = sqlSession.getMapper(DiaryMapper.class);
+		List<Diary> result = null;
+
+		try {
+			result = mapper.todaySchedule(user_no, sc_stdt);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

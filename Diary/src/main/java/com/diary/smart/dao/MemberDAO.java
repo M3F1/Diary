@@ -97,7 +97,6 @@ public class MemberDAO {
 		Member result = new Member();
 		try {
 			result = mapper.selectMember(id);
-			System.out.println(result);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

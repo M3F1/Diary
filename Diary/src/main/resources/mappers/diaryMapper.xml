@@ -34,7 +34,7 @@
 
 
 	<!-- 일정 수정 -->
-	<update id="updateDiary" parameterType="int">
+	<update id="updateDiary" parameterType="Diary">
 		update ID_SC_TB set
 		sc_stdt = #{sc_stdt}
 		, sc_endt = #{sc_endt}
@@ -49,23 +49,51 @@
 	<!-- <update id="" parameterType="int"> update ID_SC_TB set sc_fin = 'Y' 
 		where sc_no_pk = #{sc_no_pk} </update> -->
 
-
-	<!-- 일정 조회 -->
-	<select id="selectDiaryList" resultType="HashMap">
+	<!-- 일자별 리스트 조회 -->
+ 	<select id="todaySchedule" resultType="Diary">
+ 		select sc_no_pk 
+ 		, to_char(sc_stdt, 'YYYY-MM-DD') as sc_stdt
+		, to_char(sc_endt, 'YYYY-MM-DD') as sc_endt
+ 		, substr(sc_con, 1, 15) as sc_con 
+		from ID_SC_TB 
+		where 
+		user_no_fk = #{0}
+		and 
+		sc_stdt = #{1} 
+ 	</select>
+	
+	<!-- 해당 회원 일정 리스트 전체 조회 -->
+	<select id="selectDiaryList" parameterType="Int" resultType="HashMap">
 		select sc_no_pk
+		, to_char(sc_stdt, 'YYYY-MM-DD') as sc_stdt
+		, to_char(sc_endt, 'YYYY-MM-DD') as sc_endt
+		, substr(sc_con, 1, 15) as sc_con 
+		from ID_SC_TB 
+		where 
+		user_no_fk = #{user_no_fk}
+		order by sc_stdt 
+	</select>
+	
+	<!-- 단일 일정 내용 조회 -->
+	<select id="selectSchedule" parameterType="Int" resultType="Diary">
+	select sc_no_pk
 		,
 		user_no_fk
-		, to_char(sc_stdt, 'YYYY/MM/DD') as sc_stdt 
-		, to_char(sc_endt, 'YYYY/MM/DD') as sc_endt 
-		, sc_con 
+		, to_char(sc_stdt, 'YYYY-MM-DD') as sc_stdt
+		,
+		to_char(sc_endt, 'YYYY-MM-DD') as sc_endt
+		, sc_con
 		, sc_fin
 		, sc_insdt
-		, CASE WHEN sc_wt='SU' THEN 'SUNNY'
-					  WHEN sc_wt='CL' THEN 'CLOUDED'
-					  WHEN sc_wt='RA' THEN 'RAINY'
-					  WHEN sc_wt='SN' THEN 'SNOWY' 
-					  WHEN sc_wt='DU' THEN 'FINE_DUST'
-					  END AS sc_wt  
+		,
+		CASE WHEN sc_wt='SU' THEN 'SUNNY'
+		WHEN sc_wt='CL' THEN 'CLOUDED'
+		WHEN
+		sc_wt='RA' THEN 'RAINY'
+		WHEN sc_wt='SN' THEN 'SNOWY'
+		WHEN sc_wt='DU'
+		THEN 'FINE_DUST'
+		END AS sc_wt
 		from ID_SC_TB
 		where
 		user_no_fk = #{0}
@@ -73,7 +101,7 @@
 		sc_stdt = #{1}
 	</select>
 
-	<select id="selectDiary" resultType="Diary">
+<!-- 	<select id="selectDiary" resultType="Diary">
 		select sc_no_pk
 		, sc_stdt
 		,
@@ -82,11 +110,13 @@
 		, sc_wt
 		from ID_SC_TB
 		where user_no_fk = #{user_no_fk}
-	</select>
-
+	</select> -->
 
 	<!-- 동행 친구 등록 -->
-	<!-- <insert id="" parameterType=""> insert into ID_SCFRNO_TB values (#{sc_no_fk}, 
-		#{sc_frno}) </insert> -->
+	<insert id="insertCompagnie">
+		insert into ID_SCFRNO_TB values ( 
+	    #{0}, #{1}
+		)
+	</insert>
 
 </mapper> 
