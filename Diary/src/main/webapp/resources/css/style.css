@@ -3966,9 +3966,10 @@ nav.category-navigation {
 	border-top: none !important;
 	color: white;
 	text-align: center;
+	font-size: 1.5em;
 }
 
-.table>tbody>tr>td>a {
+.table>tbody>tr>td a {
 	color: white;
 }
 

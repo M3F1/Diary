@@ -369,9 +369,8 @@ function calendarHtml(date) {
 		// 각 칸에 날짜 정보 저장
 		var dateForm = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" +
 			date.getDate();
-		html += "<td id='" + dateForm + "' onclick=selectedDate('" + dateForm +
-			"')>" + "<a href='#'><div style='height: 100%; width: 100%'>" +
-			date.getDate() + "</div></a></td>";
+		html += "<td id='" + dateForm + "'>" + "<div style='height: 100%; width: 100%'><a href=javascript:selectedDate('" + dateForm + "')>" +
+			date.getDate() + "</a></div></td>";
 
 		if (date.getDay() == 6) {
 			html += "</tr><tr>";
@@ -405,7 +404,7 @@ function selectedDate(date) {
 
 function makePopover() {
 	for (var i = 0; i < $("#" + dt.getFullYear() + "-" + (dt.getMonth() + 1) + " > table > tbody > tr > td div").length; i++) {
-		var p = $("#" + dt.getFullYear() + "-" + (dt.getMonth() + 1) + "> table > tbody > tr > td div").eq(i);
+		var p = $("#" + dt.getFullYear() + "-" + (dt.getMonth() + 1) + "> table > tbody > tr > td a").eq(i);
 		p.attr("data-toggle", "popover");
 		p.attr("title", dt.getFullYear() + "년 " + (dt.getMonth() + 1) + "월 " + p.html() + "일 일정");
 		
@@ -437,7 +436,7 @@ function makePopover() {
 		
 		// 일정 있는 날 동그라미 그리는 부분
 		if (i % 7 == 3) {
-			markCircle(p);
+			markCircle(p.parent());
 		}
 		
 		
@@ -447,12 +446,13 @@ function makePopover() {
 }
 
 function markToday() {
-	$("#" + today.getFullYear() + "-" + (today.getMonth() + 1) + "-" + today.getDate()).css("color", "yellow");
+	console.log(today.getFullYear() + "-" + (today.getMonth() + 1) + "-" + today.getDate());
+	$("#" + today.getFullYear() + "-" + (today.getMonth() + 1) + "-" + today.getDate()).find("a").css("color", "yellow");
 }
 
 function markCircle(p) {
 	p.css("border-radius", "50%");
 	p.css("background", "steelblue");
-	p.css("width", "40%");
+	p.css("width", "50%");
 	p.css("margin", "auto");
 }
