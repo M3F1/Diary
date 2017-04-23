@@ -44,8 +44,9 @@
 				<!-- MENU LIST START -->
 				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 					<ul class="nav navbar-nav">
-						<li><a href="myPage">My Page</a></li>
-						<li><a href="logout">Logout</a></li>
+						<li><a href="#" id="myPageBtn" data-toggle="modal"
+							data-target="#myPageModal">My Page</a></li>
+						<li><a href="logout" >Logout</a></li>
 						<li><a href="howTo">How To</a></li>
 					<li><a href="aboutUS">About Us</a></li>
 					</ul>
@@ -56,7 +57,7 @@
 		</section>
 	</header>
 <!-- LOGIN MODAL START -->
-<div class="modal fade" id="loginModal" tabindex="-1" role="dialog"
+<div class="modal fade" id="myPageModal" tabindex="-1" role="dialog"
 	aria-labelledby="myModalLabel">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
@@ -64,21 +65,37 @@
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
-				<h4 class="modal-title" id="myModalLabel">Login</h4>
+				<h4 class="modal-title" id="myModalLabel">My Page</h4>
 			</div>
 			<div class="modal-body">
-				<form action="">
+				<form action="" method="post">
 					<div class="form-group">
-						<label for="id">ID</label> <input type="text" class="form-control" id="id"
-							name="id">
+						<input type="text" class="form-control" name="user_id" id="user_id"
+							placeholder="emailID">
 					</div>
 					<div class="form-group">
-						<label for="id">Password</label> <input type="password" class="form-control"
-							id="password" name="password">
+						<input type="password" class="form-control" name="user_pw" id="user_pw"
+							placeholder="password">
 					</div>
 					<div class="form-group">
-						<input type="submit" class="form-control" value="로그인">
+						<input type="password" class="form-control" id="re_user_pw" placeholder="password confirm">
 					</div>
+					<div class="form-group">
+						<input type="text" class="form-control"	name="user_nm" id="user_nm" placeholder="name">
+					</div>
+					<div class="form-group">
+						<input type="text" class="form-control" name="user_birth" id="user_birth"
+							placeholder="birthDate(yyyymmdd)">
+					</div>
+					<div class="form-group">
+						<input type="text" class="form-control" name="user_phone" id="user_phone"
+							placeholder="cellphone number">
+					</div>
+					<input type="text" id="sample6_postcode" placeholder="postcode"> <input
+						type="button" onclick="sample6_execDaumPostcode()" value="우편번호 찾기"><br>
+					<input type="text" name="user_add1" id="user_add1" placeholder="address"><br>
+					<br> <input type="submit" class="form-control" id="joinBtn"
+						value="수정">
 				</form>
 			</div>
 		</div>
@@ -96,7 +113,6 @@
 			<div class="item active">
 				<!-- SLIDE BACKGROUND START -->
 				<div class="slider-bg-img" style="background-image:url(resources/img/diary-bg.jpg);"></div>
-				<div class="slider-bg-img"></div>
 				<!-- SLIDE BACKGROUND END -->
 				<!-- SLIDE CAPTION START -->
 				<div class="carousel-caption">
@@ -104,6 +120,7 @@
 						<a href="javascript:movie();"><i class="fa fa-film fa-3x" aria-hidden="true"></i></a>
 						<a href="javascript:bus();"><i class="fa fa-bus fa-3x" aria-hidden="true"></i></a>
 						<a href="javascript:train();"><i class="fa fa-train fa-3x" aria-hidden="true"></i></a>
+						<a href="javascript:restaurant();"><i class="fa fa-cutlery fa-3x" aria-hidden="true"></i></a>
 						<a href="javascript:write();"><i class="fa fa-keyboard-o fa-3x" aria-hidden="true"></i></a>
 						<!-- <input type="text" class="form-control" id="write"><br> <span id="written"></span> -->
 					</div>
@@ -112,7 +129,9 @@
 						<span class="tooltiptext"></span>
 						<!--<button class="btn btn-default" id="scheduleSearch">스케쥴 검색</button>-->
 						<input type="text" class="form-control write"><br>
+						<a href="#"><i class="fa fa-users fa-1x friendList" aria-hidden="true"></i></a>
 						<span class="written"></span>
+						<a href="javascript:dateInitialize();"><i class="fa fa-times fa-1x cancel" aria-hidden="true"></i></a>
 					</div>
 					<br /><br />
 					<div class="text-center">

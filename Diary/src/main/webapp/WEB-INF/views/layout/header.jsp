@@ -20,9 +20,8 @@
 			<!-- MENU LIST START -->
 			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 				<ul class="nav navbar-nav">
-					<li><a href="signUpForm">Sign Up</a></li>
-					<li><a href="#" id="loginBtn" data-toggle="modal"
-						data-target="#loginModal">Login</a></li>
+					<li><a href="#" id="loginBtn" data-toggle="modal" data-target="#loginModal">Login</a></li>
+					<li><a href="#" data-toggle="modal" data-target="#signUpModal">Sign Up</a></li>
 					<li><a href="howTo">How To</a></li>
 					<li><a href="aboutUS">About Us</a></li>
 				</ul>
