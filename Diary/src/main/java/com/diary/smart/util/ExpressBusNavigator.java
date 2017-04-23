@@ -3,6 +3,7 @@ package com.diary.smart.util;
 import static org.hamcrest.CoreMatchers.nullValue;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
@@ -10,6 +11,7 @@ import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -37,7 +39,8 @@ public class ExpressBusNavigator {
 		driver = new ChromeDriver(options);
 		driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
 		js = (JavascriptExecutor) driver; // 자바스크립트를 사용하기 위한
-//		driver.get("https://www.hticket.co.kr/main.action");
+		driver.get("http://www.kobus.co.kr/web/03_reservation/reservation01.jsp");
+		this.setNow("kobus");
 		this.setHandle(driver.getWindowHandle());
 	}
 
@@ -66,6 +69,7 @@ public class ExpressBusNavigator {
 	public void setStartingPoint(String area){
 		boolean flag = false;
 		driver.switchTo().window(this.getHandle());
+		System.out.println(this.getHandle());
 		this.setBrowserEASYTICKET();
 		ArrayList<WebElement> terminal = (ArrayList<WebElement>) driver.findElement(By.id("searchStTermNbr")).findElements(By.tagName("option"));
 		
@@ -88,7 +92,7 @@ public class ExpressBusNavigator {
 	public void setStartingPoint2(String area) {
 		boolean flag=false;
 		driver.switchTo().window(this.getHandle());
-		this.setBrowserKOBUS();		
+//		this.setBrowserKOBUS();		
 		ArrayList<WebElement> terminal = (ArrayList<WebElement>) driver.findElement(By.id("regForm01")).findElements(By.tagName("option"));
 		
 		for (int i = 1; i < terminal.size(); i++) {
@@ -166,7 +170,7 @@ public class ExpressBusNavigator {
 				break;
 			}//if
 		}//for
-		String setTime = date.substring(8,10) + ":" + date.substring(10,12);
+		String setTime = date.substring(8,10) + ":00";
 		for (int i = 0; i < time.size(); i++) {
 			if(time.get(i).getText().equals(setTime)){
 				time.get(i).click();
@@ -203,7 +207,7 @@ public class ExpressBusNavigator {
 				break;
 			}//if
 		}//for
-		String setTime = date.substring(8,10) + ":" + date.substring(10,12);
+		String setTime = date.substring(8,10) + ":00";
 		for (int i = 1; i < time.size(); i++) {
 			if(time.get(i).getText().contains(setTime)){
 				time.get(i).click();
@@ -233,17 +237,8 @@ public class ExpressBusNavigator {
 				break;
 			}//if
 		}//for
-		
-//		driver.findElement(By.cssSelector("td[align='center'] a")).click();
 		ArrayList<WebElement> aTag = (ArrayList<WebElement>) driver.findElement(By.id("Table_3")).findElements(By.tagName("a"));
 		aTag.get(1).click();
-		
-		
-//		ArrayList<String> handles = new ArrayList<>(driver.getWindowHandles());
-//		driver.switchTo().window(handles.get(1));
-//		System.out.println(driver.getWindowHandles());
-//		driver.findElement(By.cssSelector("td[align='right'] > a")).click();
-//		driver.switchTo().window(this.getHandle());
 	}
 	
 	public void setHuman2(String count){
@@ -256,10 +251,22 @@ public class ExpressBusNavigator {
 			}//if
 		}//for
 		driver.findElement(By.cssSelector("dd.btn input")).click();
-		Alert alert = driver.switchTo().alert();
-		if(alert!=null){
-			alert.accept();
-		}
+		
+		boolean flag = true;
+	
+		Alert alert=null;
+			while(flag){
+				try{
+					alert = driver.switchTo().alert();
+					if(alert!=null){
+						alert.accept();
+					}else{
+						flag=false;
+					}
+				}catch(WebDriverException e){
+					flag=false;
+				}
+			}//while
 	}
 	
 	public void setHuman(String count){
@@ -288,30 +295,17 @@ public class ExpressBusNavigator {
 	
 	public void selectTicket(String time){
 		driver.switchTo().window(this.getHandle());
-//		ArrayList<WebElement> table = (ArrayList<WebElement>)driver.findElement(By.id("Table_4")).findElements(By.cssSelector("tbody > tr:nth-child(1) > td > table > tbody > tr:nth-child(1) > td > table > tbody > tr"));
-//		System.out.println(table);
 		ArrayList<WebElement> table2 = (ArrayList<WebElement>)driver.findElement(By.id("Table_4")).findElements(By.cssSelector("table"));
 		ArrayList<WebElement> tr = (ArrayList<WebElement>)table2.get(4).findElements(By.cssSelector("tr"));
 		ArrayList<WebElement> td = null;
 		for (WebElement webElement : tr) {
 			td = (ArrayList<WebElement>) webElement.findElements(By.tagName("td"));
-			if(td.get(0).getText().contains("08:00")){
+			if(td.get(0).getText().contains(time.substring(0,2)+":"+time.substring(2, 4))){
 				td.get(td.size()-1).findElement(By.tagName("a")).click();
 				break;
 			}
 			td = new ArrayList<WebElement>();
 		}
-//		ArrayList<WebElement> td = (ArrayList<WebElement>) driver.findElements(By.className("table_underline"));
-		
-		
-		//		for (int i=2; i<table.size(); i++){
-//			if(table.get(i).findElements(By.cssSelector("td")).get(0).getText().equals(time)){
-//				webElement.findElements(By.cssSelector("td")).get(webElement.findElements(By.cssSelector("td")).size()-1).findElement(By.cssSelector("input")).click();
-//				break;
-//			}
-//				
-//		}
-			
 	}
 	
 	
@@ -319,8 +313,8 @@ public class ExpressBusNavigator {
 		driver.switchTo().window(this.getHandle());
 		ArrayList<WebElement> table = (ArrayList<WebElement>) driver.findElement(By.cssSelector("table.ticket")).findElements(By.cssSelector("tbody tr"));
 		for (WebElement webElement : table) {
-			if(webElement.findElements(By.cssSelector("td")).get(0).getText().equals(time)){
-				webElement.findElements(By.cssSelector("td")).get(webElement.findElements(By.cssSelector("td")).size()-1).findElement(By.cssSelector("input")).click();
+			if(webElement.findElements(By.tagName("td")).get(0).getText().equals(time.subSequence(0, 2)+":"+time.substring(2, 4))){
+				webElement.findElements(By.tagName("td")).get(webElement.findElements(By.tagName("td")).size()-1).findElement(By.tagName("input")).click();
 				break;
 			}
 				
@@ -354,31 +348,45 @@ public class ExpressBusNavigator {
 		return result;
 	}
 
-	public void selectSeats2(ArrayList<String> arrayList) {
+	public ArrayList<String> selectSeats2(ArrayList<String> arrayList) {
 		driver.switchTo().window(this.getHandle());
 		int flag = 0;
 		ArrayList<WebElement> td = (ArrayList<WebElement>) driver.findElement(By.className("tbl_seat01")).findElements(By.cssSelector("label"));
 		ArrayList<WebElement> input = (ArrayList<WebElement>) driver.findElement(By.className("tbl_seat01")).findElements(By.cssSelector("input"));
-		
+		String seatNum="";
 		for (int i=0; i<td.size(); i++){
-			for(String seat : arrayList){
-				if(td.get(i).getText().equals(seat)){
+			for(int j=0; j<arrayList.size()-1; j++){
+				if(td.get(i).getText().equals(arrayList.get(j))){
 					input.get(i).click();
+					seatNum+=arrayList.get(j)+" ";
 					flag++;
 					break;
 				}
 			}
-			if(flag==arrayList.size()) break;
+			if(flag==arrayList.size()){ 
+				break;
+			}
 		}
+		if ( !driver.findElement(By.name("checkbox1")).isSelected() ){
+			driver.findElement(By.name("checkbox1")).click();
+		}
+		ArrayList<String> imsi = new ArrayList<>(Arrays.asList(arrayList.get((arrayList.size()-1)).split(",")));
+		ArrayList<String> result = new ArrayList<>();
+		result.add(imsi.get(2).substring(0, 4)+"/"+imsi.get(2).substring(4, 6)+"/"+imsi.get(2).substring(6, 8)+" "+imsi.get(2).substring(8, 10)+":"+imsi.get(2).substring(10, 12));
+		result.add(imsi.get(0)+" → "+imsi.get(1));
+		result.add(imsi.get(3));
+		result.add(seatNum);
+		result.add(imsi.get(4));
+		result.add("0");
 		
-		driver.findElement(By.name("checkbox1")).click();
+		return result;
 	}
 	
-	public void selectSeats(ArrayList<String> arrayList) {
+	public ArrayList<String> selectSeats(ArrayList<String> arrayList) {
 		driver.switchTo().window(this.getHandle());
 		int flag = 0;
 		ArrayList<WebElement> ckbox = (ArrayList<WebElement>) driver.findElement(By.id("seatView")).findElements(By.cssSelector("input[type='checkbox']"));
-		
+		ArrayList<String> result = new ArrayList<>();
 		for (WebElement webElement : ckbox) {
 			for (String seat : arrayList) {
 				if(webElement.getAttribute("value").equals(seat)){
@@ -389,11 +397,40 @@ public class ExpressBusNavigator {
 			}
 			if(flag==arrayList.size()) break;
 		}
-		
 		driver.findElement(By.id("Table_10")).findElement(By.cssSelector("a")).click();
+		
+		ArrayList<WebElement> td1 = (ArrayList<WebElement>)driver.findElements(By.id("Table_9"));
+		ArrayList<WebElement> td2 = (ArrayList<WebElement>)driver.findElements(By.id("Table_10"));
+		ArrayList<WebElement> td3 = (ArrayList<WebElement>)driver.findElements(By.id("Table_11"));
+		ArrayList<WebElement> td4 = (ArrayList<WebElement>)driver.findElements(By.id("Table_12"));
+		ArrayList<WebElement> td5 = (ArrayList<WebElement>)driver.findElements(By.id("Table_14"));
+		ArrayList<WebElement> td6 = (ArrayList<WebElement>)driver.findElements(By.id("Table_15"));
+		
+		result.add(td1.get(1).getText()+" "+td1.get(3).getText());
+		result.add(td2.get(1).getText()+" → "+td2.get(3).getText());
+		result.add(td3.get(1).getText());
+		result.add(td5.get(1).getText());
+		result.add(td6.get(1).getText()+" ("+td4.get(1).getText()+")");
+		result.add("1");
+		return result;
 	}
 	
-	public void writeCardInfo2(ArrayList<String> cardInfo){
+	public Object showPayWindow(){
+		driver.switchTo().window(this.getHandle());
+		driver.findElement(By.id(""));
+		
+		return js.executeScript("return document.getElementById('payment01').outerHTML;");
+//		return js.executeScript("return document.getElementsByName('SeatForm')[0].outerHTML;");
+//		return js.executeScript("return document.getElementsByClassName('tbl_seat01')[0].outerHTML;");
+	}
+	
+	public Object showPayWindow2(){
+		driver.switchTo().window(this.getHandle());
+		return js.executeScript("return document.getElementById('payment01').outerHTML;");
+	}
+	
+	
+	public boolean writeCardInfo2(ArrayList<String> cardInfo){
 		driver.switchTo().window(this.getHandle());
 		driver.findElement(By.name("pCAD_NO")).clear();
 		driver.findElement(By.name("pCAD_NO")).sendKeys(cardInfo.get(0));
@@ -413,7 +450,18 @@ public class ExpressBusNavigator {
 		driver.findElement(By.name("pUSR_JUMIN")).clear();
 		driver.findElement(By.name("pUSR_JUMIN")).sendKeys(cardInfo.get(3));
 		driver.findElement(By.id("p111")).click();
-		
+				
+			Alert alert = driver.switchTo().alert();
+			if(alert!=null){
+				if(alert.getText().contains("예약실패사유")||alert.getText().contains("좌석을 선택")||alert.getText().contains("유효기간")||alert.getText().contains("카드번호")||alert.getText().contains("주민")){
+					alert.accept();
+					return false;
+				}else{
+					alert.accept();
+					return true;
+				}
+			}
+		return true;
 	}
 	
 	public void writeCardInfo(ArrayList<String> cardInfo){
@@ -442,6 +490,53 @@ public class ExpressBusNavigator {
 		driver.findElement(By.name("rsvSMS_Phone")).sendKeys(cardInfo.get(4));
 		driver.findElement(By.id("tktGoBtn")).findElement(By.tagName("a")).click();
 		
+	}
+
+	public String paymentCheck() {
+		driver.switchTo().window(this.getHandle());
+		String reserveNo = null;
+		try{
+			reserveNo = driver.findElements(By.id("Table_20")).get(1).getText();
+			driver.findElement(By.cssSelector("a[href='/booking/bookingSearch_card.action']")).click();
+		}catch(WebDriverException e){
+			driver.navigate().back();
+			return null;
+		}
+		return reserveNo;
+	}
+
+	public boolean cancleTicket(String cardno, String reserveNo) {
+		driver.switchTo().window(this.getHandle());
+		driver.get("https://www.hticket.co.kr/booking/bookingSearch_card.action");
+		driver.findElement(By.cssSelector("input[name='cardNbr']")).clear();
+		driver.findElement(By.cssSelector("input[name='cardNbr']")).sendKeys(cardno);
+		driver.findElement(By.cssSelector("a[href='javascript:bookSearchGo()']")).click();
+		
+		ArrayList<WebElement> reservationInfo = (ArrayList<WebElement>) driver.findElements(By.cssSelector("input[name='rsvNbrA']"));
+		ArrayList<WebElement> tr = (ArrayList<WebElement>) driver.findElements(By.cssSelector("#Table_4 > tbody > tr")).get(1).findElements(By.tagName("tr"));
+		
+		for(int i=0 ; i<reservationInfo.size() ; i++){
+			if(reservationInfo.get(i).getAttribute("value").equals(reserveNo)){
+				tr.get(i+1).findElements(By.tagName("a")).get(1).click();
+				break;
+			}
+		}
+		
+		driver.findElement(By.cssSelector("a[href='javascript:canGo();']")).click();
+		Alert alert = driver.switchTo().alert();
+		if(alert!=null){
+			alert.accept();
+			//driver.switchTo().window(this.getHandle());
+			driver.findElement(By.cssSelector("a[href='bookingSearch_card.action']")).click();
+			return true;
+		}else{
+			return false;
+		}
+	}
+
+	public boolean cancleTicket2(String cardno) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 	
 	

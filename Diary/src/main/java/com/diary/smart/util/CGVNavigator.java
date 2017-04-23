@@ -72,16 +72,12 @@ public class CGVNavigator {
 		public boolean setMovie(String movie) {
 			driver.switchTo().window(this.getHandle());
 			driver.switchTo().frame("ticket_iframe");
-			try {
-				Thread.sleep(500);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
 			
 			for (String webElement : movieList) {
 				if(webElement.equals(movie)){
-					driver.findElement(By.cssSelector("div#movie_list li:nth-child(" + (movieList.indexOf(webElement)+1) + ") span.icon")).click();
+//					driver.findElement(By.id("movie_list")).findElements(By.tagName("li")).get(movieList.indexOf(webElement)).findElement(By.tagName("a")).click();
+					driver.findElement(By.id("movie_list")).findElements(By.tagName("a")).get(movieList.indexOf(webElement)).click();
+//					driver.findElement(By.cssSelector("div#movie_list li:nth-child(" + (movieList.indexOf(webElement)+1) + ") span.icon")).click();
 					return true;
 				}
 			}
@@ -105,7 +101,8 @@ public class CGVNavigator {
 				
 				for (WebElement webElement : list) {
 					if(theater.equals(webElement.getText())){
-						areaTag.findElement(By.linkText(theater)).click();
+						webElement.click();
+//						areaTag.findElement(By.linkText(theater)).click();
 						check = false;
 						break;
 					}					
@@ -115,6 +112,12 @@ public class CGVNavigator {
 				i++;
 				list.clear();			
 				areaTag.findElement(By.cssSelector("ul > li:nth-child("+i+") span.name")).click();			
+			}
+			try {
+				Thread.sleep(700);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 			
 		}
@@ -163,36 +166,18 @@ public class CGVNavigator {
 				for (WebElement webElement2 : times) {
 					if(webElement2.getText().equals(time)){
 						webElement2.click();
+						driver.findElement(By.cssSelector("div.tnb.step1 > a.btn-right.on")).click();
 						return;
 					}
 				}
 			}
 		}
 
-	//영화, 장소, 시간 선택후 다음단계로 넘어가는 메소드
-	public void nextStep(){
-		driver.switchTo().window(this.getHandle());
-		driver.switchTo().frame("ticket_iframe");
-		driver.findElement(By.cssSelector("div.tnb.step1 > a.btn-right.on")).click();
-		try {
-			Thread.sleep(750);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		driver.findElement(By.cssSelector("div.ft_layer_popup.popup_login.ko a.join_guest")).click();
-		try {
-			Thread.sleep(750);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		driver.findElement(By.cssSelector("div.wrap-login a.round.inred > span")).click();
-	}
-		
 	//비회원 로그인 메소드
 	public void movieInput(Member member){
 		driver.switchTo().window(this.getHandle());
+		driver.get("http://www.cgv.co.kr/user/guest/");
+		driver.findElement(By.cssSelector("div.wrap-login a.round.inred > span")).click();
 		driver.findElement(By.cssSelector("span.inp_inbox.on > input")).click();
 		
 		driver.findElement(By.id("txtName")).clear();
@@ -211,13 +196,13 @@ public class CGVNavigator {
 		driver.findElement(By.id("txtConfirmPassword")).sendKeys("8686");
 		
 		driver.findElement(By.id("btn_submit")).submit();
-		try {
-			Thread.sleep(1200);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-		driver.switchTo().frame("ticket_iframe");
-		driver.findElement(By.cssSelector("div.tnb.step1 > a.btn-right.on")).click();
+//		try {
+//			Thread.sleep(1200);
+//		} catch (InterruptedException e) {
+//			e.printStackTrace();
+//		}
+//		driver.switchTo().frame("ticket_iframe");
+//		driver.findElement(By.cssSelector("div.tnb.step1 > a.btn-right.on")).click();
 
 		
 		//만약 팝업뜨면 확인누르기처리..
@@ -258,14 +243,14 @@ public class CGVNavigator {
 	}
 	
 	//좌석클릭 메소드
-	public void selectSeats(ArrayList<Integer> arrayList) {
+	public ArrayList<String> selectSeats(ArrayList<Integer> arrayList) {
 		driver.switchTo().window(this.getHandle());
 		driver.switchTo().frame("ticket_iframe");
 		ArrayList<WebElement> div = new ArrayList<WebElement>();
 		ArrayList<WebElement> span = new ArrayList<WebElement>();
 		ArrayList<WebElement> click = new ArrayList<WebElement>();
 		div =(ArrayList<WebElement>)driver.findElements(By.className("row"));
-		
+		ArrayList<String> result = new ArrayList<>();
 		for(int i = 0 ; i<arrayList.size() ; i++){
 			if(i%2 == 0){
 				span = (ArrayList<WebElement>) div.get(arrayList.get(i)).findElements(By.cssSelector("span.no"));
@@ -279,7 +264,18 @@ public class CGVNavigator {
 			span = new ArrayList<WebElement>();
 		}
 		
+		ArrayList<WebElement> data = (ArrayList<WebElement>) driver.findElements(By.className("data"));
+		ArrayList<WebElement> priceList = (ArrayList<WebElement>) driver.findElements(By.className("price"));
+		result.add(data.get(7).getText()+" "+driver.findElement(By.cssSelector("span.data.ellipsis-line3")).getText());
+		result.add(priceList.get(0).getText());
+		result.add(data.get(4).getText());
+		result.add(data.get(0).findElement(By.tagName("a")).getAttribute("title"));
+		result.add(data.get(3).findElement(By.tagName("a")).getAttribute("title")+" "+data.get(5).getText());
+		result.add(data.get(2).getText()+" "+data.get(1).getText());
+		result.add(data.get(6).getText());
 		driver.findElement(By.id("tnb_step_btn_right")).click();
+		
+		return result;
 		
 		/* 이미예약된거면.. 처리할곳
 		Alert alert = driver.switchTo().alert(); 
@@ -291,13 +287,6 @@ public class CGVNavigator {
 			driver.findElement(By.cssSelector("div.block_wrap > span.seat_block.block1.enabled input")).click();
 		}
 		*/
-	}
-	
-	public Object getPaymentForm(){
-		driver.switchTo().window(this.getHandle());
-		driver.switchTo().frame("ticket_iframe");
-		return js.executeScript("return document.getElementsByClassName('tpm_wrap.tpm_last_pay').outerHTML;");
-		//summary_total_amount
 	}
 	
 	public boolean payment(ArrayList<String> payinfo){
@@ -345,9 +334,21 @@ public class CGVNavigator {
 		popup.findElement(By.id("agreementAll")).click();
 		popup.findElement(By.id("resvConfirm")).click();
 		popup.findElement(By.cssSelector("div.ft > .reservation")).click();
-
-		return true;
 		
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		Alert alert = driver.switchTo().alert();
+		if(alert!=null){
+			alert.accept();
+			return false;
+		}else{
+			return true;
+		}
 	}
 		
 	//셀레늄 종료 메서드
