@@ -19,7 +19,42 @@ public class DiaryDAO {
 	@Autowired
 	SqlSession sqlSession;
 	private static final Logger logger = LoggerFactory.getLogger(DiaryDAO.class);
+	
+	/**
+	 * 최근 추가한 일정번호 출력(중간예매단계에서 일정 db에 저장. 결제가완료되면 결제플래그 y로변경)
+	 * @return 최근 추가한 일정번호
+	 */
+	public int lastSchedule(){
+		DiaryMapper mapper = sqlSession.getMapper(DiaryMapper.class);
+		int result = 0;
 
+		try {
+			result = mapper.lastSchedule();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+	
+	/**
+	 * 결제후 결제플래그 Y로 변경하는 메서드
+	 * @param scno 일정번호
+	 * @return 완료되면 1리턴.
+	 */
+	public int paymentFin(int scno){
+		DiaryMapper mapper = sqlSession.getMapper(DiaryMapper.class);
+		int result = 0;
+
+		try {
+			result = mapper.paymentFin(scno);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+	
+	
+	
 	/**
 	 * @param diary
 	 *            입력할 일정 정보

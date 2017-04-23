@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -12,11 +14,16 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.diary.smart.dao.DiaryDAO;
+import com.diary.smart.dao.MemberDAO;
 import com.diary.smart.util.ExpressBusNavigator;
+import com.diary.smart.vo.Diary;
 @Controller
 public class BusController {
 	@Autowired
-	private DiaryDAO dao;
+	private DiaryDAO diaryDAO;
+	
+	@Autowired
+	private MemberDAO memberDAO;
 	
 	private ExpressBusNavigator ebn = new ExpressBusNavigator();
 	
@@ -42,6 +49,20 @@ public class BusController {
 			return ebn.showPayWindow2();
 		}else{
 			return ebn.showPayWindow();
+		}
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "beforePaymentBusSchedule", method=RequestMethod.GET)
+	public void beforePaymentSchedule(String date, String time, String busarea, String seat,
+			HttpSession session){
+		Diary diary = new Diary();
+		diary.setUser_no_fk(memberDAO.selectMember((String)session.getAttribute("user_id")).getUser_no_pk());
+		diary.setSc_con(time+"_"+busarea+"_"+seat);
+		diary.setSc_wt("SU");
+		diary.setSc_stdt(date);
+		if(diaryDAO.insertDiary(diary)==1){
+			session.setAttribute("lastscno", diaryDAO.lastSchedule());
 		}
 	}
 	

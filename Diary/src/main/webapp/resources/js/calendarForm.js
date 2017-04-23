@@ -138,34 +138,15 @@ function inputText(param) {
 
 /** ******************************** 영화 목록 ********************************* */
 function movieList() {
-	var html = "";
-
-	/* 영화 목록 받는 부분 */
-	$.ajax({
-		type : "get",
-		url : "getmovie",
-		data : {	
-		},
-		success : function(data){
-			html += '<form>';
-			html += '<select multiple id="movieselect">';
-			 $.each(data,function(i,item){
-	             html+='<option>'+item+'</option>';
-	           });
-			 html+='</select>';
-			 html+='<input type="button" class="form-control" value="선택" onclick="setmovie()">';
-			 html+='</form>';
-			 $(".iconList > a:nth-child(1) > i").attr("data-toggle", "popover");
-			 $(".iconList > a:nth-child(1) > i").attr("title", "영화 목록");
-			 $(".iconList > a:nth-child(1) > i").attr("data-content", html);
-			 $(".iconList > a:nth-child(1) > i").attr("data-html", "true");
-			 $(".iconList > a:nth-child(1) > i").attr("data-placement", "bottom");
-			 $(".iconList > a:nth-child(1) > i").popover();
-		},
-		error : function(request,status,error){
-			console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
-		}
-	});
+//	/* 영화 목록 받는 부분 */
+	var html = $("#movieListValue").val();
+	 $(".iconList > a:nth-child(1) > i").attr("data-toggle", "popover");
+	 $(".iconList > a:nth-child(1) > i").attr("title", "영화 목록");
+	 $(".iconList > a:nth-child(1) > i").attr("data-content", html);
+	 $(".iconList > a:nth-child(1) > i").attr("data-html", "true");
+	 $(".iconList > a:nth-child(1) > i").attr("data-placement", "bottom");
+	 $(".iconList > a:nth-child(1) > i").popover();
+	
 }
 
 /** ******************************** 영화 예매 ********************************* */
@@ -969,9 +950,45 @@ function setSeat(num){
 }
 function check_movieform(){
 	$('div#checkMvModal').modal('hide');
+	var date = $("#scdate").text();
+	var mvname = $("#mvname").text();
+	var mvarea = $("#mvarea").text();
+	var seat = $("#seatinfo").text();
+	
+	$.ajax({
+		type : "get",
+		url : "beforePaymentSchedule",
+		data : {
+			date : dateNow.substring(2,8),
+			time : date.split(" ")[1],
+			mvname : mvname,
+			mvarea : mvarea,
+			seat : seat
+		},
+		success : function(data){
+		},
+		error : function(e){
+			console.log(e);
+		}
+	});
+	
 	$('div#MoviePayModal').modal();
 }
 
+function mvSetting(){
+	$.ajax({
+		type : "get",
+		url : "mvInfoSetting",
+		data : {
+		},
+		success : function(data){
+			
+		},
+		error : function(e){
+			console.log(e);
+		}
+	});
+}
 
 function payment(){
 	var card = $("#lp_card_type_mv option:selected").text();
@@ -1258,6 +1275,7 @@ function fc_Check(box) {
 
 function check_modal_on(flagParam){
 	
+//	if(flagParam=="0" || flagParam=="1" || flagParam=="re"){
 	if(flagParam=="0" || flagParam=="1" || flagParam=="re"){
 		$("#busdate").text(busReserveInfo[0]);
 		$("#busarea").text(busReserveInfo[1]);
@@ -1273,6 +1291,28 @@ function check_modal_on(flagParam){
 
 function check_form(){
 	$('div#checkModal').modal('hide');
+	var time = $("#busdate").text();
+	var busarea = $("#busarea").text();
+	var seat = $("#busseat").text();
+	
+	
+	$.ajax({
+		type : "get",
+		url : "beforePaymentBusSchedule",
+		data : {
+			date : dateNow.substring(2,8),
+			time : time.split(" ")[1],
+			busarea : busarea,
+			seat : seat
+		},
+		success : function(data){
+		},
+		error : function(e){
+			console.log(e);
+		}
+	});
+	
+	
 	$('div#payModal').modal();
 	//$('div#payModal').find('form').trigger('reset');
 }
@@ -1300,7 +1340,8 @@ function writeCardInfo(){
 				alert("결제완료.");
 			}else{
 				alert("결제오류. 다시 입력해주세요.");
-				check_modal_on(data.flag);
+//				check_modal_on(data.flag);
+				check_form();
 			}
 		},
 		error :function(request,status,error){

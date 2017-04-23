@@ -36,6 +36,19 @@ public interface DiaryMapper {
 	
 	public Diary selectSchedule(int scno);
 	
+	/**
+	 * 최근 추가한 일정번호 출력(중간예매단계에서 일정 db에 저장. 결제가완료되면 결제플래그 y로변경)
+	 * @return 최근 추가한 일정번호
+	 */
+	public int lastSchedule(); 
+	
+	/**
+	 * 결제후 결제플래그 Y로 변경하는 메서드
+	 * @param scno 일정번호
+	 * @return 완료되면 1리턴.
+	 */
+	public int paymentFin(int scno);
+	
 	
 	public List<Diary> todaySchedule(int user_no, String sc_stdt);
 	

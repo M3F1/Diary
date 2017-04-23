@@ -7,6 +7,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.diary.smart.dao.DiaryDAO;
 import com.diary.smart.dao.MemberDAO;
 import com.diary.smart.util.CGVNavigator;
+import com.diary.smart.vo.Diary;
 import com.diary.smart.vo.Member;
 @Controller
 public class MovieController {
@@ -72,8 +74,7 @@ public class MovieController {
 	@RequestMapping(value = "mvInfoSetting", method=RequestMethod.GET)
 	public void mvInfoSetting(HttpSession session){
 		Member member = memberDAO.selectMember((String)session.getAttribute("user_id"));
-		cn.movieInput(member);
-		
+		cn.movieInput(member);		
 	}
 	
 	@ResponseBody
@@ -86,16 +87,34 @@ public class MovieController {
 	@RequestMapping(value = "setseat", method=RequestMethod.POST)
 	public ArrayList<String> setseat(@RequestBody Object obj){
 		HashMap<String, Object> map = (HashMap<String, Object>) obj;
+			
 		return cn.selectSeats((ArrayList<Integer>)map.get("seats"));
 	}
+	
+	
+	@ResponseBody
+	@RequestMapping(value = "beforePaymentSchedule", method=RequestMethod.GET)
+	public void beforePaymentSchedule(String date, String time, String mvname, String mvarea, String seat,
+			HttpSession session){
+		Diary diary = new Diary();
+		diary.setUser_no_fk(memberDAO.selectMember((String)session.getAttribute("user_id")).getUser_no_pk());
+		diary.setSc_con(time+"_"+mvname+"_"+mvarea+"_"+seat);
+		diary.setSc_wt("SU");
+		diary.setSc_stdt(date);
+		if(diaryDAO.insertDiary(diary)==1){
+			session.setAttribute("lastscno", diaryDAO.lastSchedule());
+		}
+	}
+	
 	
 	@ResponseBody
 	@RequestMapping(value = "payment", method=RequestMethod.GET)
 	public boolean payment(String card, String cardno, String sno, String year,
-			String month, String birth){
+			String month, String birth, HttpSession session){
 		//HashMap<String, Object> map = (HashMap<String, Object>) obj;
 //		wc.selectSeats((ArrayList<Integer>)map.get("seats"));
 		ArrayList<String> ex = new ArrayList<String>();
+		boolean result = false;
 		ex.add(card);
 		ex.add(cardno.substring(0, 4));
 		ex.add(cardno.substring(4, 8));
@@ -105,7 +124,12 @@ public class MovieController {
 		ex.add(month);
 		ex.add(year);
 		ex.add(birth);
-		return cn.payment(ex);
+		
+		result = cn.payment(ex);
+		if(result){
+			diaryDAO.paymentFin((Integer)session.getAttribute("lastscno"));
+		}
+		return result;
 	}
 	
 	@RequestMapping(value = "test", method=RequestMethod.GET)

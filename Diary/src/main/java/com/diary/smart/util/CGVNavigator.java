@@ -12,6 +12,7 @@ import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -191,9 +192,9 @@ public class CGVNavigator {
 		driver.findElement(By.id("txtMobile3")).sendKeys(member.getUser_phone().substring(7, 11));
 		
 		driver.findElement(By.id("txtPassword")).clear();
-		driver.findElement(By.id("txtPassword")).sendKeys("8686");
+		driver.findElement(By.id("txtPassword")).sendKeys(member.getUser_phone().substring(7, 11));
 		driver.findElement(By.id("txtConfirmPassword")).clear();
-		driver.findElement(By.id("txtConfirmPassword")).sendKeys("8686");
+		driver.findElement(By.id("txtConfirmPassword")).sendKeys(member.getUser_phone().substring(7, 11));
 		
 		driver.findElement(By.id("btn_submit")).submit();
 //		try {
@@ -330,23 +331,32 @@ public class CGVNavigator {
 		}
 		
 		WebElement popup = driver.findElement(By.cssSelector(".ft_layer_popup.popup_reservation_check"));
-		
+		try {
+			Thread.sleep(700);
+		} catch (InterruptedException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		popup.findElement(By.id("agreementAll")).click();
 		popup.findElement(By.id("resvConfirm")).click();
 		popup.findElement(By.cssSelector("div.ft > .reservation")).click();
 		
 		try {
-			Thread.sleep(1000);
+			Thread.sleep(800);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		Alert alert = driver.switchTo().alert();
-		if(alert!=null){
-			alert.accept();
-			return false;
-		}else{
+		Alert alert = null;
+		try{
+			alert = driver.switchTo().alert();
+			if(alert!=null){
+				alert.accept();
+				return false;
+			}else{
+				return true;
+			}
+		}catch(WebDriverException e){
 			return true;
 		}
 	}

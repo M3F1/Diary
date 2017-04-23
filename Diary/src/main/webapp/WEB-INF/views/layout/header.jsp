@@ -47,6 +47,7 @@
 					<div class="form-group">
 						<label for="id">ID</label> <input type="text" class="form-control" id="user_id"
 							name="user_id">
+							<input type="hidden" id="movieList" name="movieList" value=''/>
 					</div>
 					<div class="form-group">
 						<label for="id">Password</label> <input type="password" class="form-control"

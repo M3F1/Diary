@@ -57,7 +57,8 @@
 	<!-- 단일 회원 조회(id중복조회나 등등에 사용) -->
 	<select id="selectMember" parameterType="String" resultType="Member">
 		select user_no_pk
-		, user_id
+		, user_aflag,
+		user_id
 		, user_pw
 		, user_nm
 		, user_birth

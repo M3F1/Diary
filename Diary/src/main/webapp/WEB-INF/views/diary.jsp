@@ -18,12 +18,23 @@
 <script src="resources/js/jquery-3.1.1.js"></script>
 <script src="resources/js/bootstrap.min.js"></script>
 <script src="resources/js/ruxen.js"></script>
+<script type="text/javascript">
+$(document).ready(function () {
+	if(${user_id != null} ){
+		mvSetting();
+	}
+	//movieListData = ${movieList};
+	$("#movieListValue").val('${movieList}'); 
+});
+</script>
 <script src="resources/js/calendarForm.js"></script>
+
 <!-- <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script> -->
 <!-- JAVASCRIPT END -->
 <title>My Diary</title>
 </head>
 <body>
+	<input type="hidden" id="movieListValue" value='' />
 	<header class="header fixed-header navbar-fixed-top" id="calHeader">
 		<section class="container">
 			<!-- LOGO START -->
@@ -392,23 +403,23 @@
 				<form>
 				<div class="form-group">
 						<label for="normal">출발일시</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-						<h3 id="busdate"></h1>
+						<h3 id="busdate"></h3>
 					</div>
 					<div class="form-group">
 						<label for="cardno">출발지/도착지</label> 
-						<h3 id="busarea"></h1>
+						<h3 id="busarea"></h3>
 					</div>
 					<div class="form-group">
 						<label for="validdate">버스등급</label> 
-						<h3 id="busgrade"></h1>
+						<h3 id="busgrade"></h3>
 					</div>
 					<div class="form-group">
 						<label for="validdate">좌석</label> 
-						<h3 id="busseat"></h1>
+						<h3 id="busseat"></h3>
 					</div>
 					<div class="form-group">
 						<label for="validdate">가격</label> 
-						<h3 id="busprice"></h1>
+						<h3 id="busprice"></h3>
 					</div>
 					<div class="form-group">
 						<input type="button" class="form-control" onclick="return check_form()" value="확인">

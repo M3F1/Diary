@@ -9,20 +9,14 @@
 	<!-- 일정 정보 저장 -->
 	<insert id="insertDiary" parameterType="Diary">
 		insert into ID_SC_TB (
-		sc_no_pk, user_no_fk, sc_stdt, sc_endt, sc_con, sc_wt,
-		sc_fin,
-		sc_insdt, sc_dflag)
+		sc_no_pk, user_no_fk, sc_stdt, sc_con, sc_wt)
 		values (
 		SEQ_ID_SC_TB_sc_no_pk.nextval
 		,
 		#{user_no_fk}
 		, #{sc_stdt}
-		, #{sc_endt}
 		, #{sc_con}
-		, #{sc_wt}
-		, #{sc_fin}
-		, #{sc_insdt}
-		, #{sc_dflag})
+		, #{sc_wt})
 	</insert>
 
 	<!-- 일정 삭제 -->
@@ -43,7 +37,22 @@
 		sc_updt = #{sc_updt}
 		where sc_no_pk = #{sc_no_pk}
 	</update>
-
+	
+	<!-- 최근 일정의 일정번호 -->
+	<select id="lastSchedule" resultType="Int">
+		select sc_no_pk
+		from ID_SC_TB 
+		where 
+		rownum = 1
+		order by sc_no_pk desc 
+	</select>
+	
+	<!-- 결제된 일정 표시 -->
+	<update id="paymentFin" parameterType="Int">
+		update ID_SC_TB set
+		sc_fin = 'Y'
+		where sc_no_pk = #{sc_no_pk}
+	</update>
 
 	<!-- 결제 완료 -->
 	<!-- <update id="" parameterType="int"> update ID_SC_TB set sc_fin = 'Y' 

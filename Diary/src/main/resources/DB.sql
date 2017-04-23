@@ -147,7 +147,8 @@ CREATE SEQUENCE SEQ_ID_USER_TB_user_no_pk INCREMENT BY 1 START WITH 1;
 
 CREATE TABLE ID_SCFRNO_TB      -- 일정에 동행하는 친구정보 테이블
 (	
-	sc_no_fk number NOT NULL,  -- 일정의 일정번호
+	sc_no_fk number NOT NULL,
+	user_no_fk number NOT NULL,  -- 일정의 일정번호
 	sc_frno number 			   -- 일정에 동행하는 친구 idno 정보
 );
 
@@ -182,8 +183,7 @@ and f.user_no_fk = 1;
 CREATE TABLE ID_USERFRNO_TB		 -- 회원의 친구정보 테이블
 (
 	user_no_fk number NOT NULL,  -- 회원의 회원번호
-	user_frno number,         	 -- 친구 아이디 번호
-	PRIMARY KEY (user_no_fk, user_frno)
+	user_frno number         	 -- 친구 아이디 번호
 );
 
 
@@ -210,7 +210,7 @@ CREATE TABLE ID_USER_TB								-- 회원 테이블
 /* Create Foreign Keys */
 
 ALTER TABLE ID_SCFRNO_TB ADD
-CONSTRAINT ID_SCFRNO_TB_FK FOREIGN KEY (sc_no_fk, sc_frno)
+CONSTRAINT ID_SCFRNO_TB_FK FOREIGN KEY (sc_no_fk, user_no_fk)
 REFERENCES ID_SC_TB (sc_no_pk, user_no_fk);
 
 ALTER TABLE ID_SC_TB
@@ -222,6 +222,15 @@ ALTER TABLE ID_USERFRNO_TB
 	ADD CONSTRAINT ID_USERFRNO_TB_FK FOREIGN KEY (user_no_fk)
 REFERENCES ID_USER_TB (user_no_pk)
 ;
+
+
+
+
+
+
+
+
+
 
 ALTER TABLE ID_SCFRNO_TB DROP CONSTRAINT sc_no_pk;
 

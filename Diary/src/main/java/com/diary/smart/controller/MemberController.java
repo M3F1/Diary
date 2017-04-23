@@ -38,7 +38,6 @@ public class MemberController {
 	public String mypage(Model model, HttpSession session) {
 
 		String user_id = (String) session.getAttribute("user_id");
-		System.out.println(user_id);
 		Member member = dao.selectMember(user_id);
 
 		int user_no_pk = member.getUser_no_pk();
@@ -50,8 +49,6 @@ public class MemberController {
 
 	@RequestMapping(value = "signUp", method = RequestMethod.POST)
 	public String joinMember(Member member) {
-		System.out.println(member);
-
 		SendMail mail = new SendMail("", null, null);
 		mail.test(member.getUser_id());
 
@@ -74,8 +71,6 @@ public class MemberController {
 	@ResponseBody
 	@RequestMapping(value = "selectMember", method = RequestMethod.GET)
 	public Member selectMember(String user_id) {
-		System.out.println(user_id);
-
 		Member member = dao.selectMember(user_id);
 
 		if (member == null)
@@ -116,13 +111,9 @@ public class MemberController {
 	}
 
 	@RequestMapping(value = "login", method = RequestMethod.POST)
-	public String login(String user_id, String user_pw, Model model, HttpSession session) {
-		System.out.println(user_id);
-
+	public String login(String user_id, String user_pw, String movieList, Model model, HttpSession session) {
 		Member member = dao.selectMember(user_id);
 		int aflag = member.getUser_aflag();
-		System.out.println(aflag++);
-
 		if (aflag == 0)
 			return "redirect:/";
 
@@ -131,13 +122,20 @@ public class MemberController {
 		} else {
 			if (user_pw.equals(member.getUser_pw())) {
 				model.addAttribute("member", member);
+				model.addAttribute("movieList", movieList);
 				session.setAttribute("user_id", member.getUser_id());
-				System.out.println(member.getUser_id());
-				return "mypage";
+				return "diary";
 			} else {
 				return "redirect:/";
 			}
 		}
+	}
+	
+	
+	@RequestMapping(value = "logout", method = RequestMethod.GET)
+	public String logout(HttpSession session) {
+		session.removeAttribute("user_id");
+		return "redirect:/";
 	}
 
 	@ResponseBody
