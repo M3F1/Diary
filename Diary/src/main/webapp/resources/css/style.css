@@ -4032,3 +4032,46 @@ nav.category-navigation {
 
 /**********************************************/
 /*******************************************************************************/
+
+/************모달 가운데 정렬**************/
+.modal {
+  text-align: center;
+}
+
+@media screen and (min-width: 768px) { 
+  .modal:before {
+    display: inline-block;
+    vertical-align: middle;
+    content: " ";
+    height: 100%;
+  }
+}
+
+@media screen and (min-width: 768px) { 
+  .modal.movieseat:before {
+    display: inline-block;
+    vertical-align: middle;
+    content: " ";
+    height: 20%;
+  }
+}
+
+.modal-dialog {
+  display: inline-block;
+  text-align: left;
+  vertical-align: middle;
+}
+
+/**********버스좌석 css**********/
+.tbl_seat01 {border-top:2px solid #dedede; border-bottom:2px solid #dedede;}
+.tbl_seat01 td {height:39px; text-align:center; background:#d3e4f4; border-right:1px solid #fff; border-bottom:1px solid #fff;}
+.tbl_seat01 td.lady {background:#c2e395;}
+.tbl_seat01 td.door {background:#eaeaea;}
+.tbl_seat01 td.nobg {background:#fff;}
+.tbl_seat01 td.last {border-right:0;}
+.tbl_seat01 td label {height:16px; line-height:14px; display:block;}
+
+#busInformation>span>a:hover {
+	background-color: steelblue;
+}
+/*******************************/

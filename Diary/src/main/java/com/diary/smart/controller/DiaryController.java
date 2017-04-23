@@ -51,8 +51,8 @@ public class DiaryController {
 	@RequestMapping(value = "selectDiary", method = RequestMethod.POST)
 	public String selectDiary(int sc_no_pk, Model model) {
 
-		Diary diary = dao.selectDiary(sc_no_pk);
-		model.addAttribute("diary", diary);
+//		Diary diary = dao.selectDiary(sc_no_pk);
+//		model.addAttribute("diary", diary);
 
 		return "";
 	}
@@ -68,10 +68,11 @@ public class DiaryController {
 		int user_no_fk = member.getUser_no_pk();
 		System.out.println(member.getUser_no_pk());
 
-		ArrayList<HashMap<String, Object>> scheduleList = dao.selectDiaryList(user_no_fk, sc_stdt);
-		System.out.println(scheduleList);
+//		ArrayList<HashMap<String, Object>> scheduleList = dao.selectDiaryList(user_no_fk, sc_stdt);
+//		System.out.println(scheduleList);
 
-		return scheduleList;
+//		return scheduleList;
+		return null;
 	}
 
 	@RequestMapping(value = "updateDiary", method = RequestMethod.POST)
