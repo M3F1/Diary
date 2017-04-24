@@ -121,10 +121,11 @@ public class MemberController {
 			return "redirect:/";
 		} else {
 			if (user_pw.equals(member.getUser_pw())) {
-				model.addAttribute("member", member);
-				model.addAttribute("movieList", movieList);
+				//model.addAttribute("member", member);
+				session.setAttribute("movieList", movieList);
 				session.setAttribute("user_id", member.getUser_id());
-				return "diary";
+				session.setAttribute("mvset", 1);
+				return "redirect:diary";
 			} else {
 				return "redirect:/";
 			}

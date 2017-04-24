@@ -23,7 +23,7 @@
 	<!-- 실제 삭제가아닌 수정으로 삭제플래그만 수정!!!! -->
 	<update id="deleteDiary" parameterType="int">
 		update ID_SC_TB set
-		sc_dflag = 'Y' where sc_no_pk = #{sc_no_pk}
+		sc_dflag = 'N' where sc_no_pk = #{sc_no_pk}
 	</update>
 
 
@@ -76,7 +76,9 @@
 		select sc_no_pk
 		, to_char(sc_stdt, 'YYYY-MM-DD') as sc_stdt
 		, to_char(sc_endt, 'YYYY-MM-DD') as sc_endt
-		, substr(sc_con, 1, 15) as sc_con 
+		, sc_con
+		, sc_fin
+		, sc_dflag 
 		from ID_SC_TB 
 		where 
 		user_no_fk = #{user_no_fk}

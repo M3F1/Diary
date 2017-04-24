@@ -354,9 +354,11 @@ public class CGVNavigator {
 				alert.accept();
 				return false;
 			}else{
+				driver.get("http://www.cgv.co.kr/ticket/");
 				return true;
 			}
 		}catch(WebDriverException e){
+			driver.get("http://www.cgv.co.kr/ticket/");
 			return true;
 		}
 	}
@@ -364,6 +366,48 @@ public class CGVNavigator {
 	//셀레늄 종료 메서드
 	public void quit(){
 		driver.quit();
+	}
+
+	public boolean cancleMovieCGV(String mvtime, String mvname, Member member) {
+		driver.switchTo().window(this.getHandle());
+		driver.get("http://www.cgv.co.kr/user/guest/");
+		driver.findElement(By.cssSelector("div.wrap-login a.round.inblack > span")).click();
+		
+		driver.findElement(By.id("txtName")).clear();
+		driver.findElement(By.id("txtName")).sendKeys(member.getUser_nm());
+		driver.findElement(By.id("txtBirthday")).clear();
+		driver.findElement(By.id("txtBirthday")).sendKeys(member.getUser_birth());
+		
+		driver.findElement(By.id("txtMobile2")).clear();
+		driver.findElement(By.id("txtMobile2")).sendKeys(member.getUser_phone().substring(3, 7));
+		driver.findElement(By.id("txtMobile3")).clear();
+		driver.findElement(By.id("txtMobile3")).sendKeys(member.getUser_phone().substring(7, 11));
+		
+		driver.findElement(By.id("txtPassword")).clear();
+		driver.findElement(By.id("txtPassword")).sendKeys(member.getUser_phone().substring(7, 11));
+		driver.findElement(By.id("txtConfirmPassword")).clear();
+		driver.findElement(By.id("txtConfirmPassword")).sendKeys(member.getUser_phone().substring(7, 11));
+		
+		driver.findElement(By.id("btn_submit")).submit();
+		
+		ArrayList<WebElement> reserveList = (ArrayList<WebElement>) driver.findElements(By.className("box-contents"));
+		ArrayList<WebElement> btn = (ArrayList<WebElement>) driver.findElements(By.className("set-btn"));
+		
+		for(int i=0 ;i<reserveList.size() ; i++){
+			if(reserveList.get(i).findElement(By.cssSelector("dt a")).getText().contains(mvname.substring(0, 2))){
+				if(reserveList.get(i).findElements(By.tagName("dd")).get(1).findElement(By.tagName("strong")).getText().contains(mvtime)){
+					btn.get(i).findElements(By.tagName("button")).get(2).click();
+					Alert alert = driver.switchTo().alert();
+					if(alert!=null){
+						alert.accept();
+					}
+					driver.get("http://www.cgv.co.kr/ticket/");
+					return true;
+				}
+			}
+		}
+		
+		return false;
 	}
 
 }

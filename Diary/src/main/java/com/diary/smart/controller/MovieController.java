@@ -5,6 +5,7 @@ import java.util.HashMap;
 
 import javax.servlet.http.HttpSession;
 
+import org.openqa.selenium.WebElement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,7 +19,7 @@ import com.diary.smart.dao.MemberDAO;
 import com.diary.smart.util.CGVNavigator;
 import com.diary.smart.vo.Diary;
 import com.diary.smart.vo.Member;
-//@Controller
+@Controller
 public class MovieController {
 
 	@Autowired
@@ -74,6 +75,7 @@ public class MovieController {
 	@RequestMapping(value = "mvInfoSetting", method=RequestMethod.GET)
 	public void mvInfoSetting(HttpSession session){
 		Member member = memberDAO.selectMember((String)session.getAttribute("user_id"));
+		session.setAttribute("mvset", 0);
 		cn.movieInput(member);		
 	}
 	
@@ -94,11 +96,11 @@ public class MovieController {
 	
 	@ResponseBody
 	@RequestMapping(value = "beforePaymentSchedule", method=RequestMethod.GET)
-	public void beforePaymentSchedule(String date, String time, String mvname, String mvarea, String seat,
+	public void beforePaymentSchedule(String date, String time, String mvname, String mvarea, String seat, String flag,
 			HttpSession session){
 		Diary diary = new Diary();
 		diary.setUser_no_fk(memberDAO.selectMember((String)session.getAttribute("user_id")).getUser_no_pk());
-		diary.setSc_con(time+"_"+mvname+"_"+mvarea+"_"+seat);
+		diary.setSc_con(time+"_"+mvname+"_"+mvarea+"_"+seat+"_"+flag);
 		diary.setSc_wt("SU");
 		diary.setSc_stdt(date);
 		if(diaryDAO.insertDiary(diary)==1){
@@ -131,6 +133,22 @@ public class MovieController {
 		}
 		return result;
 	}
+	
+	@ResponseBody
+	@RequestMapping(value = "cancleMovieCGV", method=RequestMethod.GET)
+	public boolean cancleMovieCGV(String mvtime, String mvname, int scno, HttpSession session){
+		Member member = memberDAO.selectMember((String)session.getAttribute("user_id"));
+		if(cn.cancleMovieCGV(mvtime, mvname, member)){
+			if(diaryDAO.deleteDiary(scno)==1)
+				return true;
+			else{
+				return false;
+			}
+		}else{
+			return false;
+		}
+	}
+	
 	
 	@RequestMapping(value = "test", method=RequestMethod.GET)
 	public String aaa(){

@@ -20,11 +20,10 @@
 <script src="resources/js/bootstrap.min.js"></script>
 <script src="resources/js/ruxen.js"></script>
 <script type="text/javascript">
-$(document).ready(function () {
-	if(${user_id != null} ){
+$(document).ready(function() {
+	if(${mvset!=0}){
 		mvSetting();
 	}
-	//movieListData = ${movieList};
 	$("#movieListValue").val('${movieList}'); 
 });
 </script>
@@ -133,19 +132,7 @@ $(document).ready(function () {
 				<h4 class="modal-title" id="myModalLabel">My FriendList</h4>
 			</div>
 			<div class="modal-body">
-				<table class="table borderless">
-					<tr>
-						<th>아이디</th>
-						<th>이름</th>
-					</tr>
-					<c:forEach var="friend" items="${friendList}">
-						<tr>
-							<td>${friend.USER_ID}</td>
-							<td>${friend.USER_NM}</td>
-							<td><button>삭제</button></td>
-						</tr>
-					</c:forEach>
-				</table>
+				<table class="table borderless"></table>
 				<h4>친구의 이름을 입력하세요</h4>
 				<form action="" method="post">
 					<div class="form-group">

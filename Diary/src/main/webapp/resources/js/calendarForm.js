@@ -17,7 +17,9 @@ var flag = 0;
 var busReserveInfo;
 var starttime;
 var selectBusInfo="";
-
+var mvnamecancle = new Array();
+var mvtimecancle = new Array();
+var mvscno = new Array();
 $(document).ready(function () {
 	// 달력 출력
 	$("#calendar").html(calendarHtml(dt));
@@ -754,43 +756,73 @@ function selectedDate(date) {
 	$(".iconList").addClass("animated fadeInDown");
 	$(".iconList").css("display", "block");
 	dateNow += date.split('-')[0];
-	dateNow += ('0'+date.split('-')[1]);
+	dateNow += (date.split('-')[1]);
 	dateNow += date.split('-')[2];
 }
 
 function makePopover() {
 	// scheduleList 가져오기
 	var scheduleList = JSON.parse($("#scheduleList").val());
-	
 	// 날씨
 	var array1 = todayWeather();
 	var array2 = weekWeather();
-	
+	var param1 ="";
+	var param2 ="";
+	var html = new Array(); // 일정 내용 및 날씨 넣는곳.
 	for (var i = 0; i < $("#" + dt.getFullYear() + "-" + (dt.getMonth() + 1) + " > table > tbody > tr > td div").length; i++) {
 		var p = $("#" + dt.getFullYear() + "-" + (dt.getMonth() + 1) + "> table > tbody > tr > td a").eq(i);
-		p.attr("data-toggle", "popover");
-		p.attr("title", dt.getFullYear() + "년 " + (dt.getMonth() + 1) + "월 " + p.html() + "일 일정");
+//		p.attr("data-toggle", "popover");
+//		p.attr("title", dt.getFullYear() + "년 " + (dt.getMonth() + 1) + "월 " + p.html() + "일 일정");
+		html[i]="";
 		
 		/* 일정 가져오는 부분 */
-		p.attr("data-content", "오늘의 일정이 없습니다.");
-		
+//		p.attr("data-content", "오늘의 일정이 없습니다.");
 		$.each(scheduleList, function(key, value) {
 			if (p.parent().parent().attr("id") == value.SC_STDT) {
-				markCircle(p.parent());
-				p.attr("data-content", value.SC_CON);
+				if(value.SC_FIN=='Y' && value.SC_DFLAG=='Y'){
+					p.attr("data-toggle", "popover");
+					p.attr("title", dt.getFullYear() + "년 " + (dt.getMonth() + 1) + "월 " + p.html() + "일 일정");
+					markCircle(p.parent());
+					html[i]+='<table><tr><td>'+value.SC_CON.split("_")[0]+'</td>';
+					html[i]+='<td>'+value.SC_CON.split("_")[1]+'</td>';
+					html[i]+='<td>'+value.SC_CON.split("_")[2].split(" ")[0]+value.SC_CON.split("_")[2].split(" ")[1]+'</td>';
+					html[i]+='<td>'+value.SC_CON.split("_")[3].split(" ")[1]+'</td>';
+					mvscno[i] = value.SC_NO_PK;
+					mvtimecancle[i] = value.SC_CON.split("_")[0];
+					mvnamecancle[i] = value.SC_CON.split("_")[1];
+					if(value.SC_CON.split("_")[4]=="mv"){
+						console.log(mvtimecancle[i]);
+						console.log(mvnamecancle[i]);
+						html[i]+="<td><input type='button' onclick='mvCancle("+i+")' value='취소'/></td></tr></table>";
+					}
+					else if(value.SC_CON.split("_")[4]=="kobus"){
+						html[i]+='<td><input type="button" onclick="kobusCancle()" value="취소"/></td></tr></table>';
+					}
+					else if(value.SC_CON.split("_")[4]=="easy"){
+						html[i]+='<td><input type="button" onclick="easyCancle()" value="취소"/></td></tr></table>';
+					}
+					else if(value.SC_CON.split("_")[4]=="train"){
+						html[i]+='<td><input type="button" onclick="trainCancle()" value="취소"/></td></tr></table>';
+					}else{
+						html[i]+='</table>';
+					}
+				}
 			}
 		});
 		
 		// 날씨
-		$.each(array1, function(i,item){
+		$.each(array1, function(j,item){
 			if (p.parent().parent().attr("id") == item.date) {
-				p.attr("data-content", item.html);
+				html[i]+=item.html;
+				p.attr("data-content", html[i]);
 			}
 		 });
 		
-		$.each(array2, function(i,item){
+		$.each(array2, function(j,item){
 			if (p.parent().parent().attr("id") == item.date) {
-				p.attr("data-content", item.html);
+				html[i+3]="";
+				html[i+3]+=item.html;
+				p.attr("data-content", html[i+3]);
 			}
 		 });
 		
@@ -1182,7 +1214,8 @@ function check_movieform(){
 			time : date.split(" ")[1],
 			mvname : mvname,
 			mvarea : mvarea,
-			seat : seat
+			seat : seat,
+			flag : "mv"
 		},
 		success : function(data){
 		},
@@ -1233,10 +1266,24 @@ function payment(){
 		},
 		dataType : "json",
 		success : function(data){
-			if(data==true){
+			if(data){
 				//예매완료.
-				$('div#MoviePayModal').modal('hide');
-				hideTextBlock();
+				//$('div#MoviePayModal').modal('hide');
+				console.log("완료래");
+				location.href="diary";
+//				$.ajax({
+//					type : "get",
+//					url : "diary",
+//					data : {
+//					},
+//					success : function(data){
+//						
+//					},
+//					error : function(e){
+//						console.log(e);
+//					}
+//				});
+				
 			}else{
 				alert('카드정보 오류입니다. 다시 입력 해주세요.')
 				$('div#MoviePayModal').modal();
@@ -1701,4 +1748,39 @@ function showTimeModal(){
 	});
 	
 	
+}
+
+function mvCancle(num){
+	$.ajax({
+		type : "get",
+		url : "cancleMovieCGV",
+		data : {
+			mvtime : mvtimecancle[num],
+			mvname : mvnamecancle[num],
+			scno : mvscno[num]
+		},
+		success : function(data){
+			if(data){
+				console.log("취소래");
+				location.href="diary";
+//				$.ajax({
+//					type : "get",
+//					url : "diary",
+//					data : {
+//					},
+//					success : function(data){
+//						alert('정상적으로 취소되었습니다.');
+//					},error : function(e){
+//						console.log(e);
+//					}
+//				});
+				
+			}else{
+				alert('취소도중 오류발생 다시시도 해주세요.');
+			}
+		},
+		error : function(e){
+			console.log(e);
+		}
+	});
 }
