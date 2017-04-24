@@ -3990,6 +3990,16 @@ nav.category-navigation {
 	color: antiquewhite;
 }
 
+/* cancel Icon */
+.cancel {
+	color: orangered;
+}
+
+/* friendList icon */
+.friendList {
+	display: inline-block;
+	color: antiquewhite;
+}
 
 /******************* 말풍선 *******************/
 
@@ -4028,6 +4038,13 @@ nav.category-navigation {
 /******************* popover *******************/
 .popover {
 	color: black;
+}
+
+/************** myFriendListModal **************/
+#myFriendListModal th, td {
+	border-top: none !important;
+	text-align: center;
+	color: #666666 !important;
 }
 
 /**********************************************/

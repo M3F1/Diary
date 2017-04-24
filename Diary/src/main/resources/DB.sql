@@ -91,7 +91,7 @@ insert into ID_SC_TB (
 		, 'CL'
 		, 'N'
 		, '170404'
-		, 'Y');	
+		, 'Y');
 		
 SELECT s.sc_no_pk, s.user_no_fk, u.user_nm, sc_stdt, sc_con, sc_wt,
 		sc_fin, sc_insdt, sc_dflag 
@@ -183,7 +183,8 @@ and f.user_no_fk = 1;
 CREATE TABLE ID_USERFRNO_TB		 -- 회원의 친구정보 테이블
 (
 	user_no_fk number NOT NULL,  -- 회원의 회원번호
-	user_frno number         	 -- 친구 아이디 번호
+	user_frno number,         	 -- 친구 아이디 번호
+	PRIMARY KEY (user_no_fk, user_frno)
 );
 
 
@@ -199,13 +200,48 @@ CREATE TABLE ID_USER_TB								-- 회원 테이블
 	user_mvseat varchar2(20),  						-- 영화관 좌석 설정정보 L:왼쪽 R:오른쪽 M:가운데
 	user_jodt date DEFAULT SYSDATE NOT NULL,  		-- 가입날짜  YYMMDD HH24MISS
 	user_dflag varchar2(20) DEFAULT 'Y' NOT NULL,   -- 탈퇴플래그 탈퇴회원은 N 현재 회원은 Y
-	user_add1 varchar2(120) NOT NULL,  						-- 첫번째 주소 정보(시,군,구)
+	user_add1 varchar2(120) NOT NULL,  				-- 첫번째 주소 정보(시,군,구)
 	user_add2 varchar2(120),  					    -- 2번째 주소정보(시,군,구)
 	user_add3 varchar2(120),  					    -- 3번째 주소정보(시,군,구)
 	user_ddt date,  			   					-- 회원 탈퇴 날짜  YYMMDD HH24MISS
 	PRIMARY KEY (user_no_pk)
 );
 
+insert into id_user_tb(user_no_pk
+				, user_id
+				, user_pw
+				, user_nm
+				, user_birth
+				, user_phone
+				, user_add1
+				) values(
+				SEQ_ID_USER_TB_user_no_pk.nextval
+				, 'test'
+				, 'test'
+				, 'test'
+				, '890901'
+				, '010-1234-5678'
+				, '서울시 강남구 삼성동 코엑스'
+);
+
+insert into id_user_tb(user_no_pk
+				, user_id
+				, user_pw
+				, user_nm
+				, user_birth
+				, user_phone
+				, user_add1
+				) values(
+				SEQ_ID_USER_TB_user_no_pk.nextval
+				, 'testFriend'
+				, 'testFriend'
+				, 'testFriend'
+				, '891121'
+				, '010-4321-8765'
+				, '서울시 강남구 수서동 삼익아파트'
+);
+
+insert into id_userfrno_tb values(2, 3);
 
 /* Create Foreign Keys */
 
@@ -223,19 +259,12 @@ ALTER TABLE ID_USERFRNO_TB
 REFERENCES ID_USER_TB (user_no_pk)
 ;
 
-
-
-
-
-
-
-
-
-
-ALTER TABLE ID_SCFRNO_TB DROP CONSTRAINT sc_no_pk;
+ALTER TABLE ID_SCFRNO_TB DROP CONSTRAINT ID_SCFRNO_TB_FK;
 
 ALTER TABLE ID_SC_TB DROP PRIMARY KEY;
  
 ALTER TABLE ID_SC_TB ADD PRIMARY KEY (sc_no_pk, user_no_fk);
 
 ALTER TABLE ID_USERFRNO_TB DROP CONSTRAINT user_frno;
+ALTER TABLE ID_USER_TB DROP CONSTRAINT user_frno;
+

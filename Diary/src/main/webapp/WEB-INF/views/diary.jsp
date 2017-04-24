@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -34,6 +35,10 @@ $(document).ready(function () {
 <title>My Diary</title>
 </head>
 <body>
+	<!-- friendList GET -->
+	<input type="hidden" id="friendList" value='${friendList}'>
+	<!-- scheduleList GET -->
+	<input type="hidden" id="scheduleList" value='${scheduleList}' />
 	<input type="hidden" id="movieListValue" value='' />
 	<header class="header fixed-header navbar-fixed-top" id="calHeader">
 		<section class="container">
@@ -57,10 +62,12 @@ $(document).ready(function () {
 				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 					<ul class="nav navbar-nav">
 						<li><a href="#" id="myPageBtn" data-toggle="modal"
-							data-target="#myPageModal">My Page</a></li>
-						<li><a href="logout" >Logout</a></li>
-						<li><a href="howTo">How To</a></li>
-					<li><a href="aboutUS">About Us</a></li>
+							data-target="#myPageModal">MY PAGE</a></li>
+						<li><a href="#" id="myFriendListBtn" data-toggle="modal"
+							data-target="#myFriendListModal">MY FRIENDLIST</a></li>
+						<li><a href="logout" >LOGOUT</a></li>
+						<li><a href="howTo">HOW TO</a></li>
+						<li><a href="aboutUS">ABOUT US</a></li>
 					</ul>
 				</div>
 				<!-- MENU LIST END -->
@@ -68,7 +75,7 @@ $(document).ready(function () {
 			<!-- NAV MENU END -->
 		</section>
 	</header>
-<!-- LOGIN MODAL START -->
+<!-- MYPAGE MODAL START -->
 <div class="modal fade" id="myPageModal" tabindex="-1" role="dialog"
 	aria-labelledby="myModalLabel">
 	<div class="modal-dialog" role="document">
@@ -113,7 +120,49 @@ $(document).ready(function () {
 		</div>
 	</div>
 </div>
-<!-- LOGIN MODAL END -->
+<!-- MYPAGE MODAL END -->
+<!-- MYFRIENDLIST MODAL START -->
+<div class="modal fade" id="myFriendListModal" tabindex="-1" role="dialog"
+	aria-labelledby="myModalLabel">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<h4 class="modal-title" id="myModalLabel">My FriendList</h4>
+			</div>
+			<div class="modal-body">
+				<table class="table borderless">
+					<tr>
+						<th>아이디</th>
+						<th>이름</th>
+					</tr>
+					<c:forEach var="friend" items="${friendList}">
+						<tr>
+							<td>${friend.USER_ID}</td>
+							<td>${friend.USER_NM}</td>
+							<td><button>삭제</button></td>
+						</tr>
+					</c:forEach>
+				</table>
+				<h4>친구의 이름을 입력하세요</h4>
+				<form action="" method="post">
+					<div class="form-group">
+						<input type="text" class="form-control" name="user_id" id="user_id"
+							placeholder="name">
+					</div>
+					<input type="text" id="sample6_postcode" placeholder="postcode"> <input
+						type="button" onclick="sample6_execDaumPostcode()" value="우편번호 찾기"><br>
+					<input type="text" name="user_add1" id="user_add1" placeholder="address"><br>
+					<br> <input type="submit" class="form-control" id="joinBtn"
+						value="수정">
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- MYFRIENDLIST MODAL END -->
 <a href="javascript:showHeader()" class="slider-down"><i class="fa fa-angle-down"></i></a>
 <!-- calendar part -->
 <div class="container calendar">

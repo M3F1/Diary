@@ -2,6 +2,7 @@ package com.diary.smart.controller;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
@@ -18,6 +19,7 @@ import com.diary.smart.dao.DiaryDAO;
 import com.diary.smart.dao.MemberDAO;
 import com.diary.smart.vo.Diary;
 import com.diary.smart.vo.Member;
+import com.google.gson.Gson;
 
 @Controller
 public class DiaryController {
@@ -29,7 +31,18 @@ public class DiaryController {
 	private MemberDAO mdao;
 
 	@RequestMapping(value = "diary", method = RequestMethod.GET)
-	public String diary() {
+	public String diary(HttpSession session, Model model) {
+		logger.info("2번 유저 테스트");
+//		String id = (String) session.getAttribute("user_id");
+//		Member member = mdao.selectMember(id);
+//		ArrayList<HashMap<String, Object>> frlist = dao.friendList(user_no_fk);
+		List<HashMap<String, Object>> frList = mdao.friendList(2);
+//		model.addAttribute("friendList", new Gson().toJson(frList));
+		model.addAttribute("friendList", frList);
+		
+//		List<HashMap<String, Object>> scheduleList = dao.selectDiaryList(member.getUser_no_pk());
+		List<HashMap<String, Object>> scheduleList = dao.selectDiaryList(2);
+		model.addAttribute("scheduleList", new Gson().toJson(scheduleList));
 		return "diary";
 	}
 	

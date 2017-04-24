@@ -17,6 +17,7 @@ var flag = 0;
 var busReserveInfo;
 var starttime;
 var selectBusInfo="";
+
 $(document).ready(function () {
 	// 달력 출력
 	$("#calendar").html(calendarHtml(dt));
@@ -79,6 +80,9 @@ function eventActive() {
 			}
 		}
 	});
+	
+	// 친구 목록 가져오기
+	friendList();
 
 	// 영화 목록 가져오기
 	movieList();
@@ -102,12 +106,14 @@ function hideHeader() {
 
 /** ************************ textBlock() 보이기/숨기기 ************************* */
 function showTextBlock() {
+	$(".slider-area .carousel-caption").css("top", "2.5%");
 	$(".iconList").css("display", "none");
 	$(".textBlock").css("display", "block");
 	$(".write").focus();
 }
 
 function hideTextBlock() {
+	$(".slider-area .carousel-caption").css("top", "10%");
 	$(".iconList").css("display", "block");
 	$(".textBlock").css("display", "none");
 }
@@ -134,6 +140,40 @@ function inputText(param) {
 		$(".tooltiptext").html(tooltiptext[i]);
 		process[i]();
 	}
+}
+
+/** ******************************** 친구 목록 ********************************* */
+function friendList() {
+//	var friendList = JSON.parse($("#friendList").val());
+	
+	var html = "<div class='list-group'>";
+	html += "<a href='javascript:;' class='list-group-item'>친구 1</a>";
+	html += "<a href='javascript:;' class='list-group-item'>친구 2</a>";
+	html += "<a href='javascript:;' class='list-group-item'>친구 3</a>";
+	html += "<a href='javascript:;' class='list-group-item'>친구 3</a>";
+	html += "<a href='javascript:;' class='list-group-item'>친구 3</a>";
+	
+	html += "</div>";
+	
+	// 친구 목록 popover 만들기
+	$(".friendList").attr("data-toggle", "popover");
+	$(".friendList").attr("title", "친구 목록");
+	$(".friendList").attr("data-content", html);
+	$(".friendList").attr("data-html", "true");
+	$(".friendList").attr("data-placement", "bottom");
+	$(".friendList").popover();
+	
+	$(".friendList").on("click", function() {
+		var fl = $(".friendList + div > .popover-content a");
+		$(this).next().css("overflow-y", "scroll");
+		$(this).next().css("height", "200px");
+		
+		for (var index = 0; index < fl.length; index++) {
+			fl.eq(index).on("click", function() {
+				$(this).toggleClass("active");
+			});
+		}
+	});
 }
 
 /** ******************************** 영화 목록 ********************************* */
@@ -520,6 +560,15 @@ function train() {
 	process = ["", trainDest, trainPerson, trainTime, trainFinish];
 }
 
+/** ******************************** 맛집 검색 ********************************* */
+function restaurant() {
+	$(".write").attr("placeholder", "강남 or 삼겹살");
+	tooltiptext = ["약속 장소는?"];
+	$(".tooltiptext").html(tooltiptext[i]);
+	
+	process = [""];
+}
+
 /** ******************************** 직접 작성 ********************************* */
 function write() {
 	tooltiptext = ["일정을 입력하세요"];
@@ -550,6 +599,7 @@ function search() {
 
 function dateInitialize() {
 	i = 0;
+	$(".slider-area .carousel-caption").css("top", "10%");
 	$(".table > tbody > tr > td").css("outline", "");
 	$(".iconList").css("display", "none");
 	$(".textBlock").css("display", "none");
@@ -669,8 +719,8 @@ function calendarHtml(date) {
 
 	while (date.getMonth() == temp) {
 		// 각 칸에 날짜 정보 저장
-		var dateForm = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" +
-			date.getDate();
+		var dateForm = date.getFullYear() + "-" + padDigits((date.getMonth() + 1), 2) + "-" +
+		padDigits(date.getDate(), 2);
 		html += "<td id='" + dateForm + "'>" + "<div style='height: 100%; width: 100%'><a href=javascript:selectedDate('" + dateForm + "')>" +
 			date.getDate() + "</a></div></td>";
 
@@ -700,7 +750,7 @@ function calendarHtml(date) {
 function selectedDate(date) {
 	dateNow="";
 	$(".table > tbody > tr > td").css("outline", "");
-	$("#" + date).css("outline", "steelblue solid 2px");
+	$("#" + date).css("outline", "lightsteelblue solid 2px");
 	$(".iconList").addClass("animated fadeInDown");
 	$(".iconList").css("display", "block");
 	dateNow += date.split('-')[0];
@@ -709,13 +759,40 @@ function selectedDate(date) {
 }
 
 function makePopover() {
+	// scheduleList 가져오기
+	var scheduleList = JSON.parse($("#scheduleList").val());
+	
+	// 날씨
+	var array1 = todayWeather();
+	var array2 = weekWeather();
+	
 	for (var i = 0; i < $("#" + dt.getFullYear() + "-" + (dt.getMonth() + 1) + " > table > tbody > tr > td div").length; i++) {
 		var p = $("#" + dt.getFullYear() + "-" + (dt.getMonth() + 1) + "> table > tbody > tr > td a").eq(i);
 		p.attr("data-toggle", "popover");
 		p.attr("title", dt.getFullYear() + "년 " + (dt.getMonth() + 1) + "월 " + p.html() + "일 일정");
 		
 		/* 일정 가져오는 부분 */
-		p.attr("data-content", "오늘의 일정");
+		p.attr("data-content", "오늘의 일정이 없습니다.");
+		
+		$.each(scheduleList, function(key, value) {
+			if (p.parent().parent().attr("id") == value.SC_STDT) {
+				markCircle(p.parent());
+				p.attr("data-content", value.SC_CON);
+			}
+		});
+		
+		// 날씨
+		$.each(array1, function(i,item){
+			if (p.parent().parent().attr("id") == item.date) {
+				p.attr("data-content", item.html);
+			}
+		 });
+		
+		$.each(array2, function(i,item){
+			if (p.parent().parent().attr("id") == item.date) {
+				p.attr("data-content", item.html);
+			}
+		 });
 		
 		p.attr("data-html", "true");
 		p.attr("data-placement", "top");
@@ -740,29 +817,171 @@ function makePopover() {
 			p.css("color", "red");
 		});
 		
-		// 일정 있는 날 동그라미 그리는 부분
-		if (i % 7 == 3) {
-			markCircle(p.parent());
-		}
-		
-		
 	}
 	
 	markToday();
 }
 
 function markToday() {
-	console.log(today.getFullYear() + "-" + (today.getMonth() + 1) + "-" + today.getDate());
-	$("#" + today.getFullYear() + "-" + (today.getMonth() + 1) + "-" + today.getDate()).find("a").css("color", "yellow");
+	var todayDate = $("#" + today.getFullYear() + "-" + padDigits((today.getMonth() + 1), 2) + "-" +
+			padDigits(today.getDate(), 2) + " a");
+//	todayDate.css("border-radius", "50%");
+//	todayDate.css("border", "2px solid red");
+//	todayDate.css("width", "50%");
+//	todayDate.css("margin", "auto");
+//	todayDate.css("color", "red");
+	todayDate.parent().addClass("fa bounce");
 }
 
 function markCircle(p) {
 	p.css("border-radius", "50%");
-	p.css("background", "steelblue");
+	p.css("background", "rgb(162, 189, 350)");
 	p.css("width", "50%");
 	p.css("margin", "auto");
 }
 
+/** ********************************** 날씨 *********************************** */
+
+//오늘부터 +2일까지의 날씨
+function todayWeather() {
+	var whtml = "";
+	var whtml1 = "";
+	var whtml2 = "";
+	var jArray = new Array();
+	var jobj = new Object();
+	var jobj1 = new Object();
+	var jobj2 = new Object();
+	
+	var date = "";
+	var fdate = "";
+	
+     $.ajax({
+        url : "weather",
+        type : "post",
+        dataType : "json",
+        data : {
+        	city : "서울",
+        	county : "강남구",
+        	village : "삼성동"
+        },
+        async : false,
+        success : function(json) {
+        	console.log(json);
+
+        	 $.each(json.weather.forecast3days,function(i,item){
+        		
+
+        		 whtml += "<img src='resources/img/weather_icons/"+item.fcst3hour.sky.code4hour+".png' width='40px' height='40px'>"+item.fcst3hour.sky.name4hour+
+        		 		  "<br>temperature "+item.fcst3hour.temperature.temp4hour+"℃";
+        		 whtml1 +="<img src='resources/img/weather_icons/"+item.fcst3hour.sky.code25hour+".png' width='40px' height='40px'>"+item.fcst3hour.sky.name25hour+
+ 		 				  "<br>temperature "+item.fcst3hour.temperature.temp25hour+"℃";
+        		 whtml2 += "<img src='resources/img/weather_icons/"+item.fcst3hour.sky.code49hour+".png' width='40px' height='40px'>"+item.fcst3hour.sky.name49hour+
+ 		 				   "<br>temperature "+item.fcst3hour.temperature.temp49hour+"℃";
+        		 
+        		 fdate = item.timeRelease.split(' ')[0].substr(0,8);
+        		 date = parseInt(item.timeRelease.split(' ')[0].split('-')[2]);
+        		 
+        		 jobj.date = item.timeRelease.split(' ')[0];
+        		 jobj.html =  whtml;
+        		 
+        		 jobj1.date = fdate+(date+1);
+        		 jobj1.html =  whtml1;
+        		 
+        		 jobj2.date = fdate+(date+2);
+        		 jobj2.html =  whtml2;
+        		 
+        		 jArray .push(jobj);
+        		 jArray .push(jobj1);
+        		 jArray .push(jobj2);
+        		 console.log(jArray);
+             });   
+        },
+       	        
+        error : function(err) {
+           alert("에러");
+        }
+     });
+     return jArray;
+     
+}
+
+//+3일부터 +7일까지의 날씨
+function weekWeather() {
+	var whtml3 = "";
+	var whtml4 = "";
+	var whtml5 = "";
+	var whtml6 = "";
+	var whtml7 = "";
+	
+	var jArray = new Array();
+	var jobj3 = new Object();
+	var jobj4 = new Object();
+	var jobj5 = new Object();
+	var jobj6 = new Object();
+	var jobj7 = new Object();
+	
+	var date = "";
+	var fdate = "";
+	
+     $.ajax({
+        url : "weather2",
+        type : "post",
+        dataType : "json",
+        data : {
+        	city : "서울",
+        	county : "강남구",
+        	village : "삼성동"
+        },
+        async : false,
+        success : function(json) {
+        	console.log(json);
+        	 $.each(json.weather.forecast6days,function(i,item){
+        		
+
+        		 whtml3 += "<img src='resources/img/weather_icons/"+item.sky.pmCode3day+".png' width='40px' height='40px'>"+item.sky.pmName3day+"<br>" +
+        		 		"max :"+item.temperature.tmax3day+"℃   min :"+item.temperature.tmin3day+"℃";
+        		 whtml4 += "<img src='resources/img/weather_icons/"+item.sky.pmCode4day+".png' width='40px' height='40px'>"+item.sky.pmName4day+"<br>" +
+        		 		"max :"+item.temperature.tmax4day+"℃   min :"+item.temperature.tmin4day+"℃";;
+        		 whtml5 += "<img src='resources/img/weather_icons/"+item.sky.pmCode5day+".png' width='40px' height='40px'>"+item.sky.pmName5day+"<br>" +
+        		 		"max :"+item.temperature.tmax5day+"℃   min :"+item.temperature.tmin5day+"℃";;
+        		 whtml6 += "<img src='resources/img/weather_icons/"+item.sky.pmCode6day+".png' width='40px' height='40px'>"+item.sky.pmName6day+"<br>" +
+        		 		"max :"+item.temperature.tmax6day+"℃   min :"+item.temperature.tmin6day+"℃";;
+        		 whtml7 += "<img src='resources/img/weather_icons/"+item.sky.pmCode7day+".png' width='40px' height='40px'>"+item.sky.pmName7day+"<br>" +
+        		 		"max :"+item.temperature.tmax7day+"℃   min :"+item.temperature.tmin7day+"℃";;
+        		
+        		 fdate = item.timeRelease.split(' ')[0].substr(0,8);
+        		 date = parseInt(item.timeRelease.split(' ')[0].split('-')[2]);
+        		 
+        			 
+        		 jobj3.date = fdate+(date+3);
+        		 jobj3.html =  whtml3;
+        		 jobj4.date = fdate+(date+4);
+        		 jobj4.html =  whtml4;
+        		 jobj5.date = fdate+(date+5);
+        		 jobj5.html =  whtml5;
+        		 jobj6.date = fdate+(date+6);
+        		 jobj6.html =  whtml6;
+        		 jobj7.date = fdate+(date+7);
+        		 jobj7.html =  whtml7;
+        		
+        		 
+        		 jArray .push(jobj3);
+        		 jArray .push(jobj4);
+        		 jArray .push(jobj5);
+        		 jArray .push(jobj6);
+        		 jArray .push(jobj7);
+        		 
+        		 console.log(jArray);
+             });   
+        },
+       	        
+        error : function(err) {
+           alert("에러");
+        }
+     });
+     return jArray;
+     
+}
 
 function setmovie(){
 	var movieName = $("#movieselect option:selected").val();

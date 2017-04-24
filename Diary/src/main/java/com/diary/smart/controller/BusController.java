@@ -17,7 +17,7 @@ import com.diary.smart.dao.DiaryDAO;
 import com.diary.smart.dao.MemberDAO;
 import com.diary.smart.util.ExpressBusNavigator;
 import com.diary.smart.vo.Diary;
-@Controller
+//@Controller
 public class BusController {
 	@Autowired
 	private DiaryDAO diaryDAO;
