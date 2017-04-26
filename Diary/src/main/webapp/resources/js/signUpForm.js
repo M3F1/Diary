@@ -1,15 +1,16 @@
 function validationCheck() {
-	var id = $("#id");
+	
+	var id = $("#user_id");
 	var user_pw = $("#user_pw");
 	var re_user_pw = $("#re_user_pw");
 	var name = $("#user_nm");
 	var birth = $("#user_birth");
 	var phone = $("#user_phone");
 	var address1 = $("#user_add1");
-
+	
 	if (id.val() == "") {
 		alert("아이디를 입력하세요");
-		$("#id").focus();
+		id.focus();
 		return false;
 	} else if (user_pw.val() == "") {
 		alert("비밀번호를 입력하세요");
@@ -39,25 +40,24 @@ function validationCheck() {
 		address1.focus();
 		return false;
 	}
-
 	return true;
 }
 
 $(document).ready(function() {
-
+	
 	$("#user_id").keyup(function() {
 
 		var user_id = $("#user_id").val();
 
 		$.ajax({
-			type : "get",
+			type : "POST",
 			url : "selectMember",
 			data : {
 				user_id : user_id
 			},
 			dataType : "json",
 			success : function(data) {
-				console.log(data);
+				console.log("data");
 				if (data.user_id == null) {
 					$("#idLabel").text("* 사용할 수 있는 ID입니다");
 				} else {

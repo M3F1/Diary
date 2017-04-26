@@ -3,7 +3,6 @@ package com.diary.smart.controller;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
@@ -11,7 +10,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -46,7 +44,7 @@ public class MemberController {
 
 		return "mypage";
 	}
-
+	
 	@RequestMapping(value = "signUp", method = RequestMethod.POST)
 	public String joinMember(Member member) {
 		SendMail mail = new SendMail("", null, null);
@@ -54,9 +52,9 @@ public class MemberController {
 
 		int result = dao.joinMember(member);
 		if (result > 0) {
-			return "home";
+			return "/smart";
 		} else {
-			return "redirect:signUpForm";
+			return "redirect:/";
 		}
 	}
 
@@ -69,7 +67,7 @@ public class MemberController {
 	}
 
 	@ResponseBody
-	@RequestMapping(value = "selectMember", method = RequestMethod.GET)
+	@RequestMapping(value = "selectMember", method = RequestMethod.POST)
 	public Member selectMember(String user_id) {
 		Member member = dao.selectMember(user_id);
 
@@ -79,53 +77,35 @@ public class MemberController {
 		return member;
 	}
 
+	@ResponseBody
 	@RequestMapping(value = "addFriend", method = RequestMethod.GET)
-	public String addFriend(String user_id, HttpSession session) {
+	public String addFriend(int user_frno, HttpSession session) {
 
-		String my_id = (String) session.getAttribute("user_id");
-
-		Member me = dao.selectMember(my_id);
-		Member frnd = dao.selectMember(user_id);
-
-		ArrayList<HashMap<String, Object>> frlist = dao.friendList(me.getUser_no_pk());
-
-		int user_no_fk = me.getUser_no_pk();
-		int user_frno = frnd.getUser_no_pk();
-
-/*		boolean flag = false;
-		for (HashMap<String, Object> hashMap : frlist) {
-
-			for (Object a : hashMap.values()) {
-				if (user_frno == Integer.parseInt(a.toString())) {
-					flag = true;
-				}
-			}
-		}
-
-		if (flag) {
-			return "mypage";
-		}*/
-			int result = dao.addFriend(user_no_fk, user_frno);
+		String id = (String) session.getAttribute("use_id");
+		Member m = dao.selectMember(id);
+		int result = dao.addFriend(m.getUser_no_pk(), user_frno);
 	
-		return "mypage";
+		return "result";
 	}
 
 	@RequestMapping(value = "login", method = RequestMethod.POST)
-	public String login(String user_id, String user_pw, String movieList, Model model, HttpSession session) {
-		Member member = dao.selectMember(user_id);
+	public String login(String id, String pw, String movieList, Model model, HttpSession session) {
+
+		Member member = dao.selectMember(id);
 		int aflag = member.getUser_aflag();
+		System.out.println(aflag);
 		if (aflag == 0)
 			return "redirect:/";
 
 		if (member == null) {
 			return "redirect:/";
 		} else {
-			if (user_pw.equals(member.getUser_pw())) {
+			if (pw.equals(member.getUser_pw())) {
 				//model.addAttribute("member", member);
 				session.setAttribute("movieList", movieList);
 				session.setAttribute("user_id", member.getUser_id());
 				session.setAttribute("mvset", 1);
-				return "redirect:diary";
+				return "diary";
 			} else {
 				return "redirect:/";
 			}
