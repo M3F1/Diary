@@ -39,19 +39,86 @@
 	<!-- 회원 탈퇴 -->
 	<!-- 진짜 삭제가아니라 탈퇴플래그 수정만해주는거임!!!!! -->
 	<update id="deleteMember" parameterType="int">
-		update ID_USER_TB set
-		user_dflag = 'Y'
-		where user_no_pk = #{user_no_pk}
+		update
+			ID_USER_TB
+		set
+			user_dflag = 'Y'
+		where
+			user_no_pk = #{user_no_pk}
 	</update>
-
-	<!-- 회원의 친구리스트 조회 -->
-	<select id="friendList" parameterType="int" resultType="HashMap">
+	
+	<select id="getFriendList" parameterType="int" resultType="HashMap">
 		select
-		f.user_frno, u.user_id, u.user_nm, u.user_phone
-		from id_user_tb u, id_userfrno_tb f
-		where u.user_no_pk = f.user_frno
-		and
-		f.user_no_fk = #{f.user_no_fk}
+			user_no_pk
+			,user_id
+			,user_nm
+			,user_birth
+	      	,user_frno
+	      	,fr_flag
+		from
+			id_user_tb
+			,(select
+				user_no_fk
+				,user_frno
+				,fr_flag
+			from
+				id_userfrno_tb
+			where
+				user_no_fk = #{user_no_pk}
+			and
+				fr_flag = 'Y')
+		where
+			user_no_pk = user_no_fk
+	</select>
+	
+	<select id="getFriendRequestList" parameterType="int" resultType="HashMap">
+		select
+			user_no_pk
+			,user_id
+			,user_nm
+		from
+			id_user_tb
+			,(select
+				user_no_fk
+				,user_frno
+				,fr_flag
+			from
+				id_userfrno_tb
+			where
+				user_frno = #{user_no_pk}
+			and
+				fr_flag = 'N')
+		where
+			user_no_pk = user_no_fk
+	</select>
+
+	<!-- 전체 회원 조회(친구 목록에 사용) -->
+	<select id="selectMemberList" parameterType="map" resultType="HashMap">
+      select 
+      	user_no_pk
+      	,user_id
+      	,user_nm
+      	,user_birth
+      	,user_frno
+      	,fr_flag
+      from 
+      	(select u.user_no_pk
+      	,u.user_id
+      	,u.user_nm
+      	,u.user_birth
+      	,f.user_frno
+      	,f.fr_flag
+      	from
+	      (select * from id_user_tb where user_no_pk != #{user_no_pk}) u
+	      , (select * from id_userfrno_tb where user_no_fk = #{user_no_pk}) f
+	      where
+	      u.user_no_pk = f.user_frno(+))
+	  <if test="nm != null">
+	      where 
+	      user_nm like '%' || #{nm} || '%'
+      </if>
+      order by
+      	user_frno, user_nm asc
 	</select>
 
 	<!-- 단일 회원 조회(id중복조회나 등등에 사용) -->
@@ -83,19 +150,46 @@
 		where user_id = #{user_id}
 	</update>
 
-	<!-- 모든 친구 번호 정보 조회 -->
-<!-- <select id="aaa" parameterType="int" resultType="HashMap"> select u.user_nm, 
-		u.user_phone from ID_USERFRNO_TB f, ID_USER_TB u where f.user_frno = u.user_no_pk 
-		and f.user_no_fk = #{f.user_no_fk} </select> 동행 번호 조회 <select id="asd" parameterType="int" 
-		resultType="HashMap"> select u.user_nm, u.user_phone from id_user_tb u, id_scfrno_tb 
-		s where u.user_no_pk = s.sc_frno and s.sc_no_fk = #{s.sc_no_fk} </select> -->
-
-
 	<!-- 친구 id로 검색 후 저장 -->
-	<insert id="addFriend" parameterType="int">
-		insert into ID_USERFRNO_TB
-		(user_no_fk, user_frno) values (#{0},
-		#{1})
+	<insert id="addFriend">
+		insert into
+			ID_USERFRNO_TB(
+				user_no_fk
+				, user_frno
+				)
+			values(
+			#{0}
+			,#{1}
+			)
 	</insert>
+	
+	<insert id="acceptFriend">
+		update
+			ID_USERFRNO_TB
+		set
+			fr_flag = 'Y'
+		where
+			user_no_fk = #{1}
+		and
+			user_frno = #{0}
+	</insert>
+	
+	<insert id="rejectFriend">
+		delete
+			ID_USERFRNO_TB
+		where
+			user_no_fk = #{1}
+		and
+			user_frno = #{0}
+	</insert>
+	
+	<delete id="deleteFriend">
+		delete
+			ID_USERFRNO_TB
+		where
+			user_no_fk = #{0}
+		and
+			user_frno = #{1}
+	</delete>
 
 </mapper> 

@@ -32,15 +32,32 @@ public class DiaryController {
 
 	@RequestMapping(value = "diary", method = RequestMethod.GET)
 	public String diary(HttpSession session, Model model) {
-		String id = (String) session.getAttribute("user_id");
-		Member member = mdao.selectMember(id);
-		List<HashMap<String, Object>> frList = mdao.friendList(member.getUser_no_pk());
+		logger.info("41번 유저 테스트");
+//		String id = (String) session.getAttribute("user_id");
+//		Member member = mdao.selectMember(id);
 		
-		model.addAttribute("friendList", new Gson().toJson(frList));
-		
-		List<HashMap<String, Object>> scheduleList = dao.selectDiaryList(member.getUser_no_pk());
+//		List<HashMap<String, Object>> scheduleList = dao.selectDiaryList(member.getUser_no_pk());
+		List<HashMap<String, Object>> scheduleList = dao.selectDiaryList(41);
 		model.addAttribute("scheduleList", new Gson().toJson(scheduleList));
-		return "diary";
+/*		logger.info("21번 유저 테스트");
+//		String id = (String) session.getAttribute("user_id");
+//		Member member = mdao.selectMember(id);
+		
+//		List<HashMap<String, Object>> scheduleList = dao.selectDiaryList(member.getUser_no_pk());
+		List<HashMap<String, Object>> scheduleList = dao.selectDiaryList(21);
+		model.addAttribute("scheduleList", new Gson().toJson(scheduleList));
+*//*		logger.info("2번 유저 테스트");
+//		String id = (String) session.getAttribute("user_id");
+//		Member member = mdao.selectMember(id);
+		
+//		ArrayList<HashMap<String, Object>> selectMemberList = mdao.selectMemberList(member.getUser_no_pk(), null);
+		ArrayList<HashMap<String, Object>> selectMemberList = mdao.selectMemberList(2, null);
+		model.addAttribute("selectMemberList", new Gson().toJson(selectMemberList));
+		
+//		List<HashMap<String, Object>> scheduleList = dao.selectDiaryList(member.getUser_no_pk());
+		List<HashMap<String, Object>> scheduleList = dao.selectDiaryList(2);
+		model.addAttribute("scheduleList", new Gson().toJson(scheduleList));
+*/	return "diary";
 	}
 	
 	@RequestMapping(value="calendar", method=RequestMethod.GET)

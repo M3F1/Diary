@@ -3952,6 +3952,14 @@ nav.category-navigation {
 	top: -88px;
 }
 
+#myFriendListBtn .requestNum {
+	position: absolute;
+    left: 86%;
+    bottom: 51%;
+    background-color: red;
+    color: white;
+    font-size: 0.8em
+}
 /******************* write *******************/
 /* .write { */
 /* 	padding-top: 6px !important; */
@@ -3966,7 +3974,7 @@ nav.category-navigation {
 	border-top: none !important;
 	color: white;
 	text-align: center;
-	font-size: 1.5em;
+	font-size: 3rem;
 }
 
 .table>tbody>tr>td a {
@@ -4041,12 +4049,38 @@ nav.category-navigation {
 }
 
 /************** myFriendListModal **************/
-#myFriendListModal th, td {
-	border-top: none !important;
-	text-align: center;
-	color: #666666 !important;
+
+/* #myFriendListModal .modal-body { */
+/* 	height: 60vh; */
+/* } */
+
+#myFriendListModal .friendListDiv {
+	width: inherit;
+	height: 50vh;
+	overflow-y: scroll;
 }
 
+#myFriendListModal .requestListDiv {
+	width: inherit;
+	overflow-y: auto;
+}
+
+#myFriendListModal .requestListDiv td {
+	font-size: 1.8rem;
+}
+#myFriendListModal th, #myFriendListModal td {
+	border-top: none !important;
+	text-align: center;
+	color: #666666;
+}
+
+#myFriendListModal .fa-user-plus {
+	color: steelblue;
+}
+
+#myFriendListModal .fa-user-times {
+	color: rgba(255, 0, 0, 0.64);
+}
 /**********************************************/
 /*******************************************************************************/
 

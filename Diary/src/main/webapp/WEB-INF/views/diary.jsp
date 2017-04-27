@@ -41,8 +41,6 @@ $(document).ready(function() {
 <!-- 			<div class="loader-section section-left"></div> -->
 <!-- 			<div class="loader-section section-right"></div> -->
 <!-- 		</div> -->
-	<!-- friendList GET -->
-	<input type="hidden" id="friendList" value='${friendList}'>
 	<!-- scheduleList GET -->
 	<input type="hidden" id="scheduleList" value='${scheduleList}' />
 	<input type="hidden" id="movieListValue" value='' />
@@ -70,7 +68,12 @@ $(document).ready(function() {
 						<li><a href="#" id="myPageBtn" data-toggle="modal"
 							data-target="#myPageModal">MY PAGE</a></li>
 						<li><a href="#" id="myFriendListBtn" data-toggle="modal"
-							data-target="#myFriendListModal">MY FRIENDLIST</a></li>
+							data-target="#myFriendListModal">
+							<div>
+							<span class="requestNum"></span>
+							MY FRIEND
+							</div>
+							</a></li>
 						<li><a href="logout" >LOGOUT</a></li>
 						<li><a href="howTo">HOW TO</a></li>
 						<li><a href="aboutUS">ABOUT US</a></li>
@@ -139,19 +142,24 @@ $(document).ready(function() {
 				<h4 class="modal-title" id="myModalLabel">My FriendList</h4>
 			</div>
 			<div class="modal-body">
-				<table class="table borderless"></table>
+				<div class="requestListDiv">
+					<table class="table borderless">					
+					</table>
+				</div>
 				<h4>친구의 이름을 입력하세요</h4>
-				<form action="" method="post">
-					<div class="form-group">
-						<input type="text" class="form-control" name="user_id" id="user_id"
+				<div class="form-group">
+						<input type="text" class="form-control" id="friend_nm"
 							placeholder="name">
 					</div>
-					<input type="text" id="sample6_postcode" placeholder="postcode"> <input
-						type="button" onclick="sample6_execDaumPostcode()" value="우편번호 찾기"><br>
-					<input type="text" name="user_add1" id="user_add1" placeholder="address"><br>
-					<br> <input type="submit" class="form-control" id="joinBtn"
-						value="수정">
-				</form>
+					<div class="friendListDiv">
+						<table class="table borderless">
+							<tr>
+								<th>이름</th>
+								<th>생년월일</th>
+								<th></th>
+							</tr>
+						</table>
+					</div>
 			</div>
 		</div>
 	</div>
@@ -184,7 +192,7 @@ $(document).ready(function() {
 						<span class="tooltiptext"></span>
 						<!--<button class="btn btn-default" id="scheduleSearch">스케쥴 검색</button>-->
 						<input type="text" class="form-control write"><br>
-						<a href="#"><i class="fa fa-users fa-1x friendList" aria-hidden="true"></i></a>
+						<i class="fa fa-users fa-1x friendList" aria-hidden="true"></i>
 						<span class="written"></span>
 						<a href="javascript:dateInitialize();"><i class="fa fa-times fa-1x cancel" aria-hidden="true"></i></a>
 					</div>

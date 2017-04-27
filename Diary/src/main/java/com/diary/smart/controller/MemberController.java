@@ -39,8 +39,6 @@ public class MemberController {
 		Member member = dao.selectMember(user_id);
 
 		int user_no_pk = member.getUser_no_pk();
-		ArrayList<HashMap<String, Object>> frlist = dao.friendList(user_no_pk);
-		model.addAttribute("frlist", frlist);
 
 		return "mypage";
 	}
@@ -73,35 +71,84 @@ public class MemberController {
 		return member;
 	}
 
-	@RequestMapping(value = "addFriend", method = RequestMethod.GET)
-	public String addFriend(String user_id, HttpSession session) {
+@ResponseBody
+	@RequestMapping(value = "getFriendList", method = RequestMethod.GET)
+	public ArrayList<HashMap<String, Object>> getFriendList(HttpSession session) {
+		
+//		String my_id = (String) session.getAttribute("user_id");
+//		Member me = dao.selectMember(my_id);
+//		ArrayList<Member> list = dao.getFriendList(me.getUser_no_pk());
+		ArrayList<HashMap<String, Object>> list = dao.getFriendList(2);
 
-		String my_id = (String) session.getAttribute("user_id");
-
-		Member me = dao.selectMember(my_id);
-		Member frnd = dao.selectMember(user_id);
-
-		ArrayList<HashMap<String, Object>> frlist = dao.friendList(me.getUser_no_pk());
-
-		int user_no_fk = me.getUser_no_pk();
-		int user_frno = frnd.getUser_no_pk();
-
-/*		boolean flag = false;
-		for (HashMap<String, Object> hashMap : frlist) {
-
-			for (Object a : hashMap.values()) {
-				if (user_frno == Integer.parseInt(a.toString())) {
-					flag = true;
-				}
-			}
-		}
-
-		if (flag) {
-			return "mypage";
-		}*/
-			int result = dao.addFriend(user_no_fk, user_frno);
+		return list;
+	}
 	
-		return "mypage";
+	@ResponseBody
+	@RequestMapping(value = "getFriendRequestList", method = RequestMethod.GET)
+	public ArrayList<HashMap<String, Object>> getFriendRequestList(HttpSession session) {
+		
+//		String my_id = (String) session.getAttribute("user_id");
+//		Member me = dao.selectMember(my_id);
+//		ArrayList<Member> list = dao.getFriendRequestList(me.getUser_no_pk());
+		ArrayList<HashMap<String, Object>> list = dao.getFriendRequestList(2);
+		
+		return list;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "selectMemberList", method = RequestMethod.GET)
+	public ArrayList<HashMap<String, Object>> selectMemberList(HttpSession session, String user_nm) {
+		
+//		String my_id = (String) session.getAttribute("user_id");
+//		Member me = dao.selectMember(my_id);
+//		ArrayList<Member> list = dao.selectMemberList(me.getUser_no_pk(), user_nm);
+		ArrayList<HashMap<String, Object>> list = dao.selectMemberList(2, user_nm);
+		
+		return list;
+	}
+
+	@ResponseBody
+	@RequestMapping(value = "addFriend", method = RequestMethod.GET)
+	public void addFriend(int user_no_pk, HttpSession session) {
+
+//		String my_id = (String) session.getAttribute("user_id");
+//		Member me = dao.selectMember(my_id);
+//		dao.addFriend(me.getUser_no_pk(), user_no_pk);
+		logger.info("41번 유저 친구 추가 테스트");
+		dao.addFriend(2, user_no_pk);
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "acceptFriend", method = RequestMethod.GET)
+	public void acceptFriend(int user_no_pk, HttpSession session) {
+		
+//		String my_id = (String) session.getAttribute("user_id");
+//		Member me = dao.selectMember(my_id);
+//		dao.addFriend(me.getUser_no_pk(), user_no_pk);
+		logger.info("41번이 " + user_no_pk + "번 유저 친구 승인 테스트");
+		dao.acceptFriend(2, user_no_pk);
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "rejectFriend", method = RequestMethod.GET)
+	public void rejectFriend(int user_no_pk, HttpSession session) {
+		
+//		String my_id = (String) session.getAttribute("user_id");
+//		Member me = dao.selectMember(my_id);
+//		dao.addFriend(me.getUser_no_pk(), user_no_pk);
+		logger.info("41번이 2번 유저 친구 거절 테스트");
+		dao.rejectFriend(2, user_no_pk);
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "deleteFriend", method = RequestMethod.GET)
+	public void deleteFriend(int user_no_pk, HttpSession session) {
+		
+//		String my_id = (String) session.getAttribute("user_id");
+//		Member me = dao.selectMember(my_id);
+//		dao.addFriend(me.getUser_no_pk(), user_no_pk);
+		logger.info("2번 유저 친구 삭제 테스트");
+		dao.deleteFriend(2, user_no_pk);
 	}
 
 	@RequestMapping(value = "login", method = RequestMethod.POST)
@@ -134,20 +181,7 @@ public class MemberController {
 		return "redirect:/";
 	}
 
-	@ResponseBody
-	@RequestMapping(value = "frlist", method = RequestMethod.GET)
-	public ArrayList<HashMap<String, Object>> friendList(String user_id) {
 
-		System.out.println(user_id);
-		Member member = dao.selectMember(user_id);
-
-		int user_no_fk = member.getUser_no_pk();
-		ArrayList<HashMap<String, Object>> frlist = dao.friendList(user_no_fk);
-
-		System.out.println(frlist);
-
-		return frlist;
-	}
 
 	@RequestMapping(value = "infoForm", method = RequestMethod.POST)
 	public String updateForm(String user_pw, Model model, HttpSession session) {

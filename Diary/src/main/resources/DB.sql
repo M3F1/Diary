@@ -184,6 +184,7 @@ CREATE TABLE ID_USERFRNO_TB		 -- 회원의 친구정보 테이블
 (
 	user_no_fk number NOT NULL,  -- 회원의 회원번호
 	user_frno number,         	 -- 친구 아이디 번호
+	fr_flag varchar2(1) default 'N' not null,
 	PRIMARY KEY (user_no_fk, user_frno)
 );
 
@@ -241,6 +242,22 @@ insert into id_user_tb(user_no_pk
 				, '서울시 강남구 수서동 삼익아파트'
 );
 
+insert into id_user_tb(user_no_pk
+				, user_id
+				, user_pw
+				, user_nm
+				, user_birth
+				, user_phone
+				, user_add1
+				) values(
+				SEQ_ID_USER_TB_user_no_pk.nextval
+				, '첫번째 사람'
+				, '첫번째 사람'
+				, '첫번째 사람'
+				, '940228'
+				, '010-4321-8765'
+				, '서울시 중량구 망우동'
+);
 insert into id_userfrno_tb values(2, 3);
 
 /* Create Foreign Keys */

@@ -3,6 +3,9 @@ var today = new Date(); // 오늘 날짜 객체
 var tooltiptext; // tooltiptext 배열
 var process; // 선택된 icon의 절차 배열
 var i = 0;
+var selectMemberList;	// 전체 유저 목록
+var friendList = new Array();	// 친구 목록
+var scheduleList;	// 전체 스케쥴 목록
 var writeInput="";
 var movieflag = 0;
 var dateNow="";
@@ -42,17 +45,15 @@ $(document).ready(function () {
 		$("#spin").show();
 	});
 	
+	// diary 접속 시 필요한 서버 요청
+	sendRequest();
 	// 달력 출력
 	$("#calendar").html(calendarHtml(dt));
 	// 달력 아이디 바꿔주기
 	$("#calendar").attr("id", today.getFullYear() + "-" + (today.getMonth() + 1));
 	// 일자에 popover 설정하기
 	makePopover();
-//	for (var i = 0; i < 10; i++) {
-//		console.log($("#" + dt.getFullYear() + "-" + (dt.getMonth() + 1) + "> table > tbody > tr > td div").eq(0).html());
-//	}
-//	console.log($("#" + dt.getFullYear() + "-" + (dt.getMonth() + 1) + "> table > tbody > tr > td div").eq(0).attr("id", "1"));
-	
+	// 각 event 활성화
 	eventActive();
 
 	// 아무데나 클릭 시 header 숨기기
@@ -80,21 +81,74 @@ $(document).ready(function () {
 	});
 });
 
+function sendRequest() {
+	$.ajax({
+		type : "get",
+		url : "getFriendList",
+		async : false,
+		success : function (data) {
+			// 아이콘의 친구 목록 생성
+			makeFriendList(data);
+			
+			// 처음 myfriend modal의 친구 목록 띄우기
+			var html = "";
+			$.each(data, function(key, value) {
+				if (value.USER_FRNO && value.FR_FLAG == 'Y') {
+					html += "<tr>";
+					html += "<td>" + value.USER_NM + "</td>";
+					html += "<td>" + value.USER_BIRTH + "</td>";
+					html += "<td>";
+					html += "<a href='javascript:deleteFriend(" + value.USER_NO_PK + ");'><i class='fa fa-user-times'></i></a>";
+				}
+			});
+			html += "</td>";
+			html += "</tr>";
+			
+			$(".friendListDiv>.table").html(html);
+		},
+		error : function (e) {
+			console.log(e);
+		}
+	});
+	
+	// myfriend modal 목록 만들기
+	$.ajax({
+		type : "get",
+		url : "getFriendRequestList",
+		async : false,
+		success : function (data) {
+			makeRequestList(data);
+			
+			// 친구 요청 메세지 개수 처리 부분
+			if (data.length != 0) {
+				$(".requestNum").html(data.length);
+			}
+		},
+		error : function (e) {
+			console.log(e);
+		}
+	});
+	
+	// 친구 추가를 위한 유저 검색
+	$("#friend_nm").on("keyup", function() {
+		searchMemberList();
+	});
+}
 function eventActive() {
 	// 스케쥴 입력창 focus
-	$(".write").on("focus", function () {
+	$(".write").off().on("focus", function () {
 		$(".tooltiptext").css("visibility", "visible");
 		$(".tooltiptext").css("opacity", "1");
 	});
 
 	// 스케쥴 입력창 blur
-	 $(".write").on("blur", function () {
+	 $(".write").off().on("blur", function () {
 	 	$(".tooltiptext").css("visibility", "hidden");
 	 	$(".tooltiptext").css("opacity", "0");
 	 });
 
 	// 스케쥴 입력창 enter key 동작하게 하기
-	$(".write").on("keydown", function (e) {
+	$(".write").off().on("keydown", function (e) {
 		if (e.keyCode == 13 || e.which == 13) {
 			if ($(".active .write").val() == "") {
 				alert("내용을 입력하세요");
@@ -104,8 +158,7 @@ function eventActive() {
 		}
 	});
 	
-	// 친구 목록 가져오기
-	friendList();
+
 
 	// 영화 목록 가져오기
 	movieList();
@@ -166,15 +219,14 @@ function inputText(param) {
 }
 
 /** ******************************** 친구 목록 ********************************* */
-function friendList() {
-//	var friendList = JSON.parse($("#friendList").val());
+function makeFriendList(friendList) {
+	// 아이콘에 친구 목록 불러오기
+	var html = "";
 	
-	var html = "<div class='list-group'>";
-	html += "<a href='javascript:;' class='list-group-item'>친구 1</a>";
-	html += "<a href='javascript:;' class='list-group-item'>친구 2</a>";
-	html += "<a href='javascript:;' class='list-group-item'>친구 3</a>";
-	html += "<a href='javascript:;' class='list-group-item'>친구 3</a>";
-	html += "<a href='javascript:;' class='list-group-item'>친구 3</a>";
+	html = "<div class='list-group'>";
+	$.each(friendList, function(key, value) {
+		html += "<a href='javascript:;' class='list-group-item'>" + value.USER_NM + "(" + value.USER_ID + ")" + "</a>";
+	});
 	
 	html += "</div>";
 	
@@ -192,13 +244,182 @@ function friendList() {
 		$(this).next().css("height", "200px");
 		
 		for (var index = 0; index < fl.length; index++) {
-			fl.eq(index).on("click", function() {
+			fl.eq(index).off().on("click", function() {
 				$(this).toggleClass("active");
 			});
 		}
 	});
 }
 
+function makeRequestList(requestList) {
+	var html = "";
+	
+	$.each(requestList, function (key, value) {
+		html += "<tr>";
+		html += "<td>" + value.USER_NM + "(" + value.USER_ID + ")" + "님의 친구 요청이 들어왔습니다." + "</td>";
+		html += "<td>" + "<button>수락</button>";
+		html += "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+		html += "<button>거절</button>" + "</td>";
+		html += "</tr>";
+	});
+	
+	
+	$(".requestListDiv table").html(html);
+	
+	$.each(requestList, function (key, value) {
+		$(".requestListDiv table tr:nth-child(" + (key + 1) + ") button:nth-child(1)").on("click", function () {
+			acceptFriend(key, value);
+		});
+		
+		$(".requestListDiv table tr:nth-child(" + (key + 1) + ") button:nth-child(2)").on("click", function () {
+			rejectFriend(key, value);
+		});
+	});
+}
+
+function acceptFriend(key, value) {
+	$.ajax({
+		type : "get",
+		url : "acceptFriend",
+		data : {
+			user_no_pk : value.USER_NO_PK
+		},
+		success : function (data) {
+			$(".requestListDiv table tr").eq(key).html("<td colspan='2'>" + value.USER_NM + "(" + value.USER_ID + ")" + "님의 친구 요청을 수락했습니다." + "</td>");
+			
+			var cnt = parseInt($(".requestNum").html());
+			
+			if (cnt != 0) {
+				$(".requestNum").html(cnt - 1);
+			}
+			
+		},
+		error : function (e) {
+			console.log(e);
+		}
+	});
+	searchMemberList();
+}
+
+function rejectFriend(key, value) {
+	$.ajax({
+		type : "get",
+		url : "rejectFriend",
+		data : {
+			user_no_pk : value.USER_NO_PK
+		},
+		success : function (data) {
+			$(".requestListDiv table tr").eq(key).html("<td colspan='2'>" + value.USER_NM + "(" + value.USER_ID + ")" + "님의 친구 요청을 거절했습니다." + "</td>");
+			
+			var cnt = parseInt($(".requestNum").html());
+			
+			if (cnt != 0) {
+				$(".requestNum").html(cnt - 1);
+			}
+		},
+		error : function (e) {
+			console.log(e);
+		}
+	});
+	searchMemberList();
+}
+
+function searchMemberList() {
+	var nm = $("#friend_nm").val();
+	
+	$.ajax({
+		type : "get",
+		url : "selectMemberList",
+		data : {
+			user_nm : nm
+		},
+		async : false,
+		success : function(data) {
+			var html = "";
+			var friendArray = new Array();
+			
+			console.log(nm.length);
+			html += "<tr>";
+			html += "<th>이름</th>";
+			html += "<th>생년월일</th>";
+			html += "<th></th>";
+			html += "</tr>";
+			if (nm.length == 0) {
+				$.each(data, function(key, value) {
+					if (value.USER_FRNO && value.FR_FLAG == 'Y') {
+						html += "<tr>";
+						html += "<td>" + value.USER_NM + "</td>";
+						html += "<td>" + value.USER_BIRTH + "</td>";
+						html += "<td>";
+						friendArray.push(value);
+						html += "<a href='javascript:deleteFriend(" + value.USER_NO_PK + ");'><i class='fa fa-user-times'></i></a>";
+					}
+				});
+				html += "</td>";
+				html += "</tr>";
+			} else {
+				$.each(data, function(key, value) {
+					html += "<tr>";
+					html += "<td>" + value.USER_NM + "</td>";
+					html += "<td>" + value.USER_BIRTH + "</td>";
+					html += "<td>";
+					if (value.USER_FRNO && value.FR_FLAG == 'Y') {
+						friendArray.push(value);
+						html += "<a href='javascript:deleteFriend(" + value.USER_NO_PK + ");'><i class='fa fa-user-times'></i></a>";
+					} else if (value.USER_FRNO && value.FR_FLAG == 'N') {
+						html += "<i class='fa fa-hourglass-half'></i>";
+					} else {
+						html += "<a href='javascript:addFriend(" + value.USER_NO_PK + ");'><i class='fa fa-user-plus'></i></a>";
+					}
+					html += "</td>";
+					html += "</tr>";
+				});
+			}
+			
+			makeFriendList(friendArray);
+			$(".friendListDiv>.table").html(html);
+		},
+		error : function(e) {
+			console.log(e);
+		}
+	});
+}
+
+function addFriend(user_no_pk) {
+	$.ajax({
+		type : "get",
+		url : "addFriend",
+		data : {
+			user_no_pk : user_no_pk
+		},
+		async : false,
+		success : function(data) {
+			console.log("OK");
+		},
+		error : function(e) {
+			console.log(e);
+		}
+	});
+	searchMemberList();
+}
+
+function deleteFriend(user_no_pk) {
+	$.ajax({
+		type : "get",
+		url : "deleteFriend",
+		data : {
+			user_no_pk : user_no_pk
+		},
+		async : false,
+		success : function(data) {
+			console.log("OK");
+		},
+		error : function(e) {
+			console.log(e);
+		}
+	});
+	searchMemberList();
+}
 /** ******************************** 영화 목록 ********************************* */
 function movieList() {
 //	/* 영화 목록 받는 부분 */
@@ -657,7 +878,6 @@ function lastMonth() {
 	// 현재 item에서 앞에 item이 존재하지 않는 경우
 	if ($(".item.active").index(".item") == 0) {
 		$(".item:first-child").before(html);
-//		scheduleListRefresh();
 		makePopover();
 
 		eventActive();
@@ -699,7 +919,6 @@ function nextMonth() {
 	// 현재 item에서 앞에 item이 존재하지 않는 경우
 	if ($(".item.active").index(".item") == $(".item").length - 1) {
 		$(".item:last-child").after(html);
-//		scheduleListRefresh();
 		makePopover();
 
 		eventActive();
@@ -786,10 +1005,8 @@ function selectedDate(date) {
 
 function makePopover() {
 	// scheduleList 가져오기
-	var scheduleList = JSON.parse($("#scheduleList").val());
-	// 날씨
-	var array1 = todayWeather();
-	var array2 = weekWeather();
+	scheduleList = JSON.parse($("#scheduleList").val());
+
 	
 	var param1 ="";
 	var param2 ="";
@@ -837,7 +1054,7 @@ function makePopover() {
 		});
 		
 			// 날씨
-			$.each(array1, function(j,item){
+			$.each(todayWeather(), function(j,item){
 				
 				if (p.parent().parent().attr("id") == item.date) {
 					html[i]+=item.html;
@@ -845,7 +1062,7 @@ function makePopover() {
 				}
 			 });
 			
-			$.each(array2, function(j,item){
+			$.each(weekWeather(), function(j,item){
 				if (p.parent().parent().attr("id") == item.date) {
 					html[i+3]="";
 					html[i+3]+=item.html;

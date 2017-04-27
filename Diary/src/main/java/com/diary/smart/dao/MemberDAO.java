@@ -70,24 +70,6 @@ public class MemberDAO {
 	}
 
 	/**
-	 * @param idno
-	 *            친구리스트를 가져올 회원의 회원번호
-	 * @return 친구 리스트
-	 */
-	public ArrayList<HashMap<String, Object>> friendList(int idno) {
-		MemberMapper mapper = sqlSession.getMapper(MemberMapper.class);
-		ArrayList<HashMap<String, Object>> result = null;
-
-		try {
-			result = mapper.friendList(idno);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		return result;
-	}
-
-	/**
 	 * @param id
 	 *            조회할 회원의 아이디
 	 * @return 조회된 회원정보
@@ -103,17 +85,130 @@ public class MemberDAO {
 		return result;
 	}
 	
-	public int addFriend(int user_no_fk, int user_frno){
+	/**
+	 * @param user_no_pk
+	 *            접속한 회원 번호
+	 * @return 친구 목록
+	 */
+	public ArrayList<HashMap<String, Object>> getFriendList(int user_no_pk) {
 		MemberMapper mapper = sqlSession.getMapper(MemberMapper.class);
-		int result = 0;
+		ArrayList<HashMap<String, Object>> result = null;
+		
 		try {
-		result = mapper.addFriend(user_no_fk, user_frno);
+			result = mapper.getFriendList(user_no_pk);
 		} catch (Exception e) {
-		   e.printStackTrace();
+			e.printStackTrace();
 		}
 		return result;
 	}
+	
+	/**
+	 * @param user_no_pk
+	 *            접속한 회원 번호
+	 * @return 친구 요청 목록
+	 */
+	public ArrayList<HashMap<String, Object>> getFriendRequestList(int user_no_pk) {
+		MemberMapper mapper = sqlSession.getMapper(MemberMapper.class);
+		ArrayList<HashMap<String, Object>> result = null;
+		
+		try {
+			result = mapper.getFriendRequestList(user_no_pk);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+	
+	/**
+	 * @param user_no_pk
+	 *            접속한 회원 번호
+	 * @param user_nm
+	 *            검색할 글자
+	 * @return 친구 요청 목록
+	 */
+	public ArrayList<HashMap<String, Object>> selectMemberList(int user_no_pk, String user_nm){
+	      MemberMapper mapper = sqlSession.getMapper(MemberMapper.class);
+	      ArrayList<HashMap<String, Object>> result = null;
+	      
+	      try {
+	      result = mapper.selectMemberList(user_no_pk, user_nm);
+	      } catch (Exception e) {
+	         e.printStackTrace();
+	      }
+	      return result;
+	   }
+	
+	/**
+	 * @param user_no_fk
+	 *            접속한 회원 번호
+	 * @param user_frno
+	 *            요청한 친구의 회원 번호
+	 */
+	public void addFriend(int user_no_fk, int user_frno){
+		MemberMapper mapper = sqlSession.getMapper(MemberMapper.class);
 
+		try {
+			mapper.addFriend(user_no_fk, user_frno);
+		} catch (Exception e) {
+		   e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * @param user_no_fk
+	 *            접속한 회원 번호
+	 * @param user_frno
+	 *            친구 승인한 친구의 회원 번호
+	 */
+	public void acceptFriend(int user_no_fk, int user_frno) {
+		MemberMapper mapper = sqlSession.getMapper(MemberMapper.class);
+		
+		try {
+			mapper.addFriend(user_no_fk, user_frno);
+			mapper.acceptFriend(user_no_fk, user_frno);
+			mapper.acceptFriend(user_frno, user_no_fk);
+		} catch (Exception e) {
+		   e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * @param user_no_fk
+	 *            접속한 회원 번호
+	 * @param user_frno
+	 *            친구 거절한 회원 번호
+	 */
+	public void rejectFriend(int user_no_fk, int user_frno) {
+		MemberMapper mapper = sqlSession.getMapper(MemberMapper.class);
+		
+		try {
+			mapper.rejectFriend(user_no_fk, user_frno);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * @param user_no_fk
+	 *            접속한 회원 번호
+	 * @param user_frno
+	 *            삭제 요청된 친구의 회원 번호
+	 */
+	public void deleteFriend(int user_no_fk, int user_frno) {
+		MemberMapper mapper = sqlSession.getMapper(MemberMapper.class);
+		
+		try {
+			mapper.deleteFriend(user_no_fk, user_frno);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * @param id
+	 *            입력한 아이디
+	 * @return 로그인 되었을 때 그 사람의 member 객체
+	 */
 	public Member login(String id) {
 		MemberMapper mapper = sqlSession.getMapper(MemberMapper.class);
 		Member member = null;
@@ -136,5 +231,4 @@ public class MemberDAO {
 		}
 		return result;
 	}
-
 }
