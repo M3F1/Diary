@@ -68,7 +68,7 @@
 			and
 				fr_flag = 'Y')
 		where
-			user_no_pk = user_no_fk
+			user_no_pk = user_frno
 	</select>
 	
 	<select id="getFriendRequestList" parameterType="int" resultType="HashMap">

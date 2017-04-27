@@ -199,6 +199,7 @@ public class MemberDAO {
 		
 		try {
 			mapper.deleteFriend(user_no_fk, user_frno);
+			mapper.deleteFriend(user_frno, user_no_fk);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

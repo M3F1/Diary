@@ -90,7 +90,7 @@ function sendRequest() {
 			// 아이콘의 친구 목록 생성
 			makeFriendList(data);
 			
-			// 처음 myfriend modal의 친구 목록 띄우기
+			// 처음 켰을 때 myfriend modal의 친구 목록 띄우기
 			var html = "";
 			$.each(data, function(key, value) {
 				if (value.USER_FRNO && value.FR_FLAG == 'Y') {
@@ -134,21 +134,22 @@ function sendRequest() {
 		searchMemberList();
 	});
 }
+
 function eventActive() {
 	// 스케쥴 입력창 focus
-	$(".write").off().on("focus", function () {
+	$(".write").on("focus", function () {
 		$(".tooltiptext").css("visibility", "visible");
 		$(".tooltiptext").css("opacity", "1");
 	});
 
 	// 스케쥴 입력창 blur
-	 $(".write").off().on("blur", function () {
+	 $(".write").on("blur", function () {
 	 	$(".tooltiptext").css("visibility", "hidden");
 	 	$(".tooltiptext").css("opacity", "0");
 	 });
 
 	// 스케쥴 입력창 enter key 동작하게 하기
-	$(".write").off().on("keydown", function (e) {
+	$(".write").on("keydown", function (e) {
 		if (e.keyCode == 13 || e.which == 13) {
 			if ($(".active .write").val() == "") {
 				alert("내용을 입력하세요");
@@ -158,8 +159,6 @@ function eventActive() {
 		}
 	});
 	
-
-
 	// 영화 목록 가져오기
 	movieList();
 
@@ -367,7 +366,7 @@ function searchMemberList() {
 						friendArray.push(value);
 						html += "<a href='javascript:deleteFriend(" + value.USER_NO_PK + ");'><i class='fa fa-user-times'></i></a>";
 					} else if (value.USER_FRNO && value.FR_FLAG == 'N') {
-						html += "<i class='fa fa-hourglass-half'></i>";
+						html += "waiting";
 					} else {
 						html += "<a href='javascript:addFriend(" + value.USER_NO_PK + ");'><i class='fa fa-user-plus'></i></a>";
 					}
@@ -1052,24 +1051,24 @@ function makePopover() {
 				}
 			}
 		});
-		
-			// 날씨
-			$.each(todayWeather(), function(j,item){
-				
-				if (p.parent().parent().attr("id") == item.date) {
-					html[i]+=item.html;
-					p.attr("data-content", html[i]);
-				}
-			 });
+		/*
+		// 날씨
+		$.each(todayWeather(), function(j,item){
 			
-			$.each(weekWeather(), function(j,item){
-				if (p.parent().parent().attr("id") == item.date) {
-					html[i+3]="";
-					html[i+3]+=item.html;
-					p.attr("data-content", html[i+3]);
-				}
-			 });
+			if (p.parent().parent().attr("id") == item.date) {
+				html[i]+=item.html;
+				p.attr("data-content", html[i]);
+			}
+		 });
 		
+		$.each(weekWeather(), function(j,item){
+			if (p.parent().parent().attr("id") == item.date) {
+				html[i+3]="";
+				html[i+3]+=item.html;
+				p.attr("data-content", html[i+3]);
+			}
+		 });
+		*/
 		
 		p.attr("data-html", "true");
 		p.attr("data-placement", "top");
