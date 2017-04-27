@@ -19,8 +19,29 @@ var starttime;
 var selectBusInfo="";
 var mvnamecancle = new Array();
 var mvtimecancle = new Array();
+var kobuscancle = new Array();
 var mvscno = new Array();
+var kobusscno = new Array();
+var easybusscno = new Array();
+var trainscno = new Array();
+
 $(document).ready(function () {
+	$("#spin").spinner({
+		color: "black"
+		, background: "rgba(255,255,255,0.5)"
+		, html: "<i class='fa fa-repeat' style='color: steelblue;'></i>"
+		});
+	
+	//영화취소 spinner loader
+	$(".mvcancleBTN").click(function(){
+		$("#spin").show();
+	});
+	
+	//영화예매 spinner loader
+	$("#mvpaymentbtn").click(function(){
+		$("#spin").show();
+	});
+	
 	// 달력 출력
 	$("#calendar").html(calendarHtml(dt));
 	// 달력 아이디 바꿔주기
@@ -188,7 +209,6 @@ function movieList() {
 	 $(".iconList > a:nth-child(1) > i").attr("data-html", "true");
 	 $(".iconList > a:nth-child(1) > i").attr("data-placement", "bottom");
 	 $(".iconList > a:nth-child(1) > i").popover();
-	
 }
 
 /** ******************************** 영화 예매 ********************************* */
@@ -530,6 +550,7 @@ function train() {
 	
 	// 기차 시간 선택 시 처리 부분
 	var trainTime = function () {
+		console.log("111");
 		var html="";
 		html += '<form>';
 		html += '<select multiple id="trainTimeSelect">';
@@ -546,6 +567,7 @@ function train() {
 		html +='</select>';
 		html +='<input type="button" class="form-control" value="선택" onclick="showTimeModal()">';
 		html +='</form>';
+		console.log("222");
 		$(".write").attr("data-toggle", "popover");
 		$(".write").attr("title", "출발시간 선택");
 		$(".write").attr("data-content", html);
@@ -611,7 +633,7 @@ function dateInitialize() {
 function lastMonth() {
 	var tempYear = dt.getFullYear();
 	var tempMonth = dt.getMonth();
-
+	
 	dt.setMonth(dt.getMonth() - 1);
 	var html = $(".item:first-child").html();
 	
@@ -635,6 +657,7 @@ function lastMonth() {
 	// 현재 item에서 앞에 item이 존재하지 않는 경우
 	if ($(".item.active").index(".item") == 0) {
 		$(".item:first-child").before(html);
+//		scheduleListRefresh();
 		makePopover();
 
 		eventActive();
@@ -652,7 +675,7 @@ function lastMonth() {
 function nextMonth() {
 	var tempYear = dt.getFullYear();
 	var tempMonth = dt.getMonth();
-
+	
 	dt.setMonth(dt.getMonth() + 1);
 	var html = $(".item:last-child").html();
 	
@@ -672,10 +695,11 @@ function nextMonth() {
 		'<span id="' + padDigits((dt.getMonth() + 1), 2) + '">' + padDigits((dt.getMonth() + 1), 2) + '</span>');
 
 	html = "<div class='item'>" + html + "</div>";
-
+	
 	// 현재 item에서 앞에 item이 존재하지 않는 경우
 	if ($(".item.active").index(".item") == $(".item").length - 1) {
 		$(".item:last-child").after(html);
+//		scheduleListRefresh();
 		makePopover();
 
 		eventActive();
@@ -766,17 +790,14 @@ function makePopover() {
 	// 날씨
 	var array1 = todayWeather();
 	var array2 = weekWeather();
+	
 	var param1 ="";
 	var param2 ="";
 	var html = new Array(); // 일정 내용 및 날씨 넣는곳.
 	for (var i = 0; i < $("#" + dt.getFullYear() + "-" + (dt.getMonth() + 1) + " > table > tbody > tr > td div").length; i++) {
 		var p = $("#" + dt.getFullYear() + "-" + (dt.getMonth() + 1) + "> table > tbody > tr > td a").eq(i);
-//		p.attr("data-toggle", "popover");
-//		p.attr("title", dt.getFullYear() + "년 " + (dt.getMonth() + 1) + "월 " + p.html() + "일 일정");
 		html[i]="";
-		
 		/* 일정 가져오는 부분 */
-//		p.attr("data-content", "오늘의 일정이 없습니다.");
 		$.each(scheduleList, function(key, value) {
 			if (p.parent().parent().attr("id") == value.SC_STDT) {
 				if(value.SC_FIN=='Y' && value.SC_DFLAG=='Y'){
@@ -785,23 +806,28 @@ function makePopover() {
 					markCircle(p.parent());
 					html[i]+='<table><tr><td>'+value.SC_CON.split("_")[0]+'</td>';
 					html[i]+='<td>'+value.SC_CON.split("_")[1]+'</td>';
-					html[i]+='<td>'+value.SC_CON.split("_")[2].split(" ")[0]+value.SC_CON.split("_")[2].split(" ")[1]+'</td>';
-					html[i]+='<td>'+value.SC_CON.split("_")[3].split(" ")[1]+'</td>';
-					mvscno[i] = value.SC_NO_PK;
-					mvtimecancle[i] = value.SC_CON.split("_")[0];
-					mvnamecancle[i] = value.SC_CON.split("_")[1];
+					
 					if(value.SC_CON.split("_")[4]=="mv"){
-						console.log(mvtimecancle[i]);
-						console.log(mvnamecancle[i]);
-						html[i]+="<td><input type='button' onclick='mvCancle("+i+")' value='취소'/></td></tr></table>";
+						mvscno[i] = value.SC_NO_PK;
+						mvtimecancle[i] = value.SC_CON.split("_")[0];
+						mvnamecancle[i] = value.SC_CON.split("_")[1];
+						html[i]+='<td>'+value.SC_CON.split("_")[2].split(" ")[0]+value.SC_CON.split("_")[2].split(" ")[1]+'</td>';
+						html[i]+='<td>'+value.SC_CON.split("_")[3].split(" ")[1]+'</td>';
+						html[i]+="<td><input type='button' class='mvcancleBTN' onclick='mvCancle("+i+")' value='취소'/></td></tr></table>";
 					}
 					else if(value.SC_CON.split("_")[4]=="kobus"){
-						html[i]+='<td><input type="button" onclick="kobusCancle()" value="취소"/></td></tr></table>';
+						kobusscno[i] = value.SC_NO_PK;
+						kobuscancle[i] = value.SC_CON.split("_")[3]+"_"+value.SC_CON.split("_")[0]+"_"+value.SC_CON.split("_")[2];
+						html[i]+='<td>'+value.SC_CON.split("_")[2]+'</td>';
+						html[i]+='<td><input type="button" onclick="kobusCancleModal('+i+')" value="취소"/></td></tr></table>';
 					}
 					else if(value.SC_CON.split("_")[4]=="easy"){
+						easybusscno[i] = value.SC_NO_PK;
+						html[i]+='<td>'+value.SC_CON.split("_")[2]+'</td>';
 						html[i]+='<td><input type="button" onclick="easyCancle()" value="취소"/></td></tr></table>';
 					}
 					else if(value.SC_CON.split("_")[4]=="train"){
+						trainscno[i] = value.SC_NO_PK; 
 						html[i]+='<td><input type="button" onclick="trainCancle()" value="취소"/></td></tr></table>';
 					}else{
 						html[i]+='</table>';
@@ -810,21 +836,23 @@ function makePopover() {
 			}
 		});
 		
-		// 날씨
-		$.each(array1, function(j,item){
-			if (p.parent().parent().attr("id") == item.date) {
-				html[i]+=item.html;
-				p.attr("data-content", html[i]);
-			}
-		 });
+			// 날씨
+			$.each(array1, function(j,item){
+				
+				if (p.parent().parent().attr("id") == item.date) {
+					html[i]+=item.html;
+					p.attr("data-content", html[i]);
+				}
+			 });
+			
+			$.each(array2, function(j,item){
+				if (p.parent().parent().attr("id") == item.date) {
+					html[i+3]="";
+					html[i+3]+=item.html;
+					p.attr("data-content", html[i+3]);
+				}
+			 });
 		
-		$.each(array2, function(j,item){
-			if (p.parent().parent().attr("id") == item.date) {
-				html[i+3]="";
-				html[i+3]+=item.html;
-				p.attr("data-content", html[i+3]);
-			}
-		 });
 		
 		p.attr("data-html", "true");
 		p.attr("data-placement", "top");
@@ -898,7 +926,6 @@ function todayWeather() {
         },
         async : false,
         success : function(json) {
-        	console.log(json);
 
         	 $.each(json.weather.forecast3days,function(i,item){
         		
@@ -925,7 +952,6 @@ function todayWeather() {
         		 jArray .push(jobj);
         		 jArray .push(jobj1);
         		 jArray .push(jobj2);
-        		 console.log(jArray);
              });   
         },
        	        
@@ -966,7 +992,6 @@ function weekWeather() {
         },
         async : false,
         success : function(json) {
-        	console.log(json);
         	 $.each(json.weather.forecast6days,function(i,item){
         		
 
@@ -1003,7 +1028,6 @@ function weekWeather() {
         		 jArray .push(jobj6);
         		 jArray .push(jobj7);
         		 
-        		 console.log(jArray);
              });   
         },
        	        
@@ -1268,22 +1292,8 @@ function payment(){
 		success : function(data){
 			if(data){
 				//예매완료.
-				//$('div#MoviePayModal').modal('hide');
-				console.log("완료래");
 				location.href="diary";
-//				$.ajax({
-//					type : "get",
-//					url : "diary",
-//					data : {
-//					},
-//					success : function(data){
-//						
-//					},
-//					error : function(e){
-//						console.log(e);
-//					}
-//				});
-				
+				$("#spin").hide();
 			}else{
 				alert('카드정보 오류입니다. 다시 입력 해주세요.')
 				$('div#MoviePayModal').modal();
@@ -1548,6 +1558,8 @@ function check_modal_on(flagParam){
 		$("#busgrade").text(busReserveInfo[2]);
 		$("#busseat").text(busReserveInfo[3]);
 		$("#busprice").text(busReserveInfo[4]);
+		if(flagParam=="0") $("#busflag").val("kobus");
+		if(flagParam=="1") $("#busflag").val("easy");
 		$('div#checkModal').modal();
 	}else{
 		showBusSeat();
@@ -1560,24 +1572,23 @@ function check_form(){
 	var time = $("#busdate").text();
 	var busarea = $("#busarea").text();
 	var seat = $("#busseat").text();
-	
-	
-	$.ajax({
-		type : "get",
-		url : "beforePaymentBusSchedule",
-		data : {
-			date : dateNow.substring(2,8),
-			time : time.split(" ")[1],
-			busarea : busarea,
-			seat : seat
-		},
-		success : function(data){
-		},
-		error : function(e){
-			console.log(e);
-		}
-	});
-	
+		$.ajax({
+			type : "get",
+			url : "beforePaymentBusSchedule",
+			data : {
+				date : dateNow.substring(2,8),
+				busdate : time.split(" ")[0],
+				time : time.split(" ")[1],
+				busarea : busarea,
+				seat : seat,
+				flag : $("#busflag").val()
+			},
+			success : function(data){
+			},
+			error : function(e){
+				console.log(e);
+			}
+		});
 	
 	$('div#payModal').modal();
 	//$('div#payModal').find('form').trigger('reset');
@@ -1602,12 +1613,14 @@ function writeCardInfo(){
 		dataType : "json",
 		success : function(data){
 			//다이어리에 찍어줌..
-			if(data.istrue){
-				alert("결제완료.");
+			if(data){
+				$("#spin").hide();
+				location.href="diary";
 			}else{
 				alert("결제오류. 다시 입력해주세요.");
 //				check_modal_on(data.flag);
-				check_form();
+//				check_form("again");
+				$('div#checkModal').modal();
 			}
 		},
 		error :function(request,status,error){
@@ -1717,14 +1730,15 @@ function showTrainTime(){
 			count : count
 		},
 		success : function(data){
+			$(".write").popover("destroy");
+			showTextBlock();
+			inputText(count+"명");
 		},
 		error : function(e){
 			console.log(e);
 		}
 	});
-	$(".write").popover("destroy");
-	showTextBlock();
-	inputText(count+"명");
+	
 	
 }
 
@@ -1740,7 +1754,7 @@ function showTimeModal(){
 		},
 		dataType : "json",
 		success : function(data){
-
+			
 		},
 		error : function(e){
 			console.log(e);
@@ -1761,20 +1775,49 @@ function mvCancle(num){
 		},
 		success : function(data){
 			if(data){
-				console.log("취소래");
 				location.href="diary";
-//				$.ajax({
-//					type : "get",
-//					url : "diary",
-//					data : {
-//					},
-//					success : function(data){
-//						alert('정상적으로 취소되었습니다.');
-//					},error : function(e){
-//						console.log(e);
-//					}
-//				});
-				
+				$("#spin").hide();
+			}else{
+				alert('취소도중 오류발생 다시시도 해주세요.');
+			}
+		},
+		error : function(e){
+			console.log(e);
+		}
+	});
+}
+
+function kobusCancleModal(num){
+	$("#buscancleFlag").val(num);
+	$("#busCancleModal").modal();
+}
+
+function kobusCancle(){
+	$("#busCancleModal").modal('hide');
+	
+	var num = $("#buscancleFlag").val();
+	var cardno = $("#buscancle_card_no").val();
+	var year = $("#cvalidyear option:selected").val();
+	var month = $("#cvalidmonth option:selected").val();
+	console.log(year);
+	console.log(month);
+	
+	$.ajax({
+		type : "get",
+		url : "cancleKOBUS",
+		data : {
+			scno : kobusscno[num],
+			cardno : cardno,
+			startdate : kobuscancle[num].split("_")[0],
+			time : kobuscancle[num].split("_")[1],
+			area : kobuscancle[num].split("_")[2],
+			year : year,
+			month : month
+		},
+		success : function(data){
+			if(data){
+				location.href="diary";
+				$("#spin").hide();
 			}else{
 				alert('취소도중 오류발생 다시시도 해주세요.');
 			}

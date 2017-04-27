@@ -1,12 +1,12 @@
 $(function () {
 	$(document).ready(function () {
 		'use strict';
-
+		
 		/*---------- LOADING EFFECT START ----------*/
 		setTimeout(function () {
 			$('body').addClass('loaded');
-			$('h1', '.loaded-class-color').css('color', '#222222');
-		}, 1000);
+			$('h1', '.loaded-class-color').css('color', 'black');
+		}, 500);
 
 		/*---------- SLIDER CONFIG ----------*/
 		$(function () {

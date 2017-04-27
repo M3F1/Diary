@@ -17,7 +17,8 @@ import com.diary.smart.dao.DiaryDAO;
 import com.diary.smart.dao.MemberDAO;
 import com.diary.smart.util.ExpressBusNavigator;
 import com.diary.smart.vo.Diary;
-//@Controller
+import com.diary.smart.vo.Member;
+@Controller
 public class BusController {
 	@Autowired
 	private DiaryDAO diaryDAO;
@@ -54,11 +55,11 @@ public class BusController {
 	
 	@ResponseBody
 	@RequestMapping(value = "beforePaymentBusSchedule", method=RequestMethod.GET)
-	public void beforePaymentSchedule(String date, String time, String busarea, String seat,
+	public void beforePaymentSchedule(String date, String busdate, String time, String busarea, String seat, String flag,
 			HttpSession session){
 		Diary diary = new Diary();
 		diary.setUser_no_fk(memberDAO.selectMember((String)session.getAttribute("user_id")).getUser_no_pk());
-		diary.setSc_con(time+"_"+busarea+"_"+seat);
+		diary.setSc_con(time+"_"+busarea+"_"+seat+"_"+busdate+"_"+flag);
 		diary.setSc_wt("SU");
 		diary.setSc_stdt(date);
 		if(diaryDAO.insertDiary(diary)==1){
@@ -119,12 +120,6 @@ public class BusController {
 		}
 	}
 	
-	@RequestMapping(value = "test2", method=RequestMethod.GET)
-	public String test2(){
-		
-		return "test2";
-	}
-	
 	@ResponseBody
 	@RequestMapping(value = "setBusSeat", method=RequestMethod.POST)
 	public ArrayList<String> setBusSeat(@RequestBody HashMap<String, Object> seats){
@@ -139,8 +134,9 @@ public class BusController {
 	
 	@ResponseBody
 	@RequestMapping(value = "writeCardInfo", method=RequestMethod.GET)
-	public HashMap<String,Object> writeCardInfo(String cardno, String year, String month, String birth){
-		HashMap<String, Object> result = new HashMap<>();
+	public boolean writeCardInfo(String cardno, String year, String month, String birth, HttpSession session){
+		boolean result = false;
+		Member member = memberDAO.selectMember((String)session.getAttribute("user_id"));
 		if(ebn.getNow().equals("kobus")){
 			ArrayList<String> cardInfo = new ArrayList<String>();
 			cardInfo.add(cardno);
@@ -148,11 +144,10 @@ public class BusController {
 			cardInfo.add(month);
 			cardInfo.add(birth);
 			if(ebn.writeCardInfo2(cardInfo)){
-				result.put("istrue", true);
-				result.put("flag", "0");
+				result = true;
+				diaryDAO.paymentFin((Integer)session.getAttribute("lastscno"));
 			}else{
-				result.put("istrue", false);
-				result.put("flag", "re");
+				result = false;
 			}
 			return result;
 		}else{
@@ -161,15 +156,13 @@ public class BusController {
 			cardInfo.add(year);
 			cardInfo.add(month);
 			cardInfo.add(birth);
-			cardInfo.add("01022326656");
+			cardInfo.add(member.getUser_phone());
 			ebn.writeCardInfo(cardInfo);
 			if(ebn.paymentCheck()!=null){
-				//db에 예약번호 입력 및 결제플래그 Y로 수정
-				result.put("istrue", true);
-				result.put("flag", "1");
+				result = true;
+				diaryDAO.paymentFin((Integer)session.getAttribute("lastscno"));
 			}else{
-				result.put("istrue", false);
-				result.put("flag", "re");
+				result = false;
 			}
 			return result;
 		}
@@ -178,24 +171,28 @@ public class BusController {
 	@ResponseBody
 	@RequestMapping(value = "cancleBusTicket", method=RequestMethod.GET)
 	public boolean cancleBusTicket(String cardno, String terminal){
-		//terminal 매개변수로 db에서 kobus인지 아닌지 확인해서 밑에 if안 terminal이랑 교체해야함.
-		
-		
-		if(terminal.equals("kobus")){
-			return ebn.cancleTicket2(cardno);
-		}else{
 			//매개변수로 예약번호 넘김.
 			//디비에서 꺼내서 전달.
 			if(ebn.cancleTicket(cardno,"예약번호 넘기기.")){
 				//디비에서 일정 삭제 처리(삭제플래그 업데이트)
-				
 				return true;
 			}else{
 				return false;
 			}
-		}
 	}
 	
-	
+	@ResponseBody
+	@RequestMapping(value = "cancleKOBUS", method=RequestMethod.GET)
+	public boolean cancleKOBUS(int scno, String cardno, String startdate, 
+			String time, String area, String year, String month){
+		if(ebn.cancleTicket2(cardno, startdate, time, area, year, month)){
+			if(diaryDAO.deleteDiary(scno)==1){
+				return true;
+			}
+		}
+		return false;
+		
+			
+	}
 	
 }

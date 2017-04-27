@@ -55,7 +55,7 @@ public class TrainNavigator {
 		driver.findElement(By.id("get")).sendKeys(area2);
 	}
 	
-	public void setDate(String date){
+	public ArrayList<String> setDate(String date){
 		driver.switchTo().window(this.getHandle());
 		ArrayList<WebElement> year = (ArrayList<WebElement>) driver.findElement(By.id("s_year")).findElements(By.tagName("option"));
 		ArrayList<WebElement> month = (ArrayList<WebElement>) driver.findElement(By.id("s_month")).findElements(By.tagName("option"));
@@ -87,6 +87,17 @@ public class TrainNavigator {
 		}
 		
 		driver.findElement(By.className("btn_inq")).findElement(By.tagName("a")).click();
+		
+		
+		ArrayList<String> timeList = new ArrayList<>();
+		//시간가져오기
+		ArrayList<WebElement> trList = (ArrayList<WebElement>) driver.findElements(By.cssSelector("table#tableResult tbody tr"));
+		for (WebElement webElement : trList) {
+			timeList.add(webElement.findElements(By.className("td")).get(2).getText().trim()+"/"+webElement.findElements(By.className("td")).get(3).getText().trim());
+		}
+		
+		return timeList;
+		
 	}
 	
 	public void setPeople(String count){

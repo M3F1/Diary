@@ -236,7 +236,7 @@ public class CGVNavigator {
 		driver.switchTo().window(this.getHandle());
 		driver.switchTo().frame("ticket_iframe");
 		driver.findElement(By.cssSelector("div.group.adult li[data-count='"+humanCount+"']")).click();
-		driver.findElement(By.cssSelector("div.block_wrap > span.seat_block.block1.enabled input")).click();
+//		driver.findElement(By.cssSelector("div.block_wrap > span.seat_block.block1.enabled input")).click();
 		HashMap<String,Object> result = new HashMap<String, Object>();
 		result.put("tag", js.executeScript("return document.getElementById('seats_list').outerHTML;"));
 		result.put("count", humanCount);
@@ -325,18 +325,18 @@ public class CGVNavigator {
 		driver.findElement(By.id("tnb_step_btn_right")).click();
 		
 		try {
-			Thread.sleep(1200);
+			Thread.sleep(1100);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
 		
 		WebElement popup = driver.findElement(By.cssSelector(".ft_layer_popup.popup_reservation_check"));
-		try {
-			Thread.sleep(700);
+	/*	try {
+			Thread.sleep(500);
 		} catch (InterruptedException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
-		}
+		}*/
 		popup.findElement(By.id("agreementAll")).click();
 		popup.findElement(By.id("resvConfirm")).click();
 		popup.findElement(By.cssSelector("div.ft > .reservation")).click();
@@ -396,7 +396,8 @@ public class CGVNavigator {
 		for(int i=0 ;i<reserveList.size() ; i++){
 			if(reserveList.get(i).findElement(By.cssSelector("dt a")).getText().contains(mvname.substring(0, 2))){
 				if(reserveList.get(i).findElements(By.tagName("dd")).get(1).findElement(By.tagName("strong")).getText().contains(mvtime)){
-					btn.get(i).findElements(By.tagName("button")).get(2).click();
+					driver.findElement(By.className("set-btn")).findElements(By.tagName("button")).get(2).click();
+					//btn.get(i).findElements(By.tagName("button")).get(2).click();
 					Alert alert = driver.switchTo().alert();
 					if(alert!=null){
 						alert.accept();
@@ -406,7 +407,6 @@ public class CGVNavigator {
 				}
 			}
 		}
-		
 		return false;
 	}
 

@@ -41,13 +41,4 @@ public class TrainController {
 		tn.setPeople(count);
 	}
 	
-	@RequestMapping(value = "test3", method=RequestMethod.GET)
-	public String test3(){
-		return "test3";
-	}
-	
-	@RequestMapping(value = "test4", method=RequestMethod.GET)
-	public String test4(){
-		return "test4";
-	}
 }

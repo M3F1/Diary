@@ -51,11 +51,7 @@ public class MemberController {
 		mail.test(member.getUser_id());
 
 		int result = dao.joinMember(member);
-		if (result > 0) {
-			return "/smart";
-		} else {
 			return "redirect:/";
-		}
 	}
 
 	@RequestMapping(value = "authenticated", method = RequestMethod.GET)
@@ -77,15 +73,35 @@ public class MemberController {
 		return member;
 	}
 
-	@ResponseBody
 	@RequestMapping(value = "addFriend", method = RequestMethod.GET)
-	public String addFriend(int user_frno, HttpSession session) {
+	public String addFriend(String user_id, HttpSession session) {
 
-		String id = (String) session.getAttribute("use_id");
-		Member m = dao.selectMember(id);
-		int result = dao.addFriend(m.getUser_no_pk(), user_frno);
+		String my_id = (String) session.getAttribute("user_id");
+
+		Member me = dao.selectMember(my_id);
+		Member frnd = dao.selectMember(user_id);
+
+		ArrayList<HashMap<String, Object>> frlist = dao.friendList(me.getUser_no_pk());
+
+		int user_no_fk = me.getUser_no_pk();
+		int user_frno = frnd.getUser_no_pk();
+
+/*		boolean flag = false;
+		for (HashMap<String, Object> hashMap : frlist) {
+
+			for (Object a : hashMap.values()) {
+				if (user_frno == Integer.parseInt(a.toString())) {
+					flag = true;
+				}
+			}
+		}
+
+		if (flag) {
+			return "mypage";
+		}*/
+			int result = dao.addFriend(user_no_fk, user_frno);
 	
-		return "result";
+		return "mypage";
 	}
 
 	@RequestMapping(value = "login", method = RequestMethod.POST)
@@ -93,7 +109,6 @@ public class MemberController {
 
 		Member member = dao.selectMember(id);
 		int aflag = member.getUser_aflag();
-		System.out.println(aflag);
 		if (aflag == 0)
 			return "redirect:/";
 
@@ -105,7 +120,7 @@ public class MemberController {
 				session.setAttribute("movieList", movieList);
 				session.setAttribute("user_id", member.getUser_id());
 				session.setAttribute("mvset", 1);
-				return "diary";
+				return "redirect:diary";
 			} else {
 				return "redirect:/";
 			}

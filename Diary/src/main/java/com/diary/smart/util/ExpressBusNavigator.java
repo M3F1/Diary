@@ -5,6 +5,8 @@ import static org.hamcrest.CoreMatchers.nullValue;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.Alert;
@@ -69,7 +71,6 @@ public class ExpressBusNavigator {
 	public void setStartingPoint(String area){
 		boolean flag = false;
 		driver.switchTo().window(this.getHandle());
-		System.out.println(this.getHandle());
 		this.setBrowserEASYTICKET();
 		ArrayList<WebElement> terminal = (ArrayList<WebElement>) driver.findElement(By.id("searchStTermNbr")).findElements(By.tagName("option"));
 		
@@ -372,7 +373,7 @@ public class ExpressBusNavigator {
 		}
 		ArrayList<String> imsi = new ArrayList<>(Arrays.asList(arrayList.get((arrayList.size()-1)).split(",")));
 		ArrayList<String> result = new ArrayList<>();
-		result.add(imsi.get(2).substring(0, 4)+"/"+imsi.get(2).substring(4, 6)+"/"+imsi.get(2).substring(6, 8)+" "+imsi.get(2).substring(8, 10)+":"+imsi.get(2).substring(10, 12));
+		result.add(imsi.get(2).substring(0, 4)+"."+imsi.get(2).substring(4, 6)+"."+imsi.get(2).substring(6, 8)+" "+imsi.get(2).substring(8, 10)+":"+imsi.get(2).substring(10, 12));
 		result.add(imsi.get(0)+" → "+imsi.get(1));
 		result.add(imsi.get(3));
 		result.add(seatNum);
@@ -458,6 +459,7 @@ public class ExpressBusNavigator {
 					return false;
 				}else{
 					alert.accept();
+					this.setBrowserKOBUS();		
 					return true;
 				}
 			}
@@ -534,12 +536,61 @@ public class ExpressBusNavigator {
 		}
 	}
 
-	public boolean cancleTicket2(String cardno) {
-		// TODO Auto-generated method stub
+	public boolean cancleTicket2(String cardno, String startdate, String time,
+			String area, String year, String month) {
+		driver.switchTo().window(this.getHandle());
+		driver.get("https://www.kobus.co.kr/web/04_inquiry/inquiry01.jsp");
+		driver.findElement(By.cssSelector("input#regForm01")).clear();
+		driver.findElement(By.cssSelector("input#regForm01")).sendKeys(cardno);
+		driver.findElement(By.cssSelector("input[alt='KOBUS 예약조회']")).click();
+		Set<String> handles = driver.getWindowHandles();
+		Iterator<String> windowIterator = handles.iterator();
+		  while(windowIterator.hasNext()) { 
+		    String windowHandle = windowIterator.next(); 
+		    if(!windowHandle.equals(this.getHandle())){
+		    	driver.switchTo().window(windowHandle);
+		    	break;
+		    }
+		  }
+		
+		ArrayList<WebElement> reserveList = (ArrayList<WebElement>) driver.findElements(By.className("disabled01"));
+		for (WebElement webElement : reserveList) {
+			if(webElement.findElement(By.cssSelector("input[name='inTimDte']")).getAttribute("value").equals(startdate) && webElement.findElement(By.cssSelector("input[name='inTimTim']")).getAttribute("value").equals(time)){
+				webElement.findElement(By.cssSelector("td.last input")).click();
+				driver.findElement(By.cssSelector("a[title='예약취소']")).click();
+				break;
+			}
+		}//for
+		
+		ArrayList<WebElement> yearList = (ArrayList<WebElement>) driver.findElements(By.cssSelector("#sig02 select[name='pVIL_YEAR'] option"));
+		ArrayList<WebElement> monthList = (ArrayList<WebElement>) driver.findElements(By.cssSelector("#sig02 select[name='pVIL_MONTH'] option"));
+		
+		for (WebElement webElement : yearList) {
+			if(webElement.getAttribute("value").equals(year)){
+				webElement.click();
+				break;
+			}
+		}
+		for (WebElement webElement : monthList) {
+			if(webElement.getAttribute("value").equals(month)){
+				webElement.click();
+				break;
+			}
+		}
+		
+		driver.findElement(By.cssSelector("div#sig02 p.btnBlock a[title='예약취소']")).click();
+		
+		Alert alert = driver.switchTo().alert();
+		if(alert!=null){
+			alert.accept();
+			driver.close();
+			driver.switchTo().window(this.getHandle());
+			driver.get("http://www.kobus.co.kr/web/03_reservation/reservation01.jsp");
+			this.setNow("kobus");
+			return true;
+		}
 		return false;
 	}
-	
-	
 	
 	
 }

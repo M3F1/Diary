@@ -19,6 +19,7 @@
 <script src="resources/js/jquery-3.1.1.js"></script>
 <script src="resources/js/bootstrap.min.js"></script>
 <script src="resources/js/ruxen.js"></script>
+<script src="resources/js/jquery.babypaunch.spinner.js"></script>
 <script type="text/javascript">
 $(document).ready(function() {
 	if(${mvset!=0}){
@@ -34,6 +35,12 @@ $(document).ready(function() {
 <title>My Diary</title>
 </head>
 <body>
+<div id="spin" data-spinner-layer="" data-spinner-body="visible" style="display: none;"><div data-spinner-bar=""><i class="fa fa-repeat" style="color: gray;"></i></div></div>
+<!-- 		<div class="loader-wrapper"> -->
+<!-- 			<div class="loader"></div> -->
+<!-- 			<div class="loader-section section-left"></div> -->
+<!-- 			<div class="loader-section section-right"></div> -->
+<!-- 		</div> -->
 	<!-- friendList GET -->
 	<input type="hidden" id="friendList" value='${friendList}'>
 	<!-- scheduleList GET -->
@@ -377,7 +384,7 @@ $(document).ready(function() {
 							name="bitrhmv" placeholder="예)990201">
 					</div>
 					<div class="form-group">
-						<input type="button" class="form-control" onclick="return payment();" value="예매">
+						<input type="button" class="form-control" id='mvpaymentbtn' onclick="return payment();" value="예매">
 					</div>
 				</form>
 			</div>
@@ -458,6 +465,7 @@ $(document).ready(function() {
 						<h3 id="busprice"></h3>
 					</div>
 					<div class="form-group">
+						<input type="hidden" id="busflag" value=''/>
 						<input type="button" class="form-control" onclick="return check_form()" value="확인">
 					</div>					
 				</form>
@@ -492,22 +500,21 @@ $(document).ready(function() {
 					</div>
 					<div class="form-group">
 						<label for="validdate">유효기간</label> <select id="validyear" name="validyear">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-							<option value='2017'>2017</option> <option value='2018'>2018</option> <option value='2019'>2019</option>
-							<option value='2020'>2020</option> <option value='2021'>2021</option> <option value='2022'>2022</option>
-							<option value='2023'>2023</option> <option value='2024'>2024</option> <option value='2025'>2025</option>
-							<option value='2026'>2026</option> <option value='2027'>2027</option> <option value='2028'>2028</option>
-							<option value='2029'>2029</option> <option value='2030'>2030</option> <option value='2031'>2031</option>
-							<option value='2032'>2032</option> <option value='2033'>2033</option> <option value='2034'>2034</option>
-							<option value='2035'>2035</option> <option value='2036'>2036</option>
-							</select> 년
-							&nbsp;&nbsp;&nbsp;
+							<option value='2017'>2017년</option> <option value='2018'>2018년</option> <option value='2019'>2019년</option>
+							<option value='2020'>2020년</option> <option value='2021'>2021년</option> <option value='2022'>2022년</option>
+							<option value='2023'>2023년</option> <option value='2024'>2024년</option> <option value='2025'>2025년</option>
+							<option value='2026'>2026년</option> <option value='2027'>2027년</option> <option value='2028'>2028년</option>
+							<option value='2029'>2029년</option> <option value='2030'>2030년</option> <option value='2031'>2031년</option>
+							<option value='2032'>2032년</option> <option value='2033'>2033년</option> <option value='2034'>2034년</option>
+							<option value='2035'>2035년</option> <option value='2036'>2036년</option></select>
+							
 							<select id="validmonth" name="validmonth">
-							<option value='01'>1</option> <option value='02'>2</option> <option value='03'>3</option>
-							<option value='04'>4</option> <option value='05'>5</option> <option value='06'>6</option>
-							<option value='07'>7</option> <option value='08'>8</option> <option value='09'>9</option>
-							<option value='10'>10</option> <option value='11'>11</option> <option value='12'>12</option>
-							</select> 월
-					</div>
+							<option value='01'>1월</option> <option value='02'>2월</option> <option value='03'>3월</option>
+							<option value='04'>4월</option> <option value='05'>5월</option> <option value='06'>6월</option>
+							<option value='07'>7월</option> <option value='08'>8월</option> <option value='09'>9월</option>
+							<option value='10'>10월</option> <option value='11'>11월</option> <option value='12'>12월</option>
+							</select> 
+							</div>
 					<div class="form-group">
 						<label for="cardno">생년월일</label> <input type="text" class="form-control" id="birth"
 							name="bitrh" placeholder="예)990201">
@@ -520,5 +527,48 @@ $(document).ready(function() {
 		</div>
 	</div>
 </div>
+
+<!-- 카드번호 입력 모달(버스 취소시) -->
+<div class="modal fade" id="busCancleModal" tabindex="-1" role="dialog"
+	aria-labelledby="myModalLabel">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<h4 class="modal-title" id="myModalLabel">카드번호입력</h4>
+			</div>
+			<div class="modal-body">
+					<div class="form-group">
+						<label for="id">CardNo</label> <input type="text" class="form-control" id="buscancle_card_no"
+							name="buscancle_card_no" placeholder="숫자만 입력하세요. 예)0000111122223333">
+							<input type="hidden" id="buscancleFlag" name="buscancleFlag" value=''/>
+					</div>
+					<div class="form-group">
+						<label for="validdate">유효기간</label> <select id="cvalidyear" name="validyear">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+							<option value='2017'>2017년</option> <option value='2018'>2018년</option> <option value='2019'>2019년</option>
+							<option value='2020'>2020년</option> <option value='2021'>2021년</option> <option value='2022'>2022년</option>
+							<option value='2023'>2023년</option> <option value='2024'>2024년</option> <option value='2025'>2025년</option>
+							<option value='2026'>2026년</option> <option value='2027'>2027년</option> <option value='2028'>2028년</option>
+							<option value='2029'>2029년</option> <option value='2030'>2030년</option> <option value='2031'>2031년</option>
+							<option value='2032'>2032년</option> <option value='2033'>2033년</option> <option value='2034'>2034년</option>
+							<option value='2035'>2035년</option> <option value='2036'>2036년</option>
+							</select>
+							<select id="cvalidmonth" name="validmonth">
+							<option value='01'>1월</option> <option value='02'>2월</option> <option value='03'>3월</option>
+							<option value='04'>4월</option> <option value='05'>5월</option> <option value='06'>6월</option>
+							<option value='07'>7월</option> <option value='08'>8월</option> <option value='09'>9월</option>
+							<option value='10'>10월</option> <option value='11'>11월</option> <option value='12'>12월</option>
+							</select>
+					</div>
+					<div class="form-group">
+						<input type="button" class="form-control" onclick="return kobusCancle();" value="확인">
+					</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- LOGIN MODAL END -->
 </body>
 </html>
