@@ -5,9 +5,9 @@ $(function () {
 		/*---------- LOADING EFFECT START ----------*/
 		setTimeout(function () {
 			$('body').addClass('loaded');
-			$('h1', '.loaded-class-color').css('color', 'black');
+//			$('h1', '.loaded-class-color').css('color', 'black');
 		}, 500);
-
+		
 		/*---------- SLIDER CONFIG ----------*/
 		$(function () {
 			$(window).resize(function () {

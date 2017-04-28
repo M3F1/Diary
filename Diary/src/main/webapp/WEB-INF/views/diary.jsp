@@ -35,12 +35,12 @@ $(document).ready(function() {
 <title>My Diary</title>
 </head>
 <body>
-<div id="spin" data-spinner-layer="" data-spinner-body="visible" style="display: none;"><div data-spinner-bar=""><i class="fa fa-repeat" style="color: gray;"></i></div></div>
-<!-- 		<div class="loader-wrapper"> -->
-<!-- 			<div class="loader"></div> -->
-<!-- 			<div class="loader-section section-left"></div> -->
-<!-- 			<div class="loader-section section-right"></div> -->
-<!-- 		</div> -->
+	<button onclick="spinnerStart();">spinnerStart</button>
+	<div class="loader-wrapper">
+		<div class="loader"></div>
+		<div class="loader-section section-left"><button onclick="spinnerEnd();">spinnerend</button></div>
+		<div class="loader-section section-right"></div>
+	</div>
 	<!-- scheduleList GET -->
 	<input type="hidden" id="scheduleList" value='${scheduleList}' />
 	<input type="hidden" id="movieListValue" value='' />

@@ -108,12 +108,17 @@
 						<input type="text" class="form-control" name="user_phone"
 							id="user_phone" placeholder="cellphone number">
 					</div>
-					<input type="text" id="sample6_postcode" placeholder="postcode">
-					<input type="button" onclick="sample6_execDaumPostcode()"
-						value="우편번호 찾기"><br> <input type="text"
-						name="user_add1" id="user_add1" placeholder="address"><br>
-					<br> <input type="submit" class="form-control" id="joinBtn"
-						value="가입">
+					<div class="form-group form-inline">
+						<input type="text" class="form-control" id="sample6_postcode" placeholder="postcode">
+						<input type="button" onclick="sample6_execDaumPostcode()"
+							value="우편번호 찾기"><br>
+					</div>
+					<div class="form-group">
+						<input type="text"
+							name="user_add1" id="user_add1" class="form-control" placeholder="address"><br>
+						<br> <input type="submit" class="form-control" id="joinBtn"
+							value="가입">
+					</div>
 				</form>
 			</div>
 		</div>

@@ -29,22 +29,6 @@ var easybusscno = new Array();
 var trainscno = new Array();
 
 $(document).ready(function () {
-	$("#spin").spinner({
-		color: "black"
-		, background: "rgba(255,255,255,0.5)"
-		, html: "<i class='fa fa-repeat' style='color: steelblue;'></i>"
-		});
-	
-	//영화취소 spinner loader
-	$(".mvcancleBTN").click(function(){
-		$("#spin").show();
-	});
-	
-	//영화예매 spinner loader
-	$("#mvpaymentbtn").click(function(){
-		$("#spin").show();
-	});
-	
 	// diary 접속 시 필요한 서버 요청
 	sendRequest();
 	// 달력 출력
@@ -80,6 +64,22 @@ $(document).ready(function () {
 		dateInitialize();
 	});
 });
+
+function spinnerStart() {
+	$("body").removeClass("loaded");
+	$(".loader-section").css("opacity", "0");
+	$(".loader-section").fadeTo("slow", "0.5");
+	$(".calendar").fadeTo("slow", "0.5");
+}
+
+function spinnerEnd() {
+	$(".loader-wrapper .loader-section").css("-webkit-transform", "none");
+	$(".loader-wrapper .loader-section").css("-ms-transform", "none");
+	$(".loader-wrapper .loader-section").css("transform", "none");
+	$(".loader-section").fadeTo("slow", "1");
+	$(".calendar").fadeTo("slow", "1");
+	$("body").addClass("loaded");
+}
 
 function sendRequest() {
 	$.ajax({
@@ -288,7 +288,9 @@ function acceptFriend(key, value) {
 			
 			var cnt = parseInt($(".requestNum").html());
 			
-			if (cnt != 0) {
+			if (cnt == 1) {
+				$(".requestNum").html("");
+			} else {
 				$(".requestNum").html(cnt - 1);
 			}
 			
@@ -312,7 +314,9 @@ function rejectFriend(key, value) {
 			
 			var cnt = parseInt($(".requestNum").html());
 			
-			if (cnt != 0) {
+			if (cnt == 1) {
+				$(".requestNum").html("");
+			} else {
 				$(".requestNum").html(cnt - 1);
 			}
 		},

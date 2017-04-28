@@ -372,11 +372,6 @@ a img.aligncenter {
 
 .loaded .loader-wrapper {
 	visibility:hidden;
-	-webkit-transform:translateY(-100%);
-	-ms-transform:translateY(-100%);
-	transform:translateY(-100%);
-	-webkit-transition:all 0.3s 1s ease-out;  
-	transition:all 0.3s 1s ease-out;
 }
 
 .no-js .loader-wrapper {
@@ -3906,13 +3901,13 @@ nav.category-navigation {
 
 .title {
 	position: relative;
-	top: 34%;
+	top: 34vh;
 	text-align: center;
 }
 
 .btnGroup {
 	position: relative;
-	top: 38%;
+	top: 40vh;
 	z-index: 1;
 	text-align: center;
 }
