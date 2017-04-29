@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.diary.smart.dao.DiaryDAO;
 import com.diary.smart.util.TrainNavigator;
-//@Controller
+@Controller
 public class TrainController {
 	@Autowired
 	private DiaryDAO dao;

@@ -428,7 +428,7 @@ function movieList() {
 //	/* 영화 목록 받는 부분 */
 	var html = $("#movieListValue").val();
 	 $(".iconList > a:nth-child(1) > i").attr("data-toggle", "popover");
-	 $(".iconList > a:nth-child(1) > i").attr("title", "영화 목록");
+	 $(".iconList > a:nth-child(1) > i").attr("title", "<img src='resources/img/icon/show.png'>");
 	 $(".iconList > a:nth-child(1) > i").attr("data-content", html);
 	 $(".iconList > a:nth-child(1) > i").attr("data-html", "true");
 	 $(".iconList > a:nth-child(1) > i").attr("data-placement", "bottom");
@@ -470,11 +470,11 @@ function movie() {
 		              }
 		           }); //each
 		           html+='</select>';
-		           html +='<input type="button" class="form-control" value="선택" onclick="settheater()">';
+		           html +='<input type="image" img src="resources/img/icon/right-arrow.png" class="form-control" value="선택" onclick="settheater();return false;">';
 		           html+='</form>';
 		           if(movieflag!=1){
 				    	$(".write").attr("data-toggle", "popover");
-				     	$(".write").attr("title", "영화관 목록");
+				     	$(".write").attr("title", "<img src='resources/img/icon/theater.png'>");
 				     	$(".write").attr("data-content", html);
 				     	$(".write").attr("data-html", "true");
 				     	$(".write").attr("data-placement", "bottom");
@@ -503,11 +503,11 @@ function movie() {
 			            html+='<option>'+item+'</option>';
 			      }); //each
 			       html+='</select>';
-			       html +='<input type="button" class="form-control" value="선택" onclick="settime()">';
+			       html +='<input type="image" img src="resources/img/icon/right-arrow.png" class="form-control" value="선택" onclick="settime();return false;">';
 			       html+='</form>';
 			       if(movieflag!=1){
 					 $(".write").attr("data-toggle", "popover");
-					 $(".write").attr("title", "영화 시간");
+					 $(".write").attr("title", "<img src='resources/img/icon/time.png'>");
 					 $(".write").attr("data-content", html);
 					 $(".write").attr("data-html", "true");
 					 $(".write").attr("data-placement", "bottom");
@@ -529,10 +529,10 @@ function movie() {
 			html+="<option>"+i+"</option>"
 		}
 		html +='</select>';
-		html +='<input type="button" class="form-control" value="선택" onclick="getseat()">';
+				html +='<input type="image" img src="resources/img/icon/right-arrow.png" class="form-control" value="선택" onclick="getseat();return false;">';
 		html +='</form>';
 		$(".write").attr("data-toggle", "popover");
-		$(".write").attr("title", "인원");
+		$(".write").attr("title", "<img src='resources/img/icon/people.png'>");
 		$(".write").attr("data-content", html);
 		$(".write").attr("data-html", "true");
 		$(".write").attr("data-placement", "bottom");
@@ -590,11 +590,12 @@ function bus() {
 			         });    
 	           	}
 	           	html +='</select>';
-	           	html +='<input type="button" class="form-control" value="선택" onclick="selectBusArea()">';
+	           	//html +='<input type="button" class="form-control" value="선택" onclick="selectBusArea()">';
+	           	html +='<input type="image" img src="resources/img/icon/right-arrow.png" class="form-control" value="선택" onclick="selectBusArea();return false;">';
 	    		html +='</form>';
 	    		if(movieflag!=1){
 	    			$(".write").attr("data-toggle", "popover");
-	    			$(".write").attr("title", "터미널 목록");
+	    			$(".write").attr("title", "<img src='resources/img/icon/departure.png'>");
 	    			$(".write").attr("data-content", html);
 	    			$(".write").attr("data-html", "true");
 	    			$(".write").attr("data-placement", "bottom");
@@ -646,11 +647,12 @@ function bus() {
 				         });    
 		           	}
 		           	html +='</select>';
-		           	html +='<input type="button" class="form-control" value="선택" onclick="selectBusArea2()">';
+		           	//html +='<input type="button" class="form-control" value="선택" onclick="selectBusArea2()">';
+		           	html +='<input type="image" img src="resources/img/icon/right-arrow.png" class="form-control" value="선택" onclick="selectBusArea2();return false;">';
 		    		html +='</form>';
 		    		if(movieflag!=1){
 		    			$(".write").attr("data-toggle", "popover");
-		    			$(".write").attr("title", "터미널 목록");
+		    			$(".write").attr("title", "<img src='resources/img/icon/arrival.png'>");
 		    			$(".write").attr("data-content", html);
 		    			$(".write").attr("data-html", "true");
 		    			$(".write").attr("data-placement", "bottom");
@@ -681,29 +683,20 @@ function bus() {
                date : dateNow
             },
             success : function(json) {
-            	html += '<table border="0">';
-            	html+='<strong>출발일시</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>도착일시</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>출발터미널</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>도착터미널</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>버스등급</strong>';
-            	html +='</table>';	
             	if(json.response.body.items.item==null){
             		alert("검색결과 없음");
             	}else{
+            		html += '<select multiple id="busInfoSelect">';
             	 $.each(json.response.body.items.item,function(i,item){
-            		 
             		 busGrade = item.gradeNm;
             		 if(i%2==0){
-	            		 html+= "<span id='span"+i+"'><a href='javascript:selectBus("+i+','+item.depPlandTime+','+item.arrPlandTime+")' id='a"+i+"'><h4>"+item.depPlandTime.toString().substring(4,6)+"/"+item.depPlandTime.toString().substring(6,8)+" "+
-	            		 item.depPlandTime.toString().substring(8,10)+":"+item.depPlandTime.toString().substring(10,12)+" "+
-	            		 item.arrPlandTime.toString().substring(8,10)+":"+item.arrPlandTime.toString().substring(10,12)+" "+
-	//            		 item.depPlaceNm.substring(0,3)+"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"+item.arrPlaceNm.substring(0,3)+"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"+item.gradeNm+"</h4></a></span><br>";
-	            		 item.depPlaceNm+" "+item.arrPlaceNm+" "+item.gradeNm+" "+item.charge+"원"+"</h4></a></span><br>";
+            			 html+="<option id='option"+i+"' value='"+item.depPlaceNm+"/"+item.arrPlaceNm+"/"+item.depPlandTime+"/"+item.arrPlandTime+"/"+item.gradeNm+"/"+item.charge+"원"+"'>"+item.depPlandTime.toString().substring(8,10)+":"+item.depPlandTime.toString().substring(10,12)+"~"+ item.arrPlandTime.toString().substring(8,10)+":"+item.arrPlandTime.toString().substring(10,12)+" "+item.gradeNm+" "+item.charge+"원"+"</option>";
             		 }
 	               });    //each
+            	 html +='<input type="image" img src="resources/img/icon/right-arrow.png" class="form-control" value="선택" onclick="selectBus();return false;">';
             	 	$("#busInformation").html(html);
  					$('div#busInfoModal').modal();
             	}//if else
-//            	html +='<div class="form-group">';
-//				html +='<input type="button" class="form-control" onclick="return selectBus();" value="선택">'
-//				html +='</div>';
             },
             error : function(err) {
               // alert("에러");
@@ -720,10 +713,10 @@ function bus() {
 			html+="<option>"+i+"</option>"
 		}
 		html +='</select>';
-		html +='<input type="button" class="form-control" value="선택" onclick="showBusSeat()">';
+		html +='<input type="image" img src="resources/img/icon/right-arrow.png" class="form-control" value="선택" onclick="showBusSeat();return false;">';
 		html +='</form>';
 		$(".write").attr("data-toggle", "popover");
-		$(".write").attr("title", "인원");
+		$(".write").attr("title", "<img src='resources/img/icon/people.png'>");
 		$(".write").attr("data-content", html);
 		$(".write").attr("data-html", "true");
 		$(".write").attr("data-placement", "bottom");
@@ -762,10 +755,11 @@ function train() {
 			html+="<option>"+i+"</option>"
 		}
 		html +='</select>';
-		html +='<input type="button" class="form-control" value="선택" onclick="showTrainTime()">';
+		//html +='<input type="button" class="form-control" value="선택" onclick="showTrainTime()">';
+		html +='<input type="image" img src="resources/img/icon/right-arrow.png" class="form-control" value="선택" onclick="showTrainTime();return false;">';
 		html +='</form>';
 		$(".write").attr("data-toggle", "popover");
-		$(".write").attr("title", "인원");
+		$(".write").attr("title", "<img src='resources/img/icon/people.png'>");
 		$(".write").attr("data-content", html);
 		$(".write").attr("data-html", "true");
 		$(".write").attr("data-placement", "bottom");
@@ -774,7 +768,6 @@ function train() {
 	
 	// 기차 시간 선택 시 처리 부분
 	var trainTime = function () {
-		console.log("111");
 		var html="";
 		html += '<form>';
 		html += '<select multiple id="trainTimeSelect">';
@@ -789,11 +782,11 @@ function train() {
 			}
 		}
 		html +='</select>';
-		html +='<input type="button" class="form-control" value="선택" onclick="showTimeModal()">';
+		//html +='<input type="button" class="form-control" value="선택" onclick="showTimeModal()">';
+		html +='<input type="image" img src="resources/img/icon/right-arrow.png" class="form-control" value="선택" onclick="showTimeModal();return false;">';
 		html +='</form>';
-		console.log("222");
 		$(".write").attr("data-toggle", "popover");
-		$(".write").attr("title", "출발시간 선택");
+		$(".write").attr("title", "<img src='resources/img/icon/departure.png'>");
 		$(".write").attr("data-content", html);
 		$(".write").attr("data-html", "true");
 		$(".write").attr("data-placement", "bottom");
@@ -857,7 +850,7 @@ function dateInitialize() {
 function lastMonth() {
 	var tempYear = dt.getFullYear();
 	var tempMonth = dt.getMonth();
-	
+
 	dt.setMonth(dt.getMonth() - 1);
 	var html = $(".item:first-child").html();
 	
@@ -898,7 +891,7 @@ function lastMonth() {
 function nextMonth() {
 	var tempYear = dt.getFullYear();
 	var tempMonth = dt.getMonth();
-	
+
 	dt.setMonth(dt.getMonth() + 1);
 	var html = $(".item:last-child").html();
 	
@@ -918,7 +911,7 @@ function nextMonth() {
 		'<span id="' + padDigits((dt.getMonth() + 1), 2) + '">' + padDigits((dt.getMonth() + 1), 2) + '</span>');
 
 	html = "<div class='item'>" + html + "</div>";
-	
+
 	// 현재 item에서 앞에 item이 존재하지 않는 경우
 	if ($(".item.active").index(".item") == $(".item").length - 1) {
 		$(".item:last-child").after(html);
@@ -948,7 +941,7 @@ function calendarHtml(date) {
 
 	var html = "<table class='table borderless'>";
 	html += "<tr class='text-center'>";
-	html += "<td>일</td><td>월</td><td>화</td><td>수</td><td>목</td><td>금</td><td>토</td>";
+	html += "<td>SUN</td><td>MON</td><td>TUE</td><td>WED</td><td>THU</td><td>FRI</td><td>SAT</td>";
 	html += "</tr>";
 
 	// 우선은 오늘 날짜 기준으로 설정
@@ -989,7 +982,6 @@ function calendarHtml(date) {
 	html += "</table>";
 
 	date.setMonth(date.getMonth() - 1);
-	console.log(date);
 
 	return html;
 }
@@ -1009,20 +1001,27 @@ function selectedDate(date) {
 function makePopover() {
 	// scheduleList 가져오기
 	scheduleList = JSON.parse($("#scheduleList").val());
-
 	
 	var param1 ="";
 	var param2 ="";
+	
+	var array1 = todayWeather();
+	var array2 = weekWeather();
+	
 	var html = new Array(); // 일정 내용 및 날씨 넣는곳.
+	var weather = new Array(); // 일정 내용 및 날씨 넣는곳.
 	for (var i = 0; i < $("#" + dt.getFullYear() + "-" + (dt.getMonth() + 1) + " > table > tbody > tr > td div").length; i++) {
 		var p = $("#" + dt.getFullYear() + "-" + (dt.getMonth() + 1) + "> table > tbody > tr > td a").eq(i);
 		html[i]="";
+		weather[i]="";
 		/* 일정 가져오는 부분 */
+		/*html[i]+='<div class="left-box">'+dt.getFullYear() + '년 ' + (dt.getMonth() + 1) + '월 ' + p.html() + '일 일정</div>';*/
 		$.each(scheduleList, function(key, value) {
 			if (p.parent().parent().attr("id") == value.SC_STDT) {
 				if(value.SC_FIN=='Y' && value.SC_DFLAG=='Y'){
 					p.attr("data-toggle", "popover");
-					p.attr("title", dt.getFullYear() + "년 " + (dt.getMonth() + 1) + "월 " + p.html() + "일 일정");
+					//p.attr("content", dt.getFullYear() + "년 " + (dt.getMonth() + 1) + "월 " + p.html() + "일 일정");
+					
 					markCircle(p.parent());
 					html[i]+='<table><tr><td>'+value.SC_CON.split("_")[0]+'</td>';
 					html[i]+='<td>'+value.SC_CON.split("_")[1]+'</td>';
@@ -1052,27 +1051,35 @@ function makePopover() {
 					}else{
 						html[i]+='</table>';
 					}
+					console.log(scheduleList);
+					p.attr("data-content", html[i]);
+					
 				}
 			}
 		});
-		/*
+		
 		// 날씨
-		$.each(todayWeather(), function(j,item){
+		$.each(array1, function(j,item){
 			
 			if (p.parent().parent().attr("id") == item.date) {
-				html[i]+=item.html;
+				weather[i]+=item.html;
+				weather[i]+='<div class="title-box">'+p.html()+'</div></div>';
+				p.attr("data-title", weather[i]);
 				p.attr("data-content", html[i]);
+				
 			}
 		 });
 		
-		$.each(weekWeather(), function(j,item){
+		$.each(array2, function(j,item){
 			if (p.parent().parent().attr("id") == item.date) {
-				html[i+3]="";
-				html[i+3]+=item.html;
+				weather[i+3]="";
+				weather[i+3]+=item.html;
+				weather[i+3]+='<div class="title-box">'+p.html()+'</div></div>';
+				p.attr("data-title", weather[i+3]);
 				p.attr("data-content", html[i+3]);
 			}
 		 });
-		*/
+		
 		
 		p.attr("data-html", "true");
 		p.attr("data-placement", "top");
@@ -1146,16 +1153,16 @@ function todayWeather() {
         },
         async : false,
         success : function(json) {
-
+        	console.log(json);
         	 $.each(json.weather.forecast3days,function(i,item){
         		
 
-        		 whtml += "<img src='resources/img/weather_icons/"+item.fcst3hour.sky.code4hour+".png' width='40px' height='40px'>"+item.fcst3hour.sky.name4hour+
-        		 		  "<br>temperature "+item.fcst3hour.temperature.temp4hour+"℃";
-        		 whtml1 +="<img src='resources/img/weather_icons/"+item.fcst3hour.sky.code25hour+".png' width='40px' height='40px'>"+item.fcst3hour.sky.name25hour+
- 		 				  "<br>temperature "+item.fcst3hour.temperature.temp25hour+"℃";
-        		 whtml2 += "<img src='resources/img/weather_icons/"+item.fcst3hour.sky.code49hour+".png' width='40px' height='40px'>"+item.fcst3hour.sky.name49hour+
- 		 				   "<br>temperature "+item.fcst3hour.temperature.temp49hour+"℃";
+        		 whtml += "<div class='backweather'  style = 'background-image:url(resources/img/weather_icons/"+item.fcst3hour.sky.code4hour+"b.png); background-size: 273px;'> '<img src='resources/img/weather_icons/"+item.fcst3hour.sky.code4hour+".png' width='40px' height='40px'>"+item.fcst3hour.sky.name4hour+
+        		 		  "     temperature "+item.fcst3hour.temperature.temp4hour+"℃";
+        		 whtml1 +="<div class='backweather'  style = 'background-image:url(resources/img/weather_icons/"+item.fcst3hour.sky.code25hour+"b.png); background-size: 273px;'> '<img src='resources/img/weather_icons/"+item.fcst3hour.sky.code25hour+".png' width='40px' height='40px'>"+item.fcst3hour.sky.name25hour+
+ 		 				  "     temperature "+item.fcst3hour.temperature.temp25hour+"℃";
+        		 whtml2 +="<div class='backweather'  style = 'background-image:url(resources/img/weather_icons/"+item.fcst3hour.sky.code49hour+"b.png); background-size: 273px;'> '<img src='resources/img/weather_icons/"+item.fcst3hour.sky.code49hour+".png' width='40px' height='40px'>"+item.fcst3hour.sky.name49hour+
+ 		 				  "     temperature "+item.fcst3hour.temperature.temp49hour+"℃";
         		 
         		 fdate = item.timeRelease.split(' ')[0].substr(0,8);
         		 date = parseInt(item.timeRelease.split(' ')[0].split('-')[2]);
@@ -1215,15 +1222,15 @@ function weekWeather() {
         	 $.each(json.weather.forecast6days,function(i,item){
         		
 
-        		 whtml3 += "<img src='resources/img/weather_icons/"+item.sky.pmCode3day+".png' width='40px' height='40px'>"+item.sky.pmName3day+"<br>" +
+        		 whtml3 += "<div class='backweather'  style = 'background-image:url(resources/img/weather_icons/"+item.sky.pmCode3day+"b.png); background-size: 273px;'> <img src='resources/img/weather_icons/"+item.sky.pmCode3day+".png' width='40px' height='40px'>"+item.sky.pmName3day+"<br>" +
         		 		"max :"+item.temperature.tmax3day+"℃   min :"+item.temperature.tmin3day+"℃";
-        		 whtml4 += "<img src='resources/img/weather_icons/"+item.sky.pmCode4day+".png' width='40px' height='40px'>"+item.sky.pmName4day+"<br>" +
+        		 whtml4 += "<div class='backweather'  style = 'background-image:url(resources/img/weather_icons/"+item.sky.pmCode4day+"b.png); background-size: 273px;'> <img src='resources/img/weather_icons/"+item.sky.pmCode4day+".png' width='40px' height='40px'>"+item.sky.pmName4day+"<br>" +
         		 		"max :"+item.temperature.tmax4day+"℃   min :"+item.temperature.tmin4day+"℃";;
-        		 whtml5 += "<img src='resources/img/weather_icons/"+item.sky.pmCode5day+".png' width='40px' height='40px'>"+item.sky.pmName5day+"<br>" +
+        		 whtml5 += "<div class='backweather'  style = 'background-image:url(resources/img/weather_icons/"+item.sky.pmCode5day+"b.png); background-size: 273px;'> <img src='resources/img/weather_icons/"+item.sky.pmCode5day+".png' width='40px' height='40px'>"+item.sky.pmName5day+"<br>" +
         		 		"max :"+item.temperature.tmax5day+"℃   min :"+item.temperature.tmin5day+"℃";;
-        		 whtml6 += "<img src='resources/img/weather_icons/"+item.sky.pmCode6day+".png' width='40px' height='40px'>"+item.sky.pmName6day+"<br>" +
+        		 whtml6 += "<div class='backweather'  style = 'background-image:url(resources/img/weather_icons/"+item.sky.pmCode6day+"b.png); background-size: 273px;'> <img src='resources/img/weather_icons/"+item.sky.pmCode6day+".png' width='40px' height='40px'>"+item.sky.pmName6day+"<br>" +
         		 		"max :"+item.temperature.tmax6day+"℃   min :"+item.temperature.tmin6day+"℃";;
-        		 whtml7 += "<img src='resources/img/weather_icons/"+item.sky.pmCode7day+".png' width='40px' height='40px'>"+item.sky.pmName7day+"<br>" +
+        		 whtml7 += "<div class='backweather'  style = 'background-image:url(resources/img/weather_icons/"+item.sky.pmCode7day+"b.png); background-size: 273px;'> <img src='resources/img/weather_icons/"+item.sky.pmCode7day+".png' width='40px' height='40px'>"+item.sky.pmName7day+"<br>" +
         		 		"max :"+item.temperature.tmax7day+"℃   min :"+item.temperature.tmin7day+"℃";;
         		
         		 fdate = item.timeRelease.split(' ')[0].substr(0,8);
@@ -1393,7 +1400,6 @@ function setSeat(num){
 						//seattext.push($(item).parent().parent().parent().parent().prev().prev().text());
 						check[flag++] = $(item).parent().parent().parent().parent().parent().index();
 						check[flag++] = Number($(item).text());
-						console.log(check);
 						if((num*2)==check.length){
 							if(confirm("예매 하시겠습니까?")){
 								$('div#wrap').modal('hide');
@@ -1619,40 +1625,39 @@ function selectBusArea2(){
 	inputText(dest);
 }
 
-function selectBus(index,param1,param2){
-//	console.log($("a#a"+index).text());
-	var selectInfo = $("a#a"+index).text();
-	selectBusInfo += ($("a#a"+index).text().split(" ")[3]+","+$("a#a"+index).text().split(" ")[4]+","+param1+","+$("a#a"+index).text().split(" ")[5]+","+$("a#a"+index).text().split(" ")[6]) ;
-	starttime = param1;
-	$.ajax({
-		type : "get",
-		url : "setBusdate",
-		data : {
-			date : param1
-		},
-		success : function(data){
-		},
-		error : function(e){
-			console.log(e);
-		}
-	});
-	$.ajax({
-		type : "get",
-		url : "setSeatGrade",
-		data : {
-			grade : busGrade
-		},
-		success : function(data){
-
-		},
-		error : function(e){
-			console.log(e);
-		}
-	});
-	$('div#busInfoModal').modal('hide');
-	$(".write").val(selectInfo);
-	showTextBlock();
-	inputText();
+	function selectBus(){
+		var selectInfo = $("#busInfoSelect option:selected").val();
+		selectBusInfo += (selectInfo.split("/")[0]+","+selectInfo.split("/")[1]+","+selectInfo.split("/")[2]+","+selectInfo.split("/")[4]+","+selectInfo.split("/")[5]) ;
+		starttime = selectInfo.split("/")[2];
+		$.ajax({
+			type : "get",
+			url : "setBusdate",
+			data : {
+				date : starttime
+			},
+			success : function(data){
+			},
+			error : function(e){
+				console.log(e);
+			}
+		});
+		$.ajax({
+			type : "get",
+			url : "setSeatGrade",
+			data : {
+				grade : busGrade
+			},
+			success : function(data){
+	
+			},
+			error : function(e){
+				console.log(e);
+			}
+		});
+		$('div#busInfoModal').modal('hide');
+		$(".write").val($("#busInfoSelect option:selected").text());
+		showTextBlock();
+		inputText();
 	
 	}
 
@@ -1738,7 +1743,6 @@ function fc_Check(box) {
 				check_seat = 0;
 				$('div#seatModal').modal('hide');
 				seatList.push(selectBusInfo);
-				console.log(seatList);
 				$.ajax({
 					type : "POST",
 					url : "setBusSeat",
@@ -1763,7 +1767,6 @@ function fc_Check(box) {
 	} else {
 		seatList.splice(check_seat-1,1);
 		check_seat = check_seat -1;
-		console.log(seatList);
 	}//if(box.checked....의 끝
 	
 	
@@ -1884,10 +1887,13 @@ function trainAreaSelect(param){
 		               });
 	           	}
 	           	html +='</select>';
-	           	html +='<input type="button" class="form-control" value="선택" onclick="'+param+'();">';
+	           	//html +='<input type="button" class="form-control" value="선택" onclick="'+param+'();">';
+	            html +='<input type="image" img src="resources/img/icon/right-arrow.png" class="form-control" value="선택" onclick="'+param+'();return false;">';
+	           	
+	           	
 	    		html +='</form>';
 	    			$(".write").attr("data-toggle", "popover");
-	    			$(".write").attr("title", "기차역 선택");
+	    			$(".write").attr("title", "<img src='resources/img/icon/train.png'>");
 	    			$(".write").attr("data-content", html);
 	    			$(".write").attr("data-html", "true");
 	    			$(".write").attr("data-placement", "bottom");

@@ -37,7 +37,7 @@ public class DiaryController {
 //		Member member = mdao.selectMember(id);
 		
 //		List<HashMap<String, Object>> scheduleList = dao.selectDiaryList(member.getUser_no_pk());
-		List<HashMap<String, Object>> scheduleList = dao.selectDiaryList(41);
+		List<HashMap<String, Object>> scheduleList = dao.selectDiaryList(1);
 		model.addAttribute("scheduleList", new Gson().toJson(scheduleList));
 /*		logger.info("2번 유저 테스트");
 //		String id = (String) session.getAttribute("user_id");

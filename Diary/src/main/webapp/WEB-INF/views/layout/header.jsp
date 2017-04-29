@@ -47,7 +47,7 @@
 					aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
-				<h4 class="modal-title" id="myModalLabel">Login</h4>
+				<h4 class="modal-title" id="myModalLabel"><img src='resources/img/icon/login.png' width='30px' height='30px'></h4>
 			</div>
 			<div class="modal-body">
 				<form action="login" method="POST">
@@ -61,7 +61,7 @@
 							class="form-control" id="pw" name="pw">
 					</div>
 					<div class="form-group">
-						<input type="submit" class="form-control" value="로그인">
+						<input type="submit" class="form-control" value="LOGIN">
 					</div>
 				</form>
 			</div>
@@ -79,7 +79,7 @@
 					aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
-				<h4 class="modal-title" id="myModalLabel">Sign Up</h4>
+				<h4 class="modal-title" id="myModalLabel"><img src='resources/img/icon/link.png' width='30px' height='30px'></h4>
 			</div>
 			<div class="modal-body">                                                                
 				<form action="signUp" method="post" onsubmit="return validationCheck()">
@@ -117,7 +117,7 @@
 						<input type="text"
 							name="user_add1" id="user_add1" class="form-control" placeholder="address"><br>
 						<br> <input type="submit" class="form-control" id="joinBtn"
-							value="가입">
+							value="SIGN UP">
 					</div>
 				</form>
 			</div>

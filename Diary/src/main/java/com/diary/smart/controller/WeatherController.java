@@ -34,11 +34,14 @@ public class WeatherController {
 )
 	public String todayWeather(String city, String county, String village) {
 		
+		
 		try{
 		StringBuilder urlBuilder = new StringBuilder("http://apis.skplanetx.com/weather/forecast/3days"); /*URL*/
 		urlBuilder.append("?" + URLEncoder.encode("appKey","UTF-8") + "=8c6e9bd8-5e62-3619-a64f-167d4388f405"); /*Service Key*/
 //		urlBuilder.append("?" + URLEncoder.encode("appKey","UTF-8") + "=b8bd2517-e3b3-3727-8e7b-2c7dd0f219f4"); /*Service Key*/
 //		urlBuilder.append("?" + URLEncoder.encode("appKey","UTF-8") + "=0c6b6e45-c824-3c07-ab2d-09501bf9978b"); /*Service Key*/
+//		urlBuilder.append("?" + URLEncoder.encode("appKey","UTF-8") + "=46c53d39-6e46-3ce3-a147-dc995ba504e7"); /*Service Key*/
+//		urlBuilder.append("?" + URLEncoder.encode("appKey","UTF-8") + "=dc77d4bc-5d0f-32b2-be26-ae3fa052afa9");
 		urlBuilder.append("&" + URLEncoder.encode("version","UTF-8") + "=1"); /*Service Key*/
         urlBuilder.append("&" + URLEncoder.encode("city","UTF-8") + "=" + URLEncoder.encode(city, "UTF-8")); /*파라미터설명*/
         urlBuilder.append("&" + URLEncoder.encode("county","UTF-8") + "=" + URLEncoder.encode(county, "UTF-8"));
@@ -88,6 +91,8 @@ public class WeatherController {
 		urlBuilder.append("?" + URLEncoder.encode("appKey","UTF-8") + "=8c6e9bd8-5e62-3619-a64f-167d4388f405"); /*Service Key*/
 //		urlBuilder.append("?" + URLEncoder.encode("appKey","UTF-8") + "=b8bd2517-e3b3-3727-8e7b-2c7dd0f219f4"); /*Service Key*/
 //		urlBuilder.append("?" + URLEncoder.encode("appKey","UTF-8") + "=0c6b6e45-c824-3c07-ab2d-09501bf9978b"); /*Service Key*/
+//		urlBuilder.append("?" + URLEncoder.encode("appKey","UTF-8") + "=46c53d39-6e46-3ce3-a147-dc995ba504e7"); /*Service Key*/
+//		urlBuilder.append("?" + URLEncoder.encode("appKey","UTF-8") + "=dc77d4bc-5d0f-32b2-be26-ae3fa052afa9");
 		urlBuilder.append("&" + URLEncoder.encode("version","UTF-8") + "=1"); /*Service Key*/
         urlBuilder.append("&" + URLEncoder.encode("city","UTF-8") + "=" + URLEncoder.encode(city, "UTF-8")); /*파라미터설명*/
         urlBuilder.append("&" + URLEncoder.encode("county","UTF-8") + "=" + URLEncoder.encode(county, "UTF-8"));

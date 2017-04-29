@@ -35,10 +35,12 @@ $(document).ready(function() {
 <title>My Diary</title>
 </head>
 <body>
-	<button onclick="spinnerStart();">spinnerStart</button>
+<!-- 	<button onclick="spinnerStart();">spinnerStart</button> -->
 	<div class="loader-wrapper">
 		<div class="loader"></div>
-		<div class="loader-section section-left"><button onclick="spinnerEnd();">spinnerend</button></div>
+		<div class="loader-section section-left">
+<!-- 			<button onclick="spinnerEnd();">spinnerend</button> -->
+		</div>
 		<div class="loader-section section-right"></div>
 	</div>
 	<!-- scheduleList GET -->
@@ -93,7 +95,7 @@ $(document).ready(function() {
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
-				<h4 class="modal-title" id="myModalLabel">My Page</h4>
+				<h4 class="modal-title" id="myModalLabel"><img src='resources/img/icon/menu.png' width='30px' height='30px'></h4>
 			</div>
 			<div class="modal-body">
 				<form action="" method="post">
@@ -123,7 +125,7 @@ $(document).ready(function() {
 						type="button" onclick="sample6_execDaumPostcode()" value="우편번호 찾기"><br>
 					<input type="text" name="user_add1" id="user_add1" placeholder="address"><br>
 					<br> <input type="submit" class="form-control" id="joinBtn"
-						value="수정">
+						value="CONFIRM">
 				</form>
 			</div>
 		</div>
@@ -139,7 +141,7 @@ $(document).ready(function() {
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
-				<h4 class="modal-title" id="myModalLabel">My FriendList</h4>
+				<h4 class="modal-title" id="myModalLabel"><img src='resources/img/icon/friend.png' width='30px' height='30px'></h4>
 			</div>
 			<div class="modal-body">
 				<div class="requestListDiv">
@@ -300,40 +302,49 @@ $(document).ready(function() {
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
-				<h4 class="modal-title" id="myModalLabel">중간예매확인</h4>
+				<p class="modal-title" id="myModalLabel"><img src='resources/img/icon/success.png' width='30px' height='30px'></p>
 			</div>
 			<div class="modal-body">
 				<form>
-				<div class="form-group">
-						<label for="normal">날짜</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-						<h3 id="scdate"></h3>
+				
+					<div class="mvdate">
+						<div id="scdate1" class="mvinfoMenu">TIME</div>
+						<div id="scdate" class="mvinfoSet"></div>
 					</div>
-					<div class="form-group">
-						<label for="cardno">영화</label> 
-						<h3 id="mvname"></h3>
+					<br>
+					<div class="mvname">				
+						<div id="mvname1" class="mvinfoMenu">TITLE</div> 
+						<div id="mvname" class="mvinfoSet"></div>
 					</div>
-					<div class="form-group">
-						<label for="validdate">영화관</label> 
-						<h3 id="mvarea"></h3>
+					<br>
+					<div class="mvarea">
+						<div id="mvarea1" class="mvinfoMenu">AREA</div>
+						<div id="mvarea" class="mvinfoSet"></div>
 					</div>
-					<div class="form-group">
-						<label for="validdate">영화등급</label> 
-						<h3 id="mvinfo"></h3>
+					<br>
+					<div class="mvinfo">
+						<div id="mvinfo1" class="mvinfoMenu">INFORMATION</div>
+						<div id="mvinfo" class="mvinfoSet"></div>
 					</div>
-					<div class="form-group">
-						<label for="validdate">인원</label> 
-						<h3 id="people"></h3>
+					<br>
+					<div class="people">
+						<div id="people1" class="mvinfoMenu">THE NUMBER OF PEOPLE</div>
+						<div id="people" class="mvinfoSet"></div>
 					</div>
-					<div class="form-group">
-						<label for="validdate">좌석</label> 
-						<h3 id="seatinfo"></h3>
+					<br>
+					<div class="seatinfo">
+						<div id="seatinfo1" class="mvinfoMenu">SEAT INFORMATION</div>
+						<div id="seatinfo" class="mvinfoSet"></div>
 					</div>
-					<div class="form-group">
-						<label for="validdate">가격</label> 
-						<h3 id="price"></h3>
+					<br>
+					<div class="price">
+						<div id="price1" class="mvinfoMenu">PRICE</div>
+						<div id="price" class="mvinfoSet"></div>
 					</div>
-					<div class="form-group">
-						<input type="button" class="form-control" onclick="return check_movieform()" value="확인">
+					<br>
+					
+					<div class="confirm" >
+						<input type="button" class="form-control" onclick="return check_movieform()" value="CONFIRM">
 					</div>					
 				</form>
 			</div>
@@ -350,7 +361,7 @@ $(document).ready(function() {
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
-				<h4 class="modal-title" id="myModalLabel">Payment</h4>
+				<h4 class="modal-title" id="myModalLabel"><img src='resources/img/icon/credit-card.png' width='30px' height='30px'></h4>
 			</div>
 			<div class="modal-body">
 				<form>						
@@ -392,7 +403,7 @@ $(document).ready(function() {
 							name="bitrhmv" placeholder="예)990201">
 					</div>
 					<div class="form-group">
-						<input type="button" class="form-control" id='mvpaymentbtn' onclick="return payment();" value="예매">
+						<input type="button" class="form-control" onclick="return payment();" value="예매">
 					</div>
 				</form>
 			</div>
@@ -409,7 +420,7 @@ $(document).ready(function() {
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
-				<h4 class="modal-title" id="myModalLabel">버스 노선 정보 선택</h4>
+				<h4 class="modal-title" id="myModalLabel"><img src='resources/img/icon/bus.png' width='30px' height='30px'></h4>
 			</div>
 			<div class="modal-body">
 				<form id="busInformation">
@@ -429,7 +440,7 @@ $(document).ready(function() {
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
-				<h4 class="modal-title" id="myModalLabel">좌석선택</h4>
+				<h4 class="modal-title" id="myModalLabel"><img src='resources/img/icon/seat.png' width='30px' height='30px'></h4>
 			</div>
 			<div class="modal-body2">
 			
@@ -448,33 +459,32 @@ $(document).ready(function() {
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
-				<h4 class="modal-title" id="myModalLabel">중간예매확인</h4>
+				<h4 class="modal-title" id="myModalLabel"><img src='resources/img/icon/success.png' width='30px' height='30px'></h4>
 			</div>
 			<div class="modal-body">
 				<form>
 				<div class="form-group">
-						<label for="normal">출발일시</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-						<h3 id="busdate"></h3>
+						<label class = "businfoMenu" for="normal">THE TIME OF THE DEPARTURE</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						<h3 class = "businfoSet" id="busdate"></h3>
 					</div>
 					<div class="form-group">
-						<label for="cardno">출발지/도착지</label> 
-						<h3 id="busarea"></h3>
+						<label class = "businfoMenu" for="cardno">DEPARTURE / ARRIVAL</label> 
+						<h3 class = "businfoSet" id="busarea"></h3>
 					</div>
 					<div class="form-group">
-						<label for="validdate">버스등급</label> 
-						<h3 id="busgrade"></h3>
+						<label class = "businfoMenu" for="validdate">BUS GRADE</label> 
+						<h3 class = "businfoSet" id="busgrade"></h3>
 					</div>
 					<div class="form-group">
-						<label for="validdate">좌석</label> 
-						<h3 id="busseat"></h3>
+						<label class = "businfoMenu" for="validdate">SEAT</label> 
+						<h3 class = "businfoSet" id="busseat"></h3>
 					</div>
 					<div class="form-group">
-						<label for="validdate">가격</label> 
-						<h3 id="busprice"></h3>
+						<label class = "businfoMenu" for="validdate">PRICE</label> 
+						<h3 class = "businfoSet" id="busprice"></h3>
 					</div>
 					<div class="form-group">
-						<input type="hidden" id="busflag" value=''/>
-						<input type="button" class="form-control" onclick="return check_form()" value="확인">
+						<input type="button" class="form-control" onclick="return check_form()" value="CONFIRM">
 					</div>					
 				</form>
 			</div>
@@ -491,7 +501,7 @@ $(document).ready(function() {
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
-				<h4 class="modal-title" id="myModalLabel">Payment</h4>
+				<h4 class="modal-title" id="myModalLabel"><img src='resources/img/icon/credit-card.png' width='30px' height='30px'></h4>
 			</div>
 			<div class="modal-body">
 				<form>
@@ -508,21 +518,22 @@ $(document).ready(function() {
 					</div>
 					<div class="form-group">
 						<label for="validdate">유효기간</label> <select id="validyear" name="validyear">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-							<option value='2017'>2017년</option> <option value='2018'>2018년</option> <option value='2019'>2019년</option>
-							<option value='2020'>2020년</option> <option value='2021'>2021년</option> <option value='2022'>2022년</option>
-							<option value='2023'>2023년</option> <option value='2024'>2024년</option> <option value='2025'>2025년</option>
-							<option value='2026'>2026년</option> <option value='2027'>2027년</option> <option value='2028'>2028년</option>
-							<option value='2029'>2029년</option> <option value='2030'>2030년</option> <option value='2031'>2031년</option>
-							<option value='2032'>2032년</option> <option value='2033'>2033년</option> <option value='2034'>2034년</option>
-							<option value='2035'>2035년</option> <option value='2036'>2036년</option></select>
-							
+							<option value='2017'>2017</option> <option value='2018'>2018</option> <option value='2019'>2019</option>
+							<option value='2020'>2020</option> <option value='2021'>2021</option> <option value='2022'>2022</option>
+							<option value='2023'>2023</option> <option value='2024'>2024</option> <option value='2025'>2025</option>
+							<option value='2026'>2026</option> <option value='2027'>2027</option> <option value='2028'>2028</option>
+							<option value='2029'>2029</option> <option value='2030'>2030</option> <option value='2031'>2031</option>
+							<option value='2032'>2032</option> <option value='2033'>2033</option> <option value='2034'>2034</option>
+							<option value='2035'>2035</option> <option value='2036'>2036</option>
+							</select>
+							&nbsp;&nbsp;&nbsp;
 							<select id="validmonth" name="validmonth">
-							<option value='01'>1월</option> <option value='02'>2월</option> <option value='03'>3월</option>
-							<option value='04'>4월</option> <option value='05'>5월</option> <option value='06'>6월</option>
-							<option value='07'>7월</option> <option value='08'>8월</option> <option value='09'>9월</option>
-							<option value='10'>10월</option> <option value='11'>11월</option> <option value='12'>12월</option>
+							<option value='01'>1</option> <option value='02'>2</option> <option value='03'>3</option>
+							<option value='04'>4</option> <option value='05'>5</option> <option value='06'>6</option>
+							<option value='07'>7</option> <option value='08'>8</option> <option value='09'>9</option>
+							<option value='10'>10</option> <option value='11'>11</option> <option value='12'>12</option>
 							</select> 
-							</div>
+					</div>
 					<div class="form-group">
 						<label for="cardno">생년월일</label> <input type="text" class="form-control" id="birth"
 							name="bitrh" placeholder="예)990201">

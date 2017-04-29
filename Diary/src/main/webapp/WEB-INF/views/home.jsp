@@ -19,7 +19,7 @@ $(document).ready(function () {
 	             html+='<option>'+item+'</option>';
 	           });
 			 html+='</select>';
-			 html+='<input type="button" class="form-control" value="선택" onclick="setmovie()">';
+			 html+='<input type="image" img src="resources/img/icon/right-arrow.png" class="form-control" value="선택" onclick="setmovie();return false;">';
 			 html+='</form>';
 			 $("#loginModal #movieList").val(html);
 			 console.log(html);
