@@ -32,12 +32,12 @@ public class DiaryController {
 
 	@RequestMapping(value = "diary", method = RequestMethod.GET)
 	public String diary(HttpSession session, Model model) {
-		logger.info("41번 유저 테스트");
+		logger.info("2번 유저 테스트");
 //		String id = (String) session.getAttribute("user_id");
 //		Member member = mdao.selectMember(id);
 		
 //		List<HashMap<String, Object>> scheduleList = dao.selectDiaryList(member.getUser_no_pk());
-		List<HashMap<String, Object>> scheduleList = dao.selectDiaryList(1);
+		List<HashMap<String, Object>> scheduleList = dao.selectDiaryList(2);
 		model.addAttribute("scheduleList", new Gson().toJson(scheduleList));
 /*		logger.info("2번 유저 테스트");
 //		String id = (String) session.getAttribute("user_id");

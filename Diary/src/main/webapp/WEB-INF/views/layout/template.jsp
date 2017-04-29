@@ -19,6 +19,7 @@
 <script src="resources/js/jquery-3.1.1.js"></script>
 <script src="resources/js/bootstrap.min.js"></script>
 <script src="resources/js/ruxen.js"></script>
+<script src="resources/js/home.js"></script>
 <script src="resources/js/signUpForm.js"></script>
 <script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
 <!-- <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script> -->

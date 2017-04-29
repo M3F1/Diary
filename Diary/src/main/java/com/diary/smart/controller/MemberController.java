@@ -140,26 +140,26 @@ public class MemberController {
 		dao.deleteFriend(me.getUser_no_pk(), user_no_pk);
 	}
 
+	@ResponseBody
 	@RequestMapping(value = "login", method = RequestMethod.POST)
-	public String login(String id, String pw, String movieList, Model model, HttpSession session) {
+	public int login(String id, String pw, String movieList, Model model, HttpSession session) {
 
 		Member member = dao.selectMember(id);
 
-		if (member == null || member.getUser_aflag() == 0) {
-			return "redirect:/";
-		} else {
-			if (pw.equals(member.getUser_pw())) {
-				//model.addAttribute("member", member);
-				session.setAttribute("movieList", movieList);
-				session.setAttribute("user_id", member.getUser_id());
-				session.setAttribute("mvset", 1);
-				return "redirect:diary";
-			} else {
-				return "redirect:/";
-			}
+		if (member == null) {
+			return 1;
+		} else if (!pw.equals(member.getUser_pw())) {
+			return 2;
+		} else if (member.getUser_aflag() == 0) {
+			return 3;
+		}  else {
+			session.setAttribute("movieList", movieList);
+			session.setAttribute("user_id", member.getUser_id());
+			session.setAttribute("mvset", 1);
+			
+			return 0;
 		}
 	}
-	
 	
 	@RequestMapping(value = "logout", method = RequestMethod.GET)
 	public String logout(HttpSession session) {

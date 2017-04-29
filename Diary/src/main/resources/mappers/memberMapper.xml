@@ -123,23 +123,25 @@
 
 	<!-- 단일 회원 조회(id중복조회나 등등에 사용) -->
 	<select id="selectMember" parameterType="String" resultType="Member">
-		select user_no_pk
-		, user_aflag,
-		user_id
-		, user_pw
-		, user_nm
-		, user_birth
-		, user_phone
-		, user_mvseat
-		, user_jodt
-		, user_dflag
-		, user_add1
-		, user_add2
-		, user_add3
-		, user_ddt
-		from ID_USER_TB
+		select
+			user_no_pk
+			,user_aflag
+			,user_id
+			,user_pw
+			,user_nm
+			,user_birth
+			,user_phone
+			,user_mvseat
+			,user_jodt
+			,user_dflag
+			,user_add1
+			,user_add2
+			,user_add3
+			,user_ddt
+		from
+			ID_USER_TB
 		where
-		user_id = #{user_id}
+			user_id = #{id}
 	</select>
 
 	<!-- 인증된 회원 flag 변경 -->

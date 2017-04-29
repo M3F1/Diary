@@ -2,35 +2,6 @@
 <%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles"%>
 <!DOCTYPE html>
 <html>
-<head>
-<script src="resources/js/jquery-3.1.1.js"></script>
-<script type="text/javascript">
-$(document).ready(function () {
-	var html="";
-	$.ajax({
-		type : "get",
-		url : "getmovie",
-		data : {	
-		},
-		success : function(data){
-			html += '<form>';
-			html += '<select multiple id="movieselect">';
-			 $.each(data,function(i,item){
-	             html+='<option>'+item+'</option>';
-	           });
-			 html+='</select>';
-			 html+='<input type="image" img src="resources/img/icon/right-arrow.png" class="form-control" value="선택" onclick="setmovie();return false;">';
-			 html+='</form>';
-			 $("#loginModal #movieList").val(html);
-			 console.log(html);
-		},
-		error : function(request,status,error){
-			console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
-		}
-	});
-});
-</script>
-</head>
 <body class="home">
    <!-- SLIDER START -->
    <section class="slider-area">

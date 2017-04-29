@@ -38,8 +38,7 @@
 	</section>
 </header>
 <!-- LOGIN MODAL START -->
-<div class="modal fade" id="loginModal" tabindex="-1" role="dialog"
-	aria-labelledby="myModalLabel">
+<div class="modal fade" id="loginModal" tabindex="-1" role="dialog"	aria-labelledby="myModalLabel">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
@@ -50,18 +49,18 @@
 				<h4 class="modal-title" id="myModalLabel"><img src='resources/img/icon/login.png' width='30px' height='30px'></h4>
 			</div>
 			<div class="modal-body">
-				<form action="login" method="POST">
+				<form onsubmit="return loginCheck();">
+					<input type="hidden" id="movieList" name="movieList" value='' />
 					<div class="form-group">
 						<label for="id">ID</label> <input type="text" class="form-control"
-							id="id" name="id"> <input type="hidden"
-							id="movieList" name="movieList" value='' />
+							id="id" name="id">
 					</div>
 					<div class="form-group">
-						<label for="id">Password</label> <input type="password"
+						<label for="pw">Password</label> <input type="password"
 							class="form-control" id="pw" name="pw">
 					</div>
 					<div class="form-group">
-						<input type="submit" class="form-control" value="LOGIN">
+						<input type="submit" class="form-control" value="LOGIN" />
 					</div>
 				</form>
 			</div>
