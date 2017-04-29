@@ -109,15 +109,15 @@
 							id="user_phone" placeholder="cellphone number">
 					</div>
 					<div class="form-group form-inline">
-						<input type="text" class="form-control" id="sample6_postcode" placeholder="postcode">
+						<input type="text" class="form-control" id="sample6_postcode" placeholder="postcode"  readonly="readonly">
 						<input type="button" onclick="sample6_execDaumPostcode()"
 							value="우편번호 찾기"><br>
 					</div>
 					<div class="form-group">
 						<input type="text"
 							name="user_add1" id="user_add1" class="form-control" placeholder="address"><br>
-						<br> <input type="submit" class="form-control" id="joinBtn"
-							value="SIGN UP">
+						<input type="submit" class="form-control" id="joinBtn"
+							value="SIGNUP">
 					</div>
 				</form>
 			</div>

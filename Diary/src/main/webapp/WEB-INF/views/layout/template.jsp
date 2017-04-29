@@ -9,6 +9,7 @@
 <!-- CSS START -->
 <link href="resources/css/bootstrap.min.css" rel="stylesheet">
 <link href="resources/css/style.css" rel="stylesheet">
+<link href="resources/css/font-awesome.min.css" rel="stylesheet">
 <!-- CSS END -->
 <!--[if lt IE 9]>
 	<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>

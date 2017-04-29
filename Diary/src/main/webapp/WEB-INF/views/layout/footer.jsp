@@ -13,7 +13,7 @@
 		<!-- FOOTER SOCIAL MEDIA END -->
 		<br />
 		<!-- COPYRIGHT START -->
-		<p>&copy; 2017 Copyright Ruxenna Blog Theme - All rights reserved</p>
+		<p>&copy; 2017 Copyright Smart Diary - All rights reserved</p>
 		<!-- COPYRIGHT END -->
 	</section>
 </footer>

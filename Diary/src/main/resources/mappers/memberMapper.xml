@@ -131,8 +131,7 @@
 		, user_birth
 		, user_phone
 		, user_mvseat
-		,
-		user_jodt
+		, user_jodt
 		, user_dflag
 		, user_add1
 		, user_add2

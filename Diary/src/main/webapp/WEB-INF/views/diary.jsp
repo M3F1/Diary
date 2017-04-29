@@ -101,7 +101,7 @@ $(document).ready(function() {
 				<form action="" method="post">
 					<div class="form-group">
 						<input type="text" class="form-control" name="user_id" id="user_id"
-							placeholder="emailID">
+							placeholder="emailID" value="${member.user_id}">
 					</div>
 					<div class="form-group">
 						<input type="password" class="form-control" name="user_pw" id="user_pw"
@@ -111,21 +111,26 @@ $(document).ready(function() {
 						<input type="password" class="form-control" id="re_user_pw" placeholder="password confirm">
 					</div>
 					<div class="form-group">
-						<input type="text" class="form-control"	name="user_nm" id="user_nm" placeholder="name">
+						<input type="text" class="form-control"	name="user_nm" id="user_nm" placeholder="name" value="${member.user_nm}">
 					</div>
 					<div class="form-group">
 						<input type="text" class="form-control" name="user_birth" id="user_birth"
-							placeholder="birthDate(yyyymmdd)">
+							placeholder="birthDate(yyyymmdd)" value="${member.user_birth}">
 					</div>
 					<div class="form-group">
 						<input type="text" class="form-control" name="user_phone" id="user_phone"
-							placeholder="cellphone number">
+							placeholder="cellphone number" value="${member.user_phone}">
 					</div>
-					<input type="text" id="sample6_postcode" placeholder="postcode"> <input
-						type="button" onclick="sample6_execDaumPostcode()" value="우편번호 찾기"><br>
-					<input type="text" name="user_add1" id="user_add1" placeholder="address"><br>
-					<br> <input type="submit" class="form-control" id="joinBtn"
-						value="CONFIRM">
+					<div class="form-group form-inline">
+						<input type="text" class="form-control" id="sample6_postcode" placeholder="postcode" readonly="readonly">
+						<input type="button" onclick="sample6_execDaumPostcode()"
+							value="우편번호 찾기"><br>
+					</div>
+					<div class="form-group">
+						<input type="text"
+							name="user_add1" id="user_add1" class="form-control" placeholder="address" value="${member.user_add1}"><br>
+						<input type="submit" class="form-control" id="joinBtn" value="CONFIRM">
+					</div>
 				</form>
 			</div>
 		</div>
@@ -403,7 +408,7 @@ $(document).ready(function() {
 							name="bitrhmv" placeholder="예)990201">
 					</div>
 					<div class="form-group">
-						<input type="button" class="form-control" onclick="return payment();" value="예매">
+						<input type="button" class="form-control" id='mvpaymentbtn' onclick="return payment();" value="예매">
 					</div>
 				</form>
 			</div>
@@ -484,7 +489,8 @@ $(document).ready(function() {
 						<h3 class = "businfoSet" id="busprice"></h3>
 					</div>
 					<div class="form-group">
-						<input type="button" class="form-control" onclick="return check_form()" value="CONFIRM">
+						<input type="hidden" id="busflag" value=''/>
+						<input type="button" class="form-control" onclick="return check_form()" value="확인">
 					</div>					
 				</form>
 			</div>
@@ -526,7 +532,7 @@ $(document).ready(function() {
 							<option value='2032'>2032</option> <option value='2033'>2033</option> <option value='2034'>2034</option>
 							<option value='2035'>2035</option> <option value='2036'>2036</option>
 							</select>
-							&nbsp;&nbsp;&nbsp;
+							
 							<select id="validmonth" name="validmonth">
 							<option value='01'>1</option> <option value='02'>2</option> <option value='03'>3</option>
 							<option value='04'>4</option> <option value='05'>5</option> <option value='06'>6</option>

@@ -58,6 +58,7 @@ $(document).ready(function () {
 	         <article style="background-image:url(resources/img/news1.jpg)">
 	            <a href="javascript:;">
 	               <section class="container">
+	               	<p class="sectionIcon"><i class="fa fa-calendar-check-o" aria-hidden="true"></i></p>
 	                  <div class="full-grid-item">
 	                     <div class="post-list-information">
 	                        <span class="category">Point 1</span>
@@ -75,15 +76,16 @@ $(document).ready(function () {
 	         <article style="background-image:url(resources/img/news2.jpg)">
 	            <a href="javascript:;">
 	               <section class="container">
+	               	  <p class="sectionIcon"><i class="fa fa-commenting-o" aria-hidden="true"></i></p>
 	                  <div class="full-grid-item">
 	                     <div class="post-list-information">
 	                        <span class="category">Point 2</span>
 	                     </div>
 	                     <div class="full-grid-title">
-	                        <h2>Provide by entering simple text schedule</h2>
+	                        <h2>Provide by entering simple text</h2>
 	                     </div>
-	                     <p>After entering the schedule, We provide various information and services<br>
-							concerning schedule contents, Schedule management is convenient and easy.</p>
+	                     <p>After entering the schedule, we provide various information and services<br>
+							about schedule contents.</p>
 	                  </div>
 	               </section>
 	            </a>
@@ -93,12 +95,13 @@ $(document).ready(function () {
 	         <article style="background-image:url(resources/img/news3.jpg)">
 	            <a href="javascript:;">
 	               <section class="container">
+	                  <p class="sectionIcon"><i class="fa fa-share-alt" aria-hidden="true"></i></p>
 	                  <div class="full-grid-item">
 	                     <div class="post-list-information">
 	                        <span class="category">Point 3</span>
 	                     </div>
 	                     <div class="full-grid-title">
-	                        <h2>Sharing of schedule</h2>
+	                        <h2>Sharing schedule</h2>
 	                     </div>
 	                     <p>Share your schedule with friends, family and colleagues.</p>
 	                  </div>

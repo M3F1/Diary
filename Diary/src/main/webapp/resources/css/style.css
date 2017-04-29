@@ -3929,6 +3929,37 @@ nav.category-navigation {
 	color: steelblue !important;
 }
 
+/****************** section 안의 icon position ******************/
+
+.sectionIcon {
+	position: absolute;
+	top: 28%;
+	height: 11rem !important;
+}
+
+.sectionIcon > i {
+	font-size: 11rem;
+}
+
+@media (max-width: 670px) {
+	.sectionIcon {
+		display: none;
+	}
+}
+
+@media (max-width: 1090px) {
+	.sectionIcon {
+		left: 80%;
+	}
+}
+@media (min-width: 1091px) {
+	.sectionIcon {
+		left: 11%;
+	}
+}
+
+
+
 
 /********************************** signUpForm **********************************/
 
