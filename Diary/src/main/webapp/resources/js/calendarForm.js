@@ -39,7 +39,7 @@ $(document).ready(function () {
 	makePopover();
 	// 각 event 활성화
 	eventActive();
-
+	
 	// 아무데나 클릭 시 header 숨기기
 	$(".slider-area").on("click", hideHeader);
 
@@ -1001,12 +1001,10 @@ function selectedDate(date) {
 function makePopover() {
 	// scheduleList 가져오기
 	scheduleList = JSON.parse($("#scheduleList").val());
+	console.log(scheduleList);
 	
 	var param1 ="";
 	var param2 ="";
-	
-	var array1 = todayWeather();
-	var array2 = weekWeather();
 	
 	var html = new Array(); // 일정 내용 및 날씨 넣는곳.
 	var weather = new Array(); // 일정 내용 및 날씨 넣는곳.
@@ -1018,11 +1016,13 @@ function makePopover() {
 		/*html[i]+='<div class="left-box">'+dt.getFullYear() + '년 ' + (dt.getMonth() + 1) + '월 ' + p.html() + '일 일정</div>';*/
 		$.each(scheduleList, function(key, value) {
 			if (p.parent().parent().attr("id") == value.SC_STDT) {
-				if(value.SC_FIN=='Y' && value.SC_DFLAG=='Y'){
+				if(value.SC_FIN=='Y' && value.SC_DFLAG=='Y') {
 					p.attr("data-toggle", "popover");
 					//p.attr("content", dt.getFullYear() + "년 " + (dt.getMonth() + 1) + "월 " + p.html() + "일 일정");
 					
 					markCircle(p.parent());
+					
+					/*
 					html[i]+='<table><tr><td>'+value.SC_CON.split("_")[0]+'</td>';
 					html[i]+='<td>'+value.SC_CON.split("_")[1]+'</td>';
 					
@@ -1051,7 +1051,14 @@ function makePopover() {
 					}else{
 						html[i]+='</table>';
 					}
-					console.log(scheduleList);
+					*/
+					html[i] += '<button class="accordion">' + value.SC_CON.split("_")[0] + '&nbsp;' + value.SC_CON.split("_")[4] + '</button>';
+					html[i] += '<div class="panel">';
+					html[i] += '영화 제목 : ' + value.SC_CON.split("_")[1] + '<br>';
+					html[i] += '영화관 : ' + value.SC_CON.split("_")[2] + '<br>';
+					html[i] += '자리 : ' + value.SC_CON.split("_")[3];
+					html[i] += '</div>';
+					
 					p.attr("data-content", html[i]);
 					
 				}
@@ -1059,27 +1066,29 @@ function makePopover() {
 		});
 		
 		// 날씨
-		$.each(array1, function(j,item){
-			
-			if (p.parent().parent().attr("id") == item.date) {
-				weather[i]+=item.html;
-				weather[i]+='<div class="title-box">'+p.html()+'</div></div>';
-				p.attr("data-title", weather[i]);
-				p.attr("data-content", html[i]);
-				
-			}
-		 });
-		
-		$.each(array2, function(j,item){
-			if (p.parent().parent().attr("id") == item.date) {
-				weather[i+3]="";
-				weather[i+3]+=item.html;
-				weather[i+3]+='<div class="title-box">'+p.html()+'</div></div>';
-				p.attr("data-title", weather[i+3]);
-				p.attr("data-content", html[i+3]);
-			}
-		 });
-		
+//		var array1 = todayWeather();
+//		var array2 = weekWeather();
+//		
+//		$.each(array1, function(j,item){
+//			
+//			if (p.parent().parent().attr("id") == item.date) {
+//				weather[i]+=item.html;
+//				weather[i]+='<div class="title-box">'+p.html()+'</div></div>';
+//				p.attr("data-title", weather[i]);
+//				p.attr("data-content", html[i]);
+//				
+//			}
+//		 });
+//		
+//		$.each(array2, function(j,item){
+//			if (p.parent().parent().attr("id") == item.date) {
+//				weather[i+3]="";
+//				weather[i+3]+=item.html;
+//				weather[i+3]+='<div class="title-box">'+p.html()+'</div></div>';
+//				p.attr("data-title", weather[i+3]);
+//				p.attr("data-content", html[i+3]);
+//			}
+//		 });
 		
 		p.attr("data-html", "true");
 		p.attr("data-placement", "top");
@@ -1098,13 +1107,27 @@ function makePopover() {
 				}
 			}, 10);
 		});
-		
-		// hover 시 날짜 숫자색 변경
-		p.on("hover", function() {
-			p.css("color", "red");
-		});
-		
 	}
+	
+	// accordian 이벤트 활성화
+	$(document).on("click", ".accordion", function() {
+		$(this).toggleClass("active");
+		
+		var panel = $(this).next();
+		console.log(panel.css("maxHeight"));
+		console.log(panel.prop("scrollHeight"));
+		
+		if (panel.css("maxHeight") == "0px") {
+			panel.css("maxHeight", panel.prop("scrollHeight") + "px");
+		} else {
+			panel.css("maxHeight", "0px");
+		}
+	});
+	
+	// hover 시 날짜 숫자색 변경
+	p.on("hover", function() {
+		p.css("color", "red");
+	});
 	
 	markToday();
 }
