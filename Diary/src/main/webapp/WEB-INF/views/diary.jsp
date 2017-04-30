@@ -98,10 +98,10 @@ $(document).ready(function() {
 				<h4 class="modal-title" id="myModalLabel"><img src='resources/img/icon/menu.png' width='30px' height='30px'></h4>
 			</div>
 			<div class="modal-body">
-				<form action="" method="post">
+				<form onsubmit="return updateInfo();">
 					<div class="form-group">
 						<input type="text" class="form-control" name="user_id" id="user_id"
-							placeholder="emailID" value="${member.user_id}">
+							placeholder="emailID" readonly="readonly" value="${member.user_id}">
 					</div>
 					<div class="form-group">
 						<input type="password" class="form-control" name="user_pw" id="user_pw"
@@ -115,7 +115,7 @@ $(document).ready(function() {
 					</div>
 					<div class="form-group">
 						<input type="text" class="form-control" name="user_birth" id="user_birth"
-							placeholder="birthDate(yyyymmdd)" value="${member.user_birth}">
+							placeholder="birthDate(yyyymmdd)" readonly="readonly" value="${member.user_birth}">
 					</div>
 					<div class="form-group">
 						<input type="text" class="form-control" name="user_phone" id="user_phone"

@@ -36,12 +36,17 @@
 		set
 			user_pw = #{user_pw}
 			,user_nm = #{user_nm}
-			,user_birth = #{user_birth}
 			,user_phone = #{user_phone}
+		<if test="user_mvseat != null">
 			,user_mvseat = #{user_mvseat}
+		</if>
 			,user_add1 = #{user_add1}
+		<if test="user_add2 != null">
 			,user_add2 = #{user_add2}
+		</if>
+		<if test="user_add3 != null">
 			,user_add3 = #{user_add3}
+		</if>
 		where
 			user_id = #{user_id}
 	</update>

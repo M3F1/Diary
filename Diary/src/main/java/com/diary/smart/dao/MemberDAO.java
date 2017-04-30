@@ -40,16 +40,14 @@ public class MemberDAO {
 	 *            정보수정할 회원의 정보
 	 * @return 수정된 회원의 명수
 	 */
-	public int updateMember(Member member) {
+	public void updateMember(Member member) {
 		MemberMapper mapper = sqlSession.getMapper(MemberMapper.class);
-		int result = 0;
+		
 		try {
-			result = mapper.updateMember(member);
+			mapper.updateMember(member);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
-		return result;
 	}
 
 	/**

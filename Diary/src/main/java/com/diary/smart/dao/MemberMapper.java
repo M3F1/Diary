@@ -21,7 +21,7 @@ public interface MemberMapper {
 	 *            정보수정할 회원의 정보
 	 * @return int 수정된 회원의 명수
 	 */
-	public int updateMember(Member member); // 회원정보수정
+	public void updateMember(Member member); // 회원정보수정
 
 	/**
 	 * @param idno

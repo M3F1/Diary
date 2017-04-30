@@ -28,6 +28,43 @@ var kobusscno = new Array();
 var easybusscno = new Array();
 var trainscno = new Array();
 
+// 회원 정보 수정 처리
+function updateInfo() {
+	if ($("#user_pw").val() == "") {
+		alert("비밀번호를 입력하세요");
+	} else if ($("#re_user_pw").val() == "") {
+		alert("비밀번호 확인을 입력하세요");
+	} else if ($("#user_pw").val() != $("#re_user_pw").val()) {
+		alert("비밀번호가 일치하지 않습니다. 다시 입력하세요");
+	} else if ($("#user_nm").val() == "") {
+		alert("이름을 입력하세요");
+	} else if ($("#user_phone").val() == "") {
+		alert("전화번호를 입력하세요");
+	} else if ($("#user_add1").val() == "") {
+		alert("주소를 입력하세요");
+	} else {
+		$.ajax({
+			type : "post",
+			url : "updateInfo",
+			data : {
+				"user_pw" : $("#user_pw").val(),
+				"user_nm" : $("#user_nm").val(),
+				"user_phone" : $("#user_phone").val(),
+				"user_add1" : $("#user_add1").val()
+			},
+			success : function (data) {
+				alert("회원 정보가 수정되었습니다.");
+				$("#myPageModal").modal("hide");
+			},
+			error : function (e) {
+				console.log(e);
+			}
+		});
+	}
+	
+	return false;
+}
+
 $(document).ready(function () {
 	// diary 접속 시 필요한 서버 요청
 	sendRequest();

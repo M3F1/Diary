@@ -32,20 +32,14 @@ public class DiaryController {
 
 	@RequestMapping(value = "diary", method = RequestMethod.GET)
 	public String diary(HttpSession session, Model model) {
-		logger.info("2번 유저 테스트");
-//		String id = (String) session.getAttribute("user_id");
-//		Member member = mdao.selectMember(id);
+		String id = (String) session.getAttribute("user_id");
+		Member member = mdao.selectMember(id);
+		model.addAttribute("member", member);
 		
 //		List<HashMap<String, Object>> scheduleList = dao.selectDiaryList(member.getUser_no_pk());
-		List<HashMap<String, Object>> scheduleList = dao.selectDiaryList(2);
+		List<HashMap<String, Object>> scheduleList = dao.selectDiaryList(member.getUser_no_pk());
 		model.addAttribute("scheduleList", new Gson().toJson(scheduleList));
 /*		logger.info("2번 유저 테스트");
-//		String id = (String) session.getAttribute("user_id");
-//		Member member = mdao.selectMember(id);
-		
-//		ArrayList<HashMap<String, Object>> selectMemberList = mdao.selectMemberList(member.getUser_no_pk(), null);
-		ArrayList<HashMap<String, Object>> selectMemberList = mdao.selectMemberList(2, null);
-		model.addAttribute("selectMemberList", new Gson().toJson(selectMemberList));
 		
 //		List<HashMap<String, Object>> scheduleList = dao.selectDiaryList(member.getUser_no_pk());
 		List<HashMap<String, Object>> scheduleList = dao.selectDiaryList(2);

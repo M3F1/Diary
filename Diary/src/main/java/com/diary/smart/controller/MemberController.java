@@ -42,14 +42,14 @@ public class MemberController {
 
 		return "myPage";
 	}
-	
+
 	@RequestMapping(value = "signUp", method = RequestMethod.POST)
 	public String joinMember(Member member) {
 		SendMail mail = new SendMail("", null, null);
 		mail.test(member.getUser_id());
 
 		int result = dao.joinMember(member);
-			return "redirect:/";
+		return "redirect:/";
 	}
 
 	@RequestMapping(value = "authenticated", method = RequestMethod.GET)
@@ -71,36 +71,36 @@ public class MemberController {
 		return member;
 	}
 
-@ResponseBody
+	@ResponseBody
 	@RequestMapping(value = "getFriendList", method = RequestMethod.GET)
 	public ArrayList<HashMap<String, Object>> getFriendList(HttpSession session) {
-		
+
 		String my_id = (String) session.getAttribute("user_id");
 		Member me = dao.selectMember(my_id);
 		ArrayList<HashMap<String, Object>> list = dao.getFriendList(me.getUser_no_pk());
 
 		return list;
 	}
-	
+
 	@ResponseBody
 	@RequestMapping(value = "getFriendRequestList", method = RequestMethod.GET)
 	public ArrayList<HashMap<String, Object>> getFriendRequestList(HttpSession session) {
-		
+
 		String my_id = (String) session.getAttribute("user_id");
 		Member me = dao.selectMember(my_id);
 		ArrayList<HashMap<String, Object>> list = dao.getFriendRequestList(me.getUser_no_pk());
-		
+
 		return list;
 	}
-	
+
 	@ResponseBody
 	@RequestMapping(value = "selectMemberList", method = RequestMethod.GET)
 	public ArrayList<HashMap<String, Object>> selectMemberList(HttpSession session, String user_nm) {
-		
+
 		String my_id = (String) session.getAttribute("user_id");
 		Member me = dao.selectMember(my_id);
 		ArrayList<HashMap<String, Object>> list = dao.selectMemberList(me.getUser_no_pk(), user_nm);
-		
+
 		return list;
 	}
 
@@ -112,29 +112,29 @@ public class MemberController {
 		Member me = dao.selectMember(my_id);
 		dao.addFriend(me.getUser_no_pk(), user_no_pk);
 	}
-	
+
 	@ResponseBody
 	@RequestMapping(value = "acceptFriend", method = RequestMethod.GET)
 	public void acceptFriend(int user_no_pk, HttpSession session) {
-		
+
 		String my_id = (String) session.getAttribute("user_id");
 		Member me = dao.selectMember(my_id);
 		dao.acceptFriend(me.getUser_no_pk(), user_no_pk);
 	}
-	
+
 	@ResponseBody
 	@RequestMapping(value = "rejectFriend", method = RequestMethod.GET)
 	public void rejectFriend(int user_no_pk, HttpSession session) {
-		
+
 		String my_id = (String) session.getAttribute("user_id");
 		Member me = dao.selectMember(my_id);
 		dao.rejectFriend(me.getUser_no_pk(), user_no_pk);
 	}
-	
+
 	@ResponseBody
 	@RequestMapping(value = "deleteFriend", method = RequestMethod.GET)
 	public void deleteFriend(int user_no_pk, HttpSession session) {
-		
+
 		String my_id = (String) session.getAttribute("user_id");
 		Member me = dao.selectMember(my_id);
 		dao.deleteFriend(me.getUser_no_pk(), user_no_pk);
@@ -152,22 +152,20 @@ public class MemberController {
 			return 2;
 		} else if (member.getUser_aflag() == 0) {
 			return 3;
-		}  else {
+		} else {
 			session.setAttribute("movieList", movieList);
 			session.setAttribute("user_id", member.getUser_id());
 			session.setAttribute("mvset", 1);
-			
+
 			return 0;
 		}
 	}
-	
+
 	@RequestMapping(value = "logout", method = RequestMethod.GET)
 	public String logout(HttpSession session) {
 		session.removeAttribute("user_id");
 		return "redirect:/";
 	}
-
-
 
 	@RequestMapping(value = "infoForm", method = RequestMethod.POST)
 	public String updateForm(String user_pw, Model model, HttpSession session) {
@@ -182,14 +180,14 @@ public class MemberController {
 		}
 	}
 
+	@ResponseBody
 	@RequestMapping(value = "updateInfo", method = RequestMethod.POST)
-	public String updateMember(Member member, Model model, HttpSession session) {
+	public void updateMember(Member member, Model model, HttpSession session) {
 
-		int result = dao.updateMember(member);
 		String id = (String) session.getAttribute("user_id");
-		Member upMember = dao.selectMember(id);
-		model.addAttribute("member", upMember);
-		return "";
+		member.setUser_id(id);
+		logger.info("member", member);
+		dao.updateMember(member);
 	}
 
 	@RequestMapping(value = "deleteMember", method = RequestMethod.POST)
