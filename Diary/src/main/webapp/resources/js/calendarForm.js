@@ -491,7 +491,7 @@ function movie() {
 		        type : "post",
 		        dataType : "json",
 		        data : {
-		           query : $(".write").val()
+		           query : $(".active .write").val()
 		        },
 		        success : function(json) {
 		           html += '<form>';

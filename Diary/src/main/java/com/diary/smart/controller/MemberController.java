@@ -70,6 +70,68 @@ public class MemberController {
 
 		return member;
 	}
+	
+	@ResponseBody
+	@RequestMapping(value = "login", method = RequestMethod.POST)
+	public int login(String id, String pw, String movieList, Model model, HttpSession session) {
+
+		Member member = dao.selectMember(id);
+
+		if (member == null) {
+			return 1;
+		} else if (!pw.equals(member.getUser_pw())) {
+			return 2;
+		} else if (member.getUser_aflag() == 0) {
+			return 3;
+		} else {
+			session.setAttribute("movieList", movieList);
+			session.setAttribute("user_id", member.getUser_id());
+			session.setAttribute("mvset", 1);
+
+			return 0;
+		}
+	}
+
+	@RequestMapping(value = "logout", method = RequestMethod.GET)
+	public String logout(HttpSession session) {
+		session.removeAttribute("user_id");
+		return "redirect:/";
+	}
+
+	@RequestMapping(value = "infoForm", method = RequestMethod.POST)
+	public String updateForm(String user_pw, Model model, HttpSession session) {
+
+		String id = (String) session.getAttribute("user_id");
+		Member member = dao.selectMember(id);
+		if (user_pw.equals(member.getUser_pw())) {
+			model.addAttribute("member", member);
+			return "infoForm";
+		} else {
+			return "redirect:/";
+		}
+	}
+
+	@ResponseBody
+	@RequestMapping(value = "updateInfo", method = RequestMethod.POST)
+	public void updateMember(Member member, Model model, HttpSession session) {
+
+		String id = (String) session.getAttribute("user_id");
+		member.setUser_id(id);
+		logger.info("member", member);
+		dao.updateMember(member);
+	}
+
+	@RequestMapping(value = "deleteMember", method = RequestMethod.POST)
+	public String deleteMember(int idno, Model model, HttpSession session) {
+
+		int result = dao.deleteMember(idno);
+		if (result > 0) {
+			session.removeAttribute("user_id");
+			return "home";
+		} else {
+			return "";
+		}
+	}
 
 	@ResponseBody
 	@RequestMapping(value = "getFriendList", method = RequestMethod.GET)
@@ -139,66 +201,5 @@ public class MemberController {
 		Member me = dao.selectMember(my_id);
 		dao.deleteFriend(me.getUser_no_pk(), user_no_pk);
 	}
-
-	@ResponseBody
-	@RequestMapping(value = "login", method = RequestMethod.POST)
-	public int login(String id, String pw, String movieList, Model model, HttpSession session) {
-
-		Member member = dao.selectMember(id);
-
-		if (member == null) {
-			return 1;
-		} else if (!pw.equals(member.getUser_pw())) {
-			return 2;
-		} else if (member.getUser_aflag() == 0) {
-			return 3;
-		} else {
-			session.setAttribute("movieList", movieList);
-			session.setAttribute("user_id", member.getUser_id());
-			session.setAttribute("mvset", 1);
-
-			return 0;
-		}
-	}
-
-	@RequestMapping(value = "logout", method = RequestMethod.GET)
-	public String logout(HttpSession session) {
-		session.removeAttribute("user_id");
-		return "redirect:/";
-	}
-
-	@RequestMapping(value = "infoForm", method = RequestMethod.POST)
-	public String updateForm(String user_pw, Model model, HttpSession session) {
-
-		String id = (String) session.getAttribute("user_id");
-		Member member = dao.selectMember(id);
-		if (user_pw.equals(member.getUser_pw())) {
-			model.addAttribute("member", member);
-			return "infoForm";
-		} else {
-			return "redirect:/";
-		}
-	}
-
-	@ResponseBody
-	@RequestMapping(value = "updateInfo", method = RequestMethod.POST)
-	public void updateMember(Member member, Model model, HttpSession session) {
-
-		String id = (String) session.getAttribute("user_id");
-		member.setUser_id(id);
-		logger.info("member", member);
-		dao.updateMember(member);
-	}
-
-	@RequestMapping(value = "deleteMember", method = RequestMethod.POST)
-	public String deleteMember(int idno, Model model, HttpSession session) {
-
-		int result = dao.deleteMember(idno);
-		if (result > 0) {
-			session.removeAttribute("user_id");
-			return "home";
-		} else {
-			return "";
-		}
-	}
+	
 }

@@ -69,6 +69,11 @@ public interface MemberMapper {
 	 */
 	public Member selectMember(String id); // 한명의 회원조회(id중복검사 등)
 
+	/**
+	 * @param id
+	 *            조회할 회원의 아이디
+	 * @return 메일 인증 여부
+	 */
 	public int authenticated(String id); // 회원 인증처리
 
 	/**
