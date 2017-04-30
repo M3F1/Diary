@@ -4,7 +4,7 @@ var tooltiptext; // tooltiptext 배열
 var process; // 선택된 icon의 절차 배열
 var i = 0;
 var selectMemberList;	// 전체 유저 목록
-var friendList = new Array();	// 친구 목록
+var selectedFriendList = new Array();	// 선택된 친구 목록
 var scheduleList;	// 전체 스케쥴 목록
 var writeInput="";
 var movieflag = 0;
@@ -278,12 +278,24 @@ function makeFriendList(friendList) {
 		var fl = $(".friendList + div > .popover-content a");
 		$(this).next().css("overflow-y", "scroll");
 		$(this).next().css("height", "200px");
-		
-		for (var index = 0; index < fl.length; index++) {
-			fl.eq(index).off().on("click", function() {
+
+		$.each(fl, function (key, value) {
+			if ($.inArray($(this).html().substring($(this).html().indexOf("(") + 1, $(this).html().indexOf(")")), selectedFriendList) != -1) {
+				$(this).addClass("active");
+			}
+					
+			$(this).off().on("click", function () {
 				$(this).toggleClass("active");
+				if ($(this).hasClass("active")) {
+					// 같이 갈 친구의 아이디
+					selectedFriendList.push($(this).html().substring($(this).html().indexOf("(") + 1, $(this).html().indexOf(")")));
+				} else {
+					var id = $(this).html().substring($(this).html().indexOf("(") + 1, $(this).html().indexOf(")"));
+					var id_index = selectedFriendList.indexOf(id);
+					selectedFriendList.splice(id_index, 1);
+				}
 			});
-		}
+		});
 	});
 }
 
@@ -854,10 +866,32 @@ function write() {
 
 	// 직접 일정 입력 시 처리 부분
 	var scheduleWrite = function () {
-		alert("written");
+		console.log("written");
+		directWrite();
 	}
 
-	process = [scheduleWrite];
+	process = ["", scheduleWrite];
+}
+
+function directWrite() {
+	selectedFriendList.push(dateNow);
+	selectedFriendList.push($(".active .written").html().split("&nbsp;")[0]);
+	$.ajax({
+		type : "post",
+		url : "write",
+		contentType : "application/json",
+		data : JSON.stringify ({
+//			"date" : dateNow,
+//			"sc_con" : $(".active .written").html().split("&nbsp;")[0],
+			"selectedFriendList" : selectedFriendList
+		}),
+		success : function (data) {
+			
+		},
+		error : function (e) {
+			console.log(e);
+		}
+	});
 }
 
 /** ******************************** 일정 검색 ********************************* */
@@ -1031,7 +1065,7 @@ function selectedDate(date) {
 	$(".iconList").addClass("animated fadeInDown");
 	$(".iconList").css("display", "block");
 	dateNow += date.split('-')[0];
-	dateNow += (date.split('-')[1]);
+	dateNow += date.split('-')[1];
 	dateNow += date.split('-')[2];
 }
 
@@ -1578,6 +1612,7 @@ function payment(){
 		success : function(data){
 			if(data){
 				//예매완료.
+				selectedFriendList = new Array();
 				location.href="diary";
 				$("#spin").hide();
 			}else{
@@ -1878,7 +1913,7 @@ function check_form(){
 }
 
 
-function writeCardInfo(){
+function writeCardInfo() {
 	$('div#payModal').modal('hide');
 	var cardno = $("#cardno").val();
 	var year = $("#validyear option:selected").val();
@@ -1899,6 +1934,7 @@ function writeCardInfo(){
 			if(data){
 				$("#spin").hide();
 				location.href="diary";
+				selectedFriendList = new Array();
 			}else{
 				alert("결제오류. 다시 입력해주세요.");
 //				check_modal_on(data.flag);
@@ -1913,7 +1949,7 @@ function writeCardInfo(){
 	return true;
 }
 
-function trainAreaSelect(param){
+function trainAreaSelect(param) {
 	var train = "경부";
    	var train1 = "호남";
    	var train2 = "경전";
