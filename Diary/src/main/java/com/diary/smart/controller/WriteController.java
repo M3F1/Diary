@@ -65,17 +65,26 @@ public class WriteController {
 
 
 	@ResponseBody
-	@RequestMapping(value = "directWrite", method=RequestMethod.GET)
-	public HashMap<String, Object> directWrite(String query, String date){
+	@RequestMapping(value = "directWrite", method=RequestMethod.POST)
+	public HashMap<String, Object> directWrite(@RequestBody HashMap<String, Object> object, HttpSession session) {
+		String date = (String) object.get("date");
+		String query = (String) object.get("query");
+		ArrayList<String> frList = (ArrayList<String>) object.get("selectedFriendList");
+		ArrayList<Integer> frnoList = new ArrayList<>();
+		
+		for (String friend : frList) {
+			frnoList.add(memberDAO.selectMember(friend).getUser_no_pk());
+		}
+		
 		ArrayList<String> result = new ArrayList<>();
 		HashMap<String, Object> result2 = new HashMap<String, Object>();
 		HashMap<String, Object> fail = new HashMap<String, Object>();
 		ArrayList<String> times = null;
 		boolean flag = true;
 		boolean mvflag = false;
-		String mvnm="";
-		String theater="";
-		String time="";
+		String mvnm = "";
+		String theater = "";
+		String time = "";
 		result2.put("FLAG", "");
 		result2.put("MVLIST", "");
 		result2.put("MVTIME", "");
@@ -130,16 +139,16 @@ public class WriteController {
 				for (int j = 0; j < parse.length; j++) {
 					if (mvnm.equals("")) {
 						for (String string : mvList) {
-							if(!parse[j].equals("") && string.contains(parse[j])){
+							if (!parse[j].equals("") && string.contains(parse[j])) {
 								result2.put("FLAG", "movie");
-								mvnm=string;
+								mvnm = string;
 								break;
 							}
 						}//inner for
 					}
-					if(theater.equals("")){
+					if (theater.equals("")) {
 						for (String string : thList) {
-							if(!parse[j].equals("") && string.contains(parse[j])){
+							if (!parse[j].equals("") && string.contains(parse[j])) {
 								theater = string;
 								break;
 							}
@@ -152,8 +161,8 @@ public class WriteController {
 							|| parse[j].contains("12시"))) {
 						time = parse[j];
 					}
-					if(!mvnm.equals("")&&!theater.equals("")&&!time.equals("")){
-						flag=false;
+					if (!mvnm.equals("") && !theater.equals("") && !time.equals("")) {
+						flag = false;
 						break;
 					}
 				} // for
@@ -216,7 +225,7 @@ public class WriteController {
 
 			} else if (time.equals("")) {
 				cn.setMovie(mvnm);
-				if(!cn.movieSelectHelper(theater)){
+				if (!cn.movieSelectHelper(theater)) {
 					return fail;
 				}
 				cn.selectDate(date);
@@ -228,12 +237,6 @@ public class WriteController {
 		// DB 들어가는 부분
 		if (result2.get("FLAG").equals("DEFAULT")) {
 			int user_no_fk = memberDAO.selectMember((String) session.getAttribute("user_id")).getUser_no_pk();
-			
-			ArrayList<Integer> frnoList = new ArrayList<>();
-			
-			for (String friend : data) {
-				frnoList.add(memberDAO.selectMember(friend).getUser_no_pk());
-			}
 			
 			Diary diary = new Diary();
 			diary.setUser_no_fk(user_no_fk);
@@ -340,34 +343,51 @@ public class WriteController {
 	}// method end
 
 	@ResponseBody
-	@RequestMapping(value = "commonsc", method=RequestMethod.POST)
-	public void commonsc(String text, String link, String telephone, String date, String flag, HttpSession session){
+	@RequestMapping(value = "commonsc", method = RequestMethod.POST)
+	public void commonsc(@RequestBody HashMap<String, Object> object, HttpSession session) {
+		int user_no_fk = memberDAO.selectMember((String) session.getAttribute("user_id")).getUser_no_pk();
+		String text = (String) object.get("text");
+		String link = (String) object.get("link");
+		String telephone = (String) object.get("telephone");
+		String date = (String) object.get("date");
+		String flag = (String) object.get("flag");
+		ArrayList<String> frList = (ArrayList<String>) object.get("selectedFriendList");
+		ArrayList<Integer> frnoList = new ArrayList<>();
+		
+		for (String friend : frList) {
+			frnoList.add(memberDAO.selectMember(friend).getUser_no_pk());
+		}
+		
 		Diary diary = new Diary();
-		diary.setUser_no_fk(memberDAO.selectMember((String)session.getAttribute("user_id")).getUser_no_pk());
-		if(link==null || link.equals("") ){
-			diary.setSc_con(" "+"_"+text+"_"+" "+"_"+telephone+"_"+flag);
-		}else if(telephone==null || telephone.equals("") ){
-			diary.setSc_con(" "+"_"+text+"_"+link+"_"+" "+"_"+flag);
-		}else if(link.equals("") && telephone.equals("")){
-			diary.setSc_con(" "+"_"+text+"_"+" "+"_"+" "+"_"+flag);
-		}else{
-			diary.setSc_con(" "+"_"+text+"_"+link+"_"+telephone+"_"+flag);
+		diary.setUser_no_fk(memberDAO.selectMember((String) session.getAttribute("user_id")).getUser_no_pk());
+		if (link == null || link.equals("")) {
+			diary.setSc_con(" " + "_" + text + "_" + " " + "_" + telephone + "_" + flag);
+		} else if (telephone == null || telephone.equals("")) {
+			diary.setSc_con(" " + "_" + text + "_" + link + "_" + " " + "_" + flag);
+		} else if (link.equals("") && telephone.equals("")) {
+			diary.setSc_con(" " + "_" + text + "_" + " " + "_" + " " + "_" + flag);
+		} else {
+			diary.setSc_con(" " + "_" + text + "_" + link + "_" + telephone + "_" + flag);
 		}
 		diary.setSc_wt("SU");
 		diary.setSc_stdt(date);
+		diary.setSc_fin("Y");
 		diaryDAO.insertDiary(diary);
-		
+
+		for (Integer frno : frnoList) {
+			diaryDAO.insertCompanions(diary.getSc_no_pk(), user_no_fk, frno);
+		}
 	}
 	
 	@ResponseBody
-	@RequestMapping(value = "cancelCommonSC", method=RequestMethod.GET)
-	public boolean cancelCommonSC(int scno, HttpSession session){
-		Member member = memberDAO.selectMember((String)session.getAttribute("user_id"));
-			if(diaryDAO.deleteDiary(scno)==1)
-				return true;
-			else{
-				return false;
-			}
+	@RequestMapping(value = "cancelCommonSC", method = RequestMethod.GET)
+	public boolean cancelCommonSC(int scno, HttpSession session) {
+		Member member = memberDAO.selectMember((String) session.getAttribute("user_id"));
+		if (diaryDAO.deleteDiary(scno) == 1)
+			return true;
+		else {
+			return false;
+		}
 	}
 
 	@ResponseBody

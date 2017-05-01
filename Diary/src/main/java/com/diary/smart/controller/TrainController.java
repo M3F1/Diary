@@ -1,11 +1,13 @@
 package com.diary.smart.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -61,8 +63,22 @@ public class TrainController {
 	
 	@ResponseBody
 	@RequestMapping(value = "KTXwriteCardInfo", method=RequestMethod.POST)
-	public boolean KTXwriteCardInfo(String type, String cardno, String year, String month, 
-			String key, String birth, String paymentInfo, String date, HttpSession session){
+	public boolean KTXwriteCardInfo(@RequestBody HashMap<String, Object> object, HttpSession session) {
+		int user_no_fk = memberDAO.selectMember((String) session.getAttribute("user_id")).getUser_no_pk();
+		String type = (String) object.get("type");
+		String cardno = (String) object.get("cardno");
+		String year = (String) object.get("year");
+		String month = (String) object.get("month");
+		String key = (String) object.get("key");
+		String birth = (String) object.get("birth");
+		String paymentInfo = (String) object.get("paymentInfo");
+		String date = (String) object.get("date");
+		ArrayList<String> frList = (ArrayList<String>) object.get("selectedFriendList");
+		ArrayList<Integer> frnoList = new ArrayList<>();
+		
+		for (String friend : frList) {
+			frnoList.add(memberDAO.selectMember(friend).getUser_no_pk());
+		}
 
 		ArrayList<String> cardInfo = new ArrayList<String>();
 		cardInfo.add(type);
@@ -71,15 +87,21 @@ public class TrainController {
 		cardInfo.add(month);
 		cardInfo.add(key);
 		cardInfo.add(birth);
-		if(tn.pay(cardInfo)){
+		if(tn.pay(cardInfo)) {
 			Diary diary = new Diary();
 			diary.setUser_no_fk(memberDAO.selectMember((String)session.getAttribute("user_id")).getUser_no_pk());
 			diary.setSc_con(paymentInfo);
 			diary.setSc_wt("SU");
 			diary.setSc_stdt(date);
+			diary.setSc_fin("Y");
 			diaryDAO.insertDiary(diary);
+			
+			for (Integer frno : frnoList) {
+				diaryDAO.insertCompanions(diary.getSc_no_pk(), user_no_fk, frno);
+			}
+			
 			return true;
-		}else{
+		} else {
 			return false;
 		}
 	}

@@ -96,13 +96,22 @@ public class MovieController {
 	@ResponseBody
 	@RequestMapping(value = "payment", method=RequestMethod.POST)
 	public boolean payment(@RequestBody HashMap<String, Object> object, HttpSession session) {
+		int user_no_fk = memberDAO.selectMember((String) session.getAttribute("user_id")).getUser_no_pk();
 		String card = (String) object.get("card");
 		String cardno = (String) object.get("cardno");
 		String sno = (String) object.get("sno");
 		String year = (String) object.get("year");
 		String month = (String) object.get("month");
 		String birth = (String) object.get("birth");
+		String paymentInfo = (String) object.get("paymentInfo");
+		String date = (String) object.get("date");
 		ArrayList<String> frList = (ArrayList<String>) object.get("selectedFriendList");
+		ArrayList<Integer> frnoList = new ArrayList<>();
+		
+		for (String friend : frList) {
+			frnoList.add(memberDAO.selectMember(friend).getUser_no_pk());
+		}
+		
 		//HashMap<String, Object> map = (HashMap<String, Object>) obj;
 //		wc.selectSeats((ArrayList<Integer>)map.get("seats"));
 		ArrayList<String> ex = new ArrayList<String>();
@@ -118,13 +127,18 @@ public class MovieController {
 		ex.add(birth);
 		
 		result = cn.payment(ex);
-		if(result){
+		if(result) {
 			Diary diary = new Diary();
 			diary.setUser_no_fk(memberDAO.selectMember((String)session.getAttribute("user_id")).getUser_no_pk());
 			diary.setSc_con(paymentInfo);
 			diary.setSc_wt("SU");
 			diary.setSc_stdt(date);
+			diary.setSc_fin("Y");
 			diaryDAO.insertDiary(diary);
+			
+			for (Integer frno : frnoList) {
+				diaryDAO.insertCompanions(diary.getSc_no_pk(), user_no_fk, frno);
+			}
 		}
 		
 		return result;

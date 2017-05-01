@@ -131,27 +131,44 @@ public class BusController {
 	
 	@ResponseBody
 	@RequestMapping(value = "writeCardInfo", method=RequestMethod.POST)
-	public boolean writeCardInfo(String cardno, String year, String month,
-			String birth, String paymentInfo, String date, HttpSession session){
+	public boolean writeCardInfo(@RequestBody HashMap<String, Object> object, HttpSession session) {
 		boolean result = false;
+		String cardno = (String) object.get("cardno");
+		String year = (String) object.get("year");
+		String month = (String) object.get("month");
+		String birth = (String) object.get("birth");
+		String paymentInfo = (String) object.get("paymentInfo");
+		String date = (String) object.get("date");
 		Member member = memberDAO.selectMember((String)session.getAttribute("user_id"));
+		ArrayList<String> frList = (ArrayList<String>) object.get("selectedFriendList");
+		ArrayList<Integer> frnoList = new ArrayList<>();
+		
+		for (String friend : frList) {
+			frnoList.add(memberDAO.selectMember(friend).getUser_no_pk());
+		}
+		
 		//이때만 결제 작업 진행하면돼 진수야 보면지워
-		if(ebn.getNow().equals("kobus")){
+		if (ebn.getNow().equals("kobus")) {
 			ArrayList<String> cardInfo = new ArrayList<String>();
 			cardInfo.add(cardno);
 			cardInfo.add(year);
 			cardInfo.add(month);
 			cardInfo.add(birth);
-			if(ebn.writeCardInfo2(cardInfo)){
+			if (ebn.writeCardInfo2(cardInfo)) {
 				result = true;
 				Diary diary = new Diary();
 				diary.setUser_no_fk(memberDAO.selectMember((String)session.getAttribute("user_id")).getUser_no_pk());
 				diary.setSc_con(paymentInfo);
 				diary.setSc_wt("SU");
 				diary.setSc_stdt(date);
+				diary.setSc_fin("Y");
 				diaryDAO.insertDiary(diary);
 				
-			}else{
+				for (Integer frno : frnoList) {
+					diaryDAO.insertCompanions(diary.getSc_no_pk(), member.getUser_no_pk(), frno);
+				}
+				
+			} else {
 				result = false;
 			}
 			return result;

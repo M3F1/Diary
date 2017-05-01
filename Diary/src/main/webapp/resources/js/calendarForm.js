@@ -441,7 +441,7 @@ function searchMemberList() {
 						friendArray.push(value);
 						html += "<a href='javascript:deleteFriend(" + value.USER_NO_PK + ");'><i class='fa fa-user-times'></i></a>";
 					} else if (value.USER_FRNO && value.FR_FLAG == 'N') {
-						html += "waiting";
+						html += "<i class='fa fa-hourglass-half' aria-hidden='true'></i>";
 					} else {
 						html += "<a href='javascript:addFriend(" + value.USER_NO_PK + ");'><i class='fa fa-user-plus'></i></a>";
 					}
@@ -958,13 +958,13 @@ function write() {
 		 $.ajax({
 	           url : "directWrite",
 	           type : "post",
-	           dataType : "json",
 	           contentType : "application/json",
 	           data : JSON.stringify ({
-	        	   date : dateNow,
-	        	   query : input,
-	        	   selectedFriendList
+	        	   "date" : dateNow,
+	        	   "query" : input,
+	        	   "selectedFriendList" : selectedFriendList
 	           }),
+	           dataType : "json",
 	           success : function(data) {
 	        	   spinnerEnd();
 	        	   if(data.fail=='fail'){
@@ -1849,7 +1849,7 @@ function mvSetting(){
 	});
 }
 
-function payment(){
+function payment() {
 	var card = $("#lp_card_type_mv option:selected").text();
 	var cardno = $("#cardnomv").val();
 	var sno = $("#pwmv").val();
@@ -1872,20 +1872,20 @@ function payment(){
 			"year" : year,
 			"month" : month,
 			"birth" : birth,
-			paymentInfo : mvPaymentInfo,
-			date : dateNow.substring(2,8),
+			"paymentInfo" : mvPaymentInfo,
+			"date" : dateNow.substring(2,8),
 			"selectedFriendList" : selectedFriendList
 		}),
 		dataType : "json",
 		success : function(data) {
-			if(data){
+			if(data) {
 				//예매완료.
-				if(typeof tasteInfo == "undefined" || tasteInfo==''){
+				if(typeof tasteInfo == "undefined" || tasteInfo=='') {
 					location.href="diary";
 					spinnerEnd();
 					selectedFriendList = new Array();
-				}else{ 
-					if(tasteInfo!='' || tasteInfo!=null || typeof tasteInfo != "undefined"){
+				}else {
+					if(tasteInfo!='' || tasteInfo!=null || typeof tasteInfo != "undefined") {
 						$.ajax({
 							type : "POST",
 							url : "commonsc",
@@ -2209,21 +2209,23 @@ function writeCardInfo() {
 	$.ajax({
 		type : "POST",
 		url : "writeCardInfo",
-		data : {
-			cardno : cardno,
-			year : year,
-			month : month,
-			birth : birth,
-			paymentInfo : busPaymentInfo,
-			date : dateNow.substring(2,8)
-		},
+		contentType : "application/json",
+		data : JSON.stringify({
+			"cardno" : cardno,
+			"year" : year,
+			"month" : month,
+			"birth" : birth,
+			"paymentInfo" : busPaymentInfo,
+			"date" : dateNow.substring(2,8),
+			"selectedFriendList" : selectedFriendList
+		}),
 		dataType : "json",
-		success : function(data){
-			if(data){
+		success : function(data) {
+			if(data) {
 				spinnerEnd();
 				location.href="diary";
 				selectedFriendList = new Array();
-			}else{
+			} else {
 				alert("결제오류. 다시 입력해주세요.");
 				$('div#checkModal').modal();
 				spinnerEnd();
@@ -2719,20 +2721,22 @@ function tastyListSelect(num){
 
 	var html="";
 	$.ajax({
-		type : "get",
+		type : "post",
 		url : "commonsc",
-		data : {
-			text : tasteInfo.split("`")[0],
-			link : tasteInfo.split("`")[1],
-			telephone: tasteInfo.split("`")[2],
-			date : dateNow.substring(2,8),
-			flag : "common"
-		},
-		success : function(data){
+		contentType : "application/json",
+		data : JSON.stringify({
+			"text" : tasteInfo.split("`")[0],
+			"link" : tasteInfo.split("`")[1],
+			"telephone" : tasteInfo.split("`")[2],
+			"date" : dateNow.substring(2,8),
+			"flag" : "common",
+			"selectedFriendList" : selectedFriendList
+		}),
+		success : function(data) {
 			location.href="diary";
 			spinnerEnd();
 		},
-		error : function(e){
+		error : function(e) {
 			console.log(e);
 		}
 	});
@@ -2812,30 +2816,32 @@ function KTXwriteCardInfo(){
 	$.ajax({
 		type : "POST",
 		url : "KTXwriteCardInfo",
-		data : {
-			type : type, 
-			cardno : cardno,
-			year : year,
-			month : month,
-			key : key,
-			birth : birth,
-			paymentInfo : ktxPaymentInfo,
-			date : dateNow.substring(2,8)
-		},
+		contentType : "application/json",
+		data : JSON.stringify({
+			"type" : type, 
+			"cardno" : cardno,
+			"year" : year,
+			"month" : month,
+			"key" : key,
+			"birth" : birth,
+			"paymentInfo" : ktxPaymentInfo,
+			"date" : dateNow.substring(2,8),
+			"selectedFriendList" : selectedFriendList
+		}),
 		dataType : "json",
-		success : function(data){
+		success : function(data) {
 			//다이어리에 찍어줌..
-			if(data){
+			if(data) {
 				spinnerEnd();
 				selectedFriendList = new Array();
 				location.href="diary";
-			}else{
+			} else {
 				alert("결제오류. 다시 입력해주세요.");
 				$('div#KTXpayModal').modal();
 				spinnerEnd();
 			}
 		},
-		error :function(request,status,error){
+		error :function(request,status,error) {
 	        console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error); 
 		}
 	});
