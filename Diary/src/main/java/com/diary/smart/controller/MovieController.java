@@ -28,7 +28,9 @@ public class MovieController {
 	@Autowired
 	private MemberDAO memberDAO;	
 	
-	private CGVNavigator cn = new CGVNavigator();
+	@Autowired
+	private CGVNavigator cn;	
+	
 	
 	@ResponseBody
 	@RequestMapping(value = "getmovie", method=RequestMethod.GET)
@@ -47,16 +49,14 @@ public class MovieController {
 	
 	@ResponseBody
 	@RequestMapping(value = "setdate", method=RequestMethod.GET)
-	public HashMap<String,ArrayList<String>> setdate(String moviedate){
-		cn.selectDate(moviedate);
-		
-		return null;
+	public boolean setdate(String moviedate){
+		return cn.selectDate(moviedate);
 	}
 	
 	@ResponseBody
 	@RequestMapping(value = "settheater", method=RequestMethod.GET)
-	public void settheater(String theater){
-		cn.movieSelectHelper(theater);
+	public boolean settheater(String theater){
+		return cn.movieSelectHelper(theater);
 	}
 	
 	@ResponseBody
@@ -103,14 +103,14 @@ public class MovieController {
 		diary.setSc_con(time+"_"+mvname+"_"+mvarea+"_"+seat+"_"+flag);
 		diary.setSc_wt("SU");
 		diary.setSc_stdt(date);
-		if(diaryDAO.insertDiary(diary)==1){
-			session.setAttribute("lastscno", diaryDAO.lastSchedule());
-		}
+		diaryDAO.insertDiary(diary);
+		session.setAttribute("lastscno", diaryDAO.lastSchedule());
+		
 	}
 	
 	
 	@ResponseBody
-	@RequestMapping(value = "payment", method=RequestMethod.GET)
+	@RequestMapping(value = "payment", method=RequestMethod.POST)
 	public boolean payment(String card, String cardno, String sno, String year,
 			String month, String birth, HttpSession session){
 		//HashMap<String, Object> map = (HashMap<String, Object>) obj;
@@ -128,17 +128,27 @@ public class MovieController {
 		ex.add(birth);
 		
 		result = cn.payment(ex);
-		if(result){
-			diaryDAO.paymentFin((Integer)session.getAttribute("lastscno"));
-		}
+//		if(result){
+//			diaryDAO.paymentFin((Integer)session.getAttribute("lastscno"));
+//		}
 		return result;
 	}
 	
 	@ResponseBody
-	@RequestMapping(value = "cancleMovieCGV", method=RequestMethod.GET)
-	public boolean cancleMovieCGV(String mvtime, String mvname, int scno, HttpSession session){
+	@RequestMapping(value = "updatePaymentFIN", method=RequestMethod.GET)
+	public boolean updatePaymentFIN(HttpSession session){
+			diaryDAO.paymentFin((Integer)session.getAttribute("lastscno"));
+			return true;
+	}
+	
+	
+	
+	
+	@ResponseBody
+	@RequestMapping(value = "cancelMovieCGV", method=RequestMethod.GET)
+	public boolean cancelMovieCGV(String mvtime, String mvname, int scno, HttpSession session){
 		Member member = memberDAO.selectMember((String)session.getAttribute("user_id"));
-		if(cn.cancleMovieCGV(mvtime, mvname, member)){
+		if(cn.cancelMovieCGV(mvtime, mvname, member)){
 			if(diaryDAO.deleteDiary(scno)==1)
 				return true;
 			else{
@@ -147,12 +157,5 @@ public class MovieController {
 		}else{
 			return false;
 		}
-	}
-	
-	
-	@RequestMapping(value = "test", method=RequestMethod.GET)
-	public String aaa(){
-		
-		return "test";
 	}
 }

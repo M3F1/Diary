@@ -18,7 +18,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.springframework.stereotype.Controller;
-
+import org.springframework.stereotype.Repository;
+@Repository
 public class ExpressBusNavigator {
 	private ChromeOptions options;
 	private WebDriver driver;
@@ -195,7 +196,7 @@ public class ExpressBusNavigator {
 		
 		for (int i = 1; i < month.size(); i++) {
 			//받아올때 03이면 밑에꺼 걍 3이면 4,5
-			if(month.get(i).getText().contains(date.substring(4, 6))){
+			if(month.get(i).getAttribute("value").contains(date.substring(4, 6))){
 				month.get(i).click();
 				break;
 			}//if
@@ -203,7 +204,7 @@ public class ExpressBusNavigator {
 		
 		for (int i = 1; i < day.size(); i++) {
 			//월형식에따라 다름.. 날짜 한자리여도.. 보내줄때어케할지 알아야겟다.
-			if(day.get(i).getText().contains(date.substring(6, 8))){
+			if(day.get(i).getAttribute("value").contains(date.substring(6, 8))){
 				day.get(i).click();
 				break;
 			}//if
@@ -310,21 +311,33 @@ public class ExpressBusNavigator {
 	}
 	
 	
-	public void selectTicket2(String time){
+	public ArrayList<String> selectTicket2(String time){
 		driver.switchTo().window(this.getHandle());
 		ArrayList<WebElement> table = (ArrayList<WebElement>) driver.findElement(By.cssSelector("table.ticket")).findElements(By.cssSelector("tbody tr"));
+		ArrayList<String> result = new ArrayList<>();
+		
+//		driver.findElements(By.cssSelector("table.bus_fare tbody > tr > td")).get(1).getText();
+//		driver.findElements(By.cssSelector("table.bus_fare tbody > tr > td")).get(2).getText();
 		for (WebElement webElement : table) {
-			if(webElement.findElements(By.tagName("td")).get(0).getText().equals(time.subSequence(0, 2)+":"+time.substring(2, 4))){
+			if(webElement.findElements(By.tagName("td")).get(0).getText().equals(time)){
+				result.add(webElement.findElements(By.tagName("td")).get(1).getText());
+				if(result.get(0).contains("일반")) result.add(driver.findElements(By.cssSelector("table.bus_fare tbody > tr > td")).get(1).getText());
+				else result.add(driver.findElements(By.cssSelector("table.bus_fare tbody > tr > td")).get(2).getText());
+				
 				webElement.findElements(By.tagName("td")).get(webElement.findElements(By.tagName("td")).size()-1).findElement(By.tagName("input")).click();
 				break;
 			}
-				
 		}
-		
 		Alert alert = driver.switchTo().alert();
 		if(alert!=null){
 			alert.accept();
 		}
+		
+		result.add(driver.findElement(By.cssSelector("p.sel_title")).getText().substring(0, 25));
+		result.add(driver.findElement(By.cssSelector("p.sel_title")).getText().trim());
+		result.add(driver.findElement(By.cssSelector("p.sel_title span")).getText().trim());
+		
+		return result;
 	}
 	
 	//count값 생각...나중에 체크할때
@@ -373,7 +386,8 @@ public class ExpressBusNavigator {
 		}
 		ArrayList<String> imsi = new ArrayList<>(Arrays.asList(arrayList.get((arrayList.size()-1)).split(",")));
 		ArrayList<String> result = new ArrayList<>();
-		result.add(imsi.get(2).substring(0, 4)+"."+imsi.get(2).substring(4, 6)+"."+imsi.get(2).substring(6, 8)+" "+imsi.get(2).substring(8, 10)+":"+imsi.get(2).substring(10, 12));
+		System.out.println(imsi);
+		result.add(imsi.get(2).substring(0, 4)+"."+imsi.get(2).substring(6, 8)+"."+imsi.get(2).substring(10, 12)+" "+imsi.get(2).substring(18, 23));
 		result.add(imsi.get(0)+" → "+imsi.get(1));
 		result.add(imsi.get(3));
 		result.add(seatNum);
@@ -507,7 +521,7 @@ public class ExpressBusNavigator {
 		return reserveNo;
 	}
 
-	public boolean cancleTicket(String cardno, String reserveNo) {
+	public boolean cancelTicket(String cardno, String reserveNo) {
 		driver.switchTo().window(this.getHandle());
 		driver.get("https://www.hticket.co.kr/booking/bookingSearch_card.action");
 		driver.findElement(By.cssSelector("input[name='cardNbr']")).clear();
@@ -536,7 +550,7 @@ public class ExpressBusNavigator {
 		}
 	}
 
-	public boolean cancleTicket2(String cardno, String startdate, String time,
+	public boolean cancelTicket2(String cardno, String startdate, String time,
 			String area, String year, String month) {
 		driver.switchTo().window(this.getHandle());
 		driver.get("https://www.kobus.co.kr/web/04_inquiry/inquiry01.jsp");
@@ -557,7 +571,7 @@ public class ExpressBusNavigator {
 		for (WebElement webElement : reserveList) {
 			if(webElement.findElement(By.cssSelector("input[name='inTimDte']")).getAttribute("value").equals(startdate) && webElement.findElement(By.cssSelector("input[name='inTimTim']")).getAttribute("value").equals(time)){
 				webElement.findElement(By.cssSelector("td.last input")).click();
-				driver.findElement(By.cssSelector("a[title='예약취소']")).click();
+				driver.findElement(By.cssSelector("p.btnBlock > a[title='예약취소']")).click();
 				break;
 			}
 		}//for
@@ -590,6 +604,18 @@ public class ExpressBusNavigator {
 			return true;
 		}
 		return false;
+	}
+
+	public ArrayList<String> getBusTimes() {
+		ArrayList<String> result = new ArrayList<>();
+		driver.switchTo().window(this.getHandle());
+		ArrayList<WebElement> trList = (ArrayList<WebElement>) driver.findElements(By.cssSelector("table.ticket tbody tr"));
+		
+		for (WebElement webElement : trList) {
+			result.add(webElement.findElements(By.cssSelector("td")).get(0).getText());
+		}
+		
+		return result;
 	}
 	
 	

@@ -584,19 +584,18 @@
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
-				<p class="modal-title" id="myModalLabel">
-					<img src='resources/img/icon/success.png' width='30px' height='30px'>
-				</p>
+				<p class="modal-title" id="myModalLabel"><img src='resources/img/icon/success.png' width='30px' height='30px'></p>
 			</div>
 			<div class="modal-body">
 				<form>
+				
 					<div class="mvdate">
 						<div id="scdate1" class="mvinfoMenu">TIME</div>
 						<div id="scdate" class="mvinfoSet"></div>
 					</div>
 					<br>
-					<div class="mvname">
-						<div id="mvname1" class="mvinfoMenu">TITLE</div>
+					<div class="mvname">				
+						<div id="mvname1" class="mvinfoMenu">TITLE</div> 
 						<div id="mvname" class="mvinfoSet"></div>
 					</div>
 					<br>
@@ -625,11 +624,10 @@
 						<div id="price" class="mvinfoSet"></div>
 					</div>
 					<br>
-
-					<div class="confirm">
-						<input type="button" class="form-control" onclick="return check_movieform()"
-							value="CONFIRM">
-					</div>
+					
+					<div class="confirm" >
+						<input type="button" class="form-control" onclick="return check_movieform()" value="CONFIRM">
+					</div>					
 				</form>
 			</div>
 		</div>
@@ -645,93 +643,48 @@
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
-				<h4 class="modal-title" id="myModalLabel">
-					<img src='resources/img/icon/credit-card.png' width='30px' height='30px'>
-				</h4>
+				<h4 class="modal-title" id="myModalLabel"><img src='resources/img/icon/credit-card.png' width='30px' height='30px'></h4>
 			</div>
 			<div class="modal-body">
-				<form>
-					<div class="form-group">
-						<label for="normal">카드 종류</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <select
-							id="lp_card_type_mv"><option selected="selected">카드를 선택하세요</option>
-							<option>BC카드</option>
-							<option>국민카드</option>
-							<option>삼성카드(올앳포함)</option>
-							<option>신한카드</option>
-							<option>현대카드</option>
-							<option>KEB하나카드(구,외환)</option>
-							<option>우리(평화)카드</option>
-							<option>롯데/아멕스카드</option>
-							<option>시티카드(구,한미)</option>
-							<option>신세계카드</option>
-							<option>NH카드</option>
-							<option>하나카드(구,하나SK)</option>
-							<option>광주VISA카드</option>
-							<option>산은캐피탈</option>
-							<option>수협카드</option>
-							<option>KDB산업은행카드</option>
-							<option>전북은행카드</option>
-							<option>제주은행카드</option>
-							<option>우체국카드</option>
-							<option>스탠다드차타드은행카드</option>
-							<option>MG체크카드</option>
-							<option>현대증권카드</option>
-							<option>기업은행카드</option></select>
+				<form>						
+				<div class="form-group">
+						<label for="normal">카드 종류</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						 <select id="lp_card_type_mv"><option selected="selected">카드를 선택하세요</option><option>BC카드</option><option>국민카드</option><option>삼성카드(올앳포함)</option><option>신한카드</option><option>현대카드</option><option>KEB하나카드(구,외환)</option><option>우리(평화)카드</option><option>롯데/아멕스카드</option><option>시티카드(구,한미)</option><option>신세계카드</option><option>NH카드</option><option>하나카드(구,하나SK)</option><option>광주VISA카드</option><option>산은캐피탈</option><option>수협카드</option><option>KDB산업은행카드</option><option>전북은행카드</option><option>제주은행카드</option><option>우체국카드</option><option>스탠다드차타드은행카드</option><option>MG체크카드</option><option>현대증권카드</option><option>기업은행카드</option></select> 
 					</div>
 					<div class="form-group">
-						<label for="cardno">카드번호</label> <input type="text" class="form-control"
-							id="cardnomv" name="cardnomv" placeholder="숫자만 입력하세요. 예)0000111122223333">
+						<label for="cardno">카드번호</label> <input type="text" class="form-control" id="cardnomv"
+							name="cardnomv" placeholder="숫자만 입력하세요. 예)0000111122223333">
 					</div>
 					<div class="form-group">
-						<label for="validdate">비밀번호 (앞2자리)</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-						<input type="password" class="form-control" id="pwmv" name="pwmv">
+						<label for="validdate">비밀번호 (앞2자리)</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+						<input type="password" class="form-control" id="pwmv"
+							name="pwmv">
 
 					</div>
 					<div class="form-group">
-						<label for="validdate">유효기간</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <select
-							id="validyearmv" name="validyear">
-							<option value='17'>2017</option>
-							<option value='18'>2018</option>
-							<option value='19'>2019</option>
-							<option value='20'>2020</option>
-							<option value='21'>2021</option>
-							<option value='22'>2022</option>
-							<option value='23'>2023</option>
-							<option value='24'>2024</option>
-							<option value='25'>2025</option>
-							<option value='26'>2026</option>
-							<option value='27'>2027</option>
-							<option value='28'>2028</option>
-							<option value='29'>2029</option>
-							<option value='30'>2030</option>
-							<option value='31'>2031</option>
-							<option value='32'>2032</option>
-							<option value='33'>2033</option>
-							<option value='34'>2034</option>
-							<option value='35'>2035</option>
-							<option value='36'>2036</option>
-						</select> 년 &nbsp;&nbsp;&nbsp; <select id="validmonthmv" name="validmonth">
-							<option value='01'>1</option>
-							<option value='02'>2</option>
-							<option value='03'>3</option>
-							<option value='04'>4</option>
-							<option value='05'>5</option>
-							<option value='06'>6</option>
-							<option value='07'>7</option>
-							<option value='08'>8</option>
-							<option value='09'>9</option>
-							<option value='10'>10</option>
-							<option value='11'>11</option>
-							<option value='12'>12</option>
-						</select> 월
+						<label for="validdate">유효기간</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+						<select id="validyearmv" name="validyear">
+							<option value='17'>2017년</option> <option value='18'>2018년</option> <option value='19'>2019년</option>
+							<option value='20'>2020년</option> <option value='21'>2021년</option> <option value='22'>2022년</option>
+							<option value='23'>2023년</option> <option value='24'>2024년</option> <option value='25'>2025년</option>
+							<option value='26'>2026년</option> <option value='27'>2027년</option> <option value='28'>2028년</option>
+							<option value='29'>2029년</option> <option value='30'>2030년</option> <option value='31'>2031년</option>
+							<option value='32'>2032년</option> <option value='33'>2033년</option> <option value='34'>2034년</option>
+							<option value='35'>2035년</option> <option value='36'>2036년</option>
+							</select>
+							<select id="validmonthmv" name="validmonth">
+							<option value='01'>1월</option> <option value='02'>2월</option> <option value='03'>3월</option>
+							<option value='04'>4월</option> <option value='05'>5월</option> <option value='06'>6월</option>
+							<option value='07'>7월</option> <option value='08'>8월</option> <option value='09'>9월</option>
+							<option value='10'>10월</option> <option value='11'>11월</option> <option value='12'>12월</option>
+							</select>
 					</div>
 					<div class="form-group">
-						<label for="cardno">생년월일</label> <input type="text" class="form-control"
-							id="birthmv" name="bitrhmv" placeholder="예)990201">
+						<label for="cardno">생년월일</label> <input type="text" class="form-control" id="birthmv"
+							name="bitrhmv" placeholder="예)990201">
 					</div>
 					<div class="form-group">
-						<input type="button" class="form-control" id='mvpaymentbtn'
-							onclick="return payment();" value="예매">
+						<input type="button" class="form-control" id='mvpaymentbtn' onclick="return payment();" value="예매">
 					</div>
 				</form>
 			</div>
@@ -739,26 +692,6 @@
 	</div>
 </div>
 <!-- MOVIE PAYMENT MODAL END -->
-<!-- BUS DEPARTURE/ARRIVAL MODAL START -->
-<div class="modal fade" id="busInfoModal" tabindex="-1" role="dialog"
-	aria-labelledby="myModalLabel">
-	<div class="modal-dialog" role="document">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-					<span aria-hidden="true">&times;</span>
-				</button>
-				<h4 class="modal-title" id="myModalLabel">
-					<img src='resources/img/icon/bus.png' width='30px' height='30px'>
-				</h4>
-			</div>
-			<div class="modal-body">
-				<form id="busInformation"></form>
-			</div>
-		</div>
-	</div>
-</div>
-<!-- BUS DEPARTURE/ARRIVAL MODAL END -->
 <!-- BUS SEAT MODAL START -->
 <div id="seatModal" class="modal fade" tabindex="-1" role="dialog"
 	aria-labelledby="myModalLabel">
@@ -768,13 +701,14 @@
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
-				<h4 class="modal-title" id="myModalLabel">
-					<img src='resources/img/icon/seat.png' width='30px' height='30px'>
-				</h4>
+				<h4 class="modal-title" id="myModalLabel"><img src='resources/img/icon/seat.png' width='30px' height='30px'></h4>
 			</div>
-			<div class="modal-body2"></div>
+			<div class="modal-body2">
+			
+			</div>
 		</div>
 	</div>
+	
 </div>
 <!-- BUS SEAT MODAL END -->
 <!-- BUS RESERVATIONCONFIRM MODAL START -->
@@ -786,42 +720,58 @@
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
-				<h4 class="modal-title" id="myModalLabel">
-					<img src='resources/img/icon/success.png' width='30px' height='30px'>
-				</h4>
+				<h4 class="modal-title" id="myModalLabel"><img src='resources/img/icon/success.png' width='30px' height='30px'></h4>
 			</div>
 			<div class="modal-body">
 				<form>
-					<div class="form-group">
-						<label class="businfoMenu" for="normal">THE TIME OF THE DEPARTURE</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-						<h3 class="businfoSet" id="busdate"></h3>
+				<div class="form-group">
+						<label class = "businfoMenu" for="normal">THE TIME OF THE DEPARTURE</label>
+						<h3 class = "businfoSet" id="busdate"></h3>
 					</div>
 					<div class="form-group">
-						<label class="businfoMenu" for="cardno">DEPARTURE / ARRIVAL</label>
-						<h3 class="businfoSet" id="busarea"></h3>
+						<label class = "businfoMenu" for="cardno">DEPARTURE / ARRIVAL</label> 
+						<h3 class = "businfoSet" id="busarea"></h3>
 					</div>
 					<div class="form-group">
-						<label class="businfoMenu" for="validdate">BUS GRADE</label>
-						<h3 class="businfoSet" id="busgrade"></h3>
+						<label class = "businfoMenu" for="validdate">BUS GRADE</label> 
+						<h3 class = "businfoSet" id="busgrade"></h3>
 					</div>
 					<div class="form-group">
-						<label class="businfoMenu" for="validdate">SEAT</label>
-						<h3 class="businfoSet" id="busseat"></h3>
+						<label class = "businfoMenu" for="validdate">SEAT</label> 
+						<h3 class = "businfoSet" id="busseat"></h3>
 					</div>
 					<div class="form-group">
-						<label class="businfoMenu" for="validdate">PRICE</label>
-						<h3 class="businfoSet" id="busprice"></h3>
+						<label class = "businfoMenu" for="validdate">PRICE</label> 
+						<h3 class = "businfoSet" id="busprice"></h3>
 					</div>
 					<div class="form-group">
-						<input type="hidden" id="busflag" value='' /> <input type="button"
-							class="form-control" onclick="return check_form()" value="확인">
-					</div>
+						<input type="hidden" id="busflag" value=''/>
+						<input type="button" class="form-control" onclick="return check_form()" value="확인">
+					</div>					
 				</form>
 			</div>
 		</div>
 	</div>
 </div>
 <!-- BUS RESERVATIONCONFIRM MODAL END -->
+<!-- BUS TIME SELECT START -->
+<div id="BusTimeModal" class="modal fade" tabindex="-1" role="dialog"
+	aria-labelledby="myModalLabel">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<h4 class="modal-title" id="myModalLabel"><img src='resources/img/icon/menu.png'  width='30px' height='30px'></h4>
+			</div>
+			<div class="modal-bodybus">
+			
+			</div>
+		</div>
+	</div>
+</div>
+<!-- BUS TIME SELECT END -->
 <!-- BUS PAYMENT MODAL START -->
 <div class="modal fade" id="payModal" tabindex="-1" role="dialog"
 	aria-labelledby="myModalLabel">
@@ -831,65 +781,45 @@
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
-				<h4 class="modal-title" id="myModalLabel">
-					<img src='resources/img/icon/credit-card.png' width='30px' height='30px'>
-				</h4>
+				<h4 class="modal-title" id="myModalLabel"><img src='resources/img/icon/credit-card.png' width='30px' height='30px'></h4>
 			</div>
 			<div class="modal-body">
 				<form>
-					<div class="form-group">
+				<div class="form-group">
 						<label for="normal">카드 종류</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-						<input type="radio" id="normal" value="0" name="card" checked="checked">
-						일반 &nbsp;&nbsp;&nbsp; <input type="radio" id="company" name="card"> 법인
+						 <input type="radio" id="normal" value="0" name="card" checked="checked"> 일반
+							&nbsp;&nbsp;&nbsp;
+							<input type="radio" id="company"
+							name="card"> 법인
 					</div>
 					<div class="form-group">
-						<label for="cardno">카드번호</label> <input type="text" class="form-control"
-							id="cardno" name="cardno" placeholder="숫자만 입력하세요. 예)0000111122223333">
+						<label for="cardno">카드번호</label> <input type="text" class="form-control" id="cardno"
+							name="cardno" placeholder="숫자만 입력하세요. 예)0000111122223333">
 					</div>
 					<div class="form-group">
 						<label for="validdate">유효기간</label> <select id="validyear" name="validyear">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-							<option value='2017'>2017</option>
-							<option value='2018'>2018</option>
-							<option value='2019'>2019</option>
-							<option value='2020'>2020</option>
-							<option value='2021'>2021</option>
-							<option value='2022'>2022</option>
-							<option value='2023'>2023</option>
-							<option value='2024'>2024</option>
-							<option value='2025'>2025</option>
-							<option value='2026'>2026</option>
-							<option value='2027'>2027</option>
-							<option value='2028'>2028</option>
-							<option value='2029'>2029</option>
-							<option value='2030'>2030</option>
-							<option value='2031'>2031</option>
-							<option value='2032'>2032</option>
-							<option value='2033'>2033</option>
-							<option value='2034'>2034</option>
-							<option value='2035'>2035</option>
-							<option value='2036'>2036</option>
-						</select> <select id="validmonth" name="validmonth">
-							<option value='01'>1</option>
-							<option value='02'>2</option>
-							<option value='03'>3</option>
-							<option value='04'>4</option>
-							<option value='05'>5</option>
-							<option value='06'>6</option>
-							<option value='07'>7</option>
-							<option value='08'>8</option>
-							<option value='09'>9</option>
-							<option value='10'>10</option>
-							<option value='11'>11</option>
-							<option value='12'>12</option>
-						</select>
+							<option value='2017'>2017년</option> <option value='2018'>2018년</option> <option value='2019'>2019년</option>
+							<option value='2020'>2020년</option> <option value='2021'>2021년</option> <option value='2022'>2022년</option>
+							<option value='2023'>2023년</option> <option value='2024'>2024년</option> <option value='2025'>2025년</option>
+							<option value='2026'>2026년</option> <option value='2027'>2027년</option> <option value='2028'>2028년</option>
+							<option value='2029'>2029년</option> <option value='2030'>2030년</option> <option value='2031'>2031년</option>
+							<option value='2032'>2032년</option> <option value='2033'>2033년</option> <option value='2034'>2034년</option>
+							<option value='2035'>2035년</option> <option value='2036'>2036년</option>
+							</select>
+							
+							<select id="validmonth" name="validmonth">
+							<option value='01'>1월</option> <option value='02'>2월</option> <option value='03'>3월</option>
+							<option value='04'>4월</option> <option value='05'>5월</option> <option value='06'>6월</option>
+							<option value='07'>7월</option> <option value='08'>8월</option> <option value='09'>9월</option>
+							<option value='10'>10월</option> <option value='11'>11월</option> <option value='12'>12월</option>
+							</select> 
 					</div>
 					<div class="form-group">
-						<label for="cardno">생년월일</label> <input type="text" class="form-control"
-							id="birth" name="bitrh" placeholder="예)990201">
+						<label for="cardno">생년월일</label> <input type="text" class="form-control" id="birth"
+							name="bitrh" placeholder="예)990201">
 					</div>
 					<div class="form-group">
-						<input type="button" class="form-control" onclick="return writeCardInfo();"
-							value="예매">
+						<input type="button" class="form-control" onclick="return writeCardInfo();" value="예매">
 					</div>
 				</form>
 			</div>
@@ -898,7 +828,7 @@
 </div>
 <!-- BUS PAYMENT MODAL END -->
 <!-- BUS PAYMENT CANCEL MODAL START -->
-<div class="modal fade" id="busCancleModal" tabindex="-1" role="dialog"
+<div class="modal fade" id="busCancelModal" tabindex="-1" role="dialog"
 	aria-labelledby="myModalLabel">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
@@ -909,55 +839,211 @@
 				<h4 class="modal-title" id="myModalLabel">카드번호입력</h4>
 			</div>
 			<div class="modal-body">
-				<div class="form-group">
-					<label for="id">CardNo</label> <input type="text" class="form-control"
-						id="buscancle_card_no" name="buscancle_card_no"
-						placeholder="숫자만 입력하세요. 예)0000111122223333"> <input type="hidden"
-						id="buscancleFlag" name="buscancleFlag" value='' />
-				</div>
-				<div class="form-group">
-					<label for="validdate">유효기간</label> <select id="cvalidyear" name="validyear">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-						<option value='2017'>2017년</option>
-						<option value='2018'>2018년</option>
-						<option value='2019'>2019년</option>
-						<option value='2020'>2020년</option>
-						<option value='2021'>2021년</option>
-						<option value='2022'>2022년</option>
-						<option value='2023'>2023년</option>
-						<option value='2024'>2024년</option>
-						<option value='2025'>2025년</option>
-						<option value='2026'>2026년</option>
-						<option value='2027'>2027년</option>
-						<option value='2028'>2028년</option>
-						<option value='2029'>2029년</option>
-						<option value='2030'>2030년</option>
-						<option value='2031'>2031년</option>
-						<option value='2032'>2032년</option>
-						<option value='2033'>2033년</option>
-						<option value='2034'>2034년</option>
-						<option value='2035'>2035년</option>
-						<option value='2036'>2036년</option>
-					</select> <select id="cvalidmonth" name="validmonth">
-						<option value='01'>1월</option>
-						<option value='02'>2월</option>
-						<option value='03'>3월</option>
-						<option value='04'>4월</option>
-						<option value='05'>5월</option>
-						<option value='06'>6월</option>
-						<option value='07'>7월</option>
-						<option value='08'>8월</option>
-						<option value='09'>9월</option>
-						<option value='10'>10월</option>
-						<option value='11'>11월</option>
-						<option value='12'>12월</option>
-					</select>
-				</div>
-				<div class="form-group">
-					<input type="button" class="form-control" onclick="return kobusCancle();"
-						value="확인">
-				</div>
+					<div class="form-group">
+						<label for="id">CardNo</label> <input type="text" class="form-control" id="buscancel_card_no"
+							name="buscancel_card_no" placeholder="숫자만 입력하세요. 예)0000111122223333">
+							<input type="hidden" id="buscancelFlag" name="buscancelFlag" value=''/>
+					</div>
+					<div class="form-group">
+						<label for="validdate">유효기간</label> <select id="cvalidyear" name="validyear">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+							<option value='2017'>2017년</option> <option value='2018'>2018년</option> <option value='2019'>2019년</option>
+							<option value='2020'>2020년</option> <option value='2021'>2021년</option> <option value='2022'>2022년</option>
+							<option value='2023'>2023년</option> <option value='2024'>2024년</option> <option value='2025'>2025년</option>
+							<option value='2026'>2026년</option> <option value='2027'>2027년</option> <option value='2028'>2028년</option>
+							<option value='2029'>2029년</option> <option value='2030'>2030년</option> <option value='2031'>2031년</option>
+							<option value='2032'>2032년</option> <option value='2033'>2033년</option> <option value='2034'>2034년</option>
+							<option value='2035'>2035년</option> <option value='2036'>2036년</option>
+							</select>
+							<select id="cvalidmonth" name="validmonth">
+							<option value='01'>1월</option> <option value='02'>2월</option> <option value='03'>3월</option>
+							<option value='04'>4월</option> <option value='05'>5월</option> <option value='06'>6월</option>
+							<option value='07'>7월</option> <option value='08'>8월</option> <option value='09'>9월</option>
+							<option value='10'>10월</option> <option value='11'>11월</option> <option value='12'>12월</option>
+							</select>
+					</div>
+					<div class="form-group">
+						<input type="button" class="form-control" onclick="return kobusCancel();" value="확인">
+					</div>
 			</div>
 		</div>
 	</div>
 </div>
 <!-- BUS PAYMENT CANCEL MODAL END -->
+<!-- OISHIII SELECT MODAL START -->
+<div id="tastyModal" class="modal fade" tabindex="-1" role="dialog"
+	aria-labelledby="myModalLabel">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<h4 class="modal-title" id="myModalLabel"><img src='resources/img/icon/menu.png' width='30px' height='30px'></h4>
+			</div>
+			<div class="modal-body3">
+			
+			</div>
+		</div>
+	</div>
+</div>
+<!-- OISHIII SELECT MODAL END -->
+<!-- KTX TIME SELECT MODAL START -->
+<div id="TrainTimeModal" class="modal fade" tabindex="-1" role="dialog"
+	aria-labelledby="myModalLabel">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<h4 class="modal-title" id="myModalLabel"><img src='resources/img/icon/time.png'  width='200px' height='200px'></h4>
+			</div>
+			<div class="modal-body4">
+			
+			</div>
+		</div>
+	</div>
+</div>
+<!-- KTX TIME SELECT MODAL END -->
+<!-- KTX LOGIN MODAL START -->
+<div id="trainLoginModal" class="modal fade" tabindex="-1" role="dialog"
+	aria-labelledby="myModalLabel">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<h4 class="modal-title" id="myModalLabel"><img src='resources/img/icon/login.png' width='30px' height='30px'></h4>
+			</div>
+			<div class="modal-body">
+				<form>
+				<div class="form-group">
+						<label for="normal">카드 종류</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						 <input type="radio" id="normal" value="1" name="logintype" checked="checked"> KORAIL
+							&nbsp;&nbsp;&nbsp;
+							<input type="radio" value="2" id="company"
+							name="logintype"> Telephone
+					</div>
+						<div class="form-group">
+							<label for="id">ID</label> <input type="text" class="form-control"
+								id="idtrain" name="idtrain"> 
+						</div>
+						<div class="form-group">
+							<label for="id">Password</label> <input type="password"
+								class="form-control" id="pwtrain" name="pwtrain">
+						</div>
+						<div class="form-group">
+							<input type="button" class="form-control" onclick="loginTrain()" value="LOGIN">
+<!-- 							<input type="image" img src="resources/img/icon/right-arrow.png" class="form-control" value="선택" onclick="loginTrain();return false;"> -->
+						</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- KTX LOGIN MODAL END -->
+<!-- KTX CONFIRM CHECK START -->
+<div class="modal fade" id="trainCheckModal" tabindex="-1" role="dialog"
+	aria-labelledby="myModalLabel">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<h4 class="modal-title" id="myModalLabel"><img src='resources/img/icon/success.png' width='30px' height='30px'></h4>
+			</div>
+			<div class="modal-body">
+				<form>
+				<div class="form-group">
+						<label class = "businfoMenu" for="normal">THE TIME OF THE DEPARTURE</label>
+						<h3 class = "businfoSet" id="ktxdate"></h3>
+					</div>
+					<div class="form-group">
+						<label class = "businfoMenu" for="cardno">DEPARTURE / ARRIVAL</label> 
+						<h3 class = "businfoSet" id="ktxarea"></h3>
+					</div>
+					<div class="form-group">
+						<label class = "businfoMenu" for="validdate">KTX GRADE</label> 
+						<h3 class = "businfoSet" id="ktxgrade"></h3>
+					</div>
+					<div class="form-group">
+						<label class = "businfoMenu" for="validdate">SEAT</label> 
+						<h3 class = "businfoSet" id="ktxseat"></h3>
+					</div>
+					<div class="form-group">
+						<label class = "businfoMenu" for="validdate">PRICE</label> 
+						<h3 class = "businfoSet" id="ktxprice"></h3>
+					</div>
+					<div class="form-group">
+						<input type="hidden" id="busflag" value=''/>
+						<input type="button" class="form-control" onclick="return checkKtx_form()" value="확인">
+					</div>					
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- KTX CONFIRM CHECK END -->
+<!-- KTX PAYMENT MODAL START -->
+<div class="modal fade" id="KTXpayModal" tabindex="-1" role="dialog"
+	aria-labelledby="myModalLabel">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<h4 class="modal-title" id="myModalLabel"><img src='resources/img/icon/credit-card.png' width='30px' height='30px'></h4>
+			</div>
+			<div class="modal-body">
+				<form>
+				<div class="form-group">
+						<label for="normal">카드 종류</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						 <input type="radio" id="normal" value="0" name="cardtype" checked="checked"> 일반
+							&nbsp;&nbsp;&nbsp;
+							<input type="radio" value="1" id="company"
+							name="cardtype"> 법인
+					</div>
+					<div class="form-group">
+						<label for="cardno">카드번호</label> <input type="text" class="form-control" id="cardnoktx"
+							name="cardno" placeholder="숫자만 입력하세요. 예)0000111122223333">
+					</div>
+					<div class="form-group">
+						<label for="validdate">유효기간</label> <select id="validyear" class="validyear" name="validyear">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+							<option value='2017'>2017년</option> <option value='2018'>2018년</option> <option value='2019'>2019년</option>
+							<option value='2020'>2020년</option> <option value='2021'>2021년</option> <option value='2022'>2022년</option>
+							<option value='2023'>2023년</option> <option value='2024'>2024년</option> <option value='2025'>2025년</option>
+							<option value='2026'>2026년</option> <option value='2027'>2027년</option> <option value='2028'>2028년</option>
+							<option value='2029'>2029년</option> <option value='2030'>2030년</option> <option value='2031'>2031년</option>
+							<option value='2032'>2032년</option> <option value='2033'>2033년</option> <option value='2034'>2034년</option>
+							<option value='2035'>2035년</option> <option value='2036'>2036년</option>
+							</select>
+							
+							<select id="validmonth" class="validmonth" name="validmonth">
+							<option value='01'>1월</option> <option value='02'>2월</option> <option value='03'>3월</option>
+							<option value='04'>4월</option> <option value='05'>5월</option> <option value='06'>6월</option>
+							<option value='07'>7월</option> <option value='08'>8월</option> <option value='09'>9월</option>
+							<option value='10'>10월</option> <option value='11'>11월</option> <option value='12'>12월</option>
+							</select> 
+					</div>
+					<div class="form-group">
+						<label for="validdate">비밀번호 (앞2자리)</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+						<input type="password" class="form-control" id="pwktx"
+							name="pwktx">
+
+					</div>
+					<div class="form-group">
+						<label for="cardno">생년월일</label> <input type="text" class="form-control" id="birthktx"
+							name="bitrh" placeholder="예)990201">
+					</div>
+					<div class="form-group">
+						<input type="button" class="form-control" onclick="return KTXwriteCardInfo();" value="예매">
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- KTX PAYMENT MODAL END -->

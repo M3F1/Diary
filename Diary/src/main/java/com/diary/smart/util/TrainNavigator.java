@@ -7,10 +7,12 @@ import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
-
+import org.springframework.stereotype.Repository;
+@Repository
 public class TrainNavigator {
 	private ChromeOptions options;
 	private WebDriver driver;
@@ -68,13 +70,13 @@ public class TrainNavigator {
 			}
 		}
 		for (WebElement webElement : month) {
-			if(webElement.getText().equals(date.substring(4,6))){
+			if(webElement.getAttribute("value").equals(date.substring(4,6))){
 				webElement.click();
 				break;
 			}
 		}
 		for (WebElement webElement : day) {
-			if(webElement.getText().equals(date.substring(6,8))){
+			if(webElement.getAttribute("value").equals(date.substring(6,8))){
 				webElement.click();
 				break;
 			}
@@ -90,10 +92,17 @@ public class TrainNavigator {
 		
 		
 		ArrayList<String> timeList = new ArrayList<>();
+		
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		//시간가져오기
 		ArrayList<WebElement> trList = (ArrayList<WebElement>) driver.findElements(By.cssSelector("table#tableResult tbody tr"));
 		for (WebElement webElement : trList) {
-			timeList.add(webElement.findElements(By.className("td")).get(2).getText().trim()+"/"+webElement.findElements(By.className("td")).get(3).getText().trim());
+			timeList.add(webElement.findElements(By.cssSelector("td")).get(2).getText().trim()+"/"+webElement.findElements(By.cssSelector("td")).get(3).getText().trim());
 		}
 		
 		return timeList;
@@ -116,18 +125,36 @@ public class TrainNavigator {
 		driver.switchTo().window(this.getHandle());
 		ArrayList<WebElement> tr = (ArrayList<WebElement>) driver.findElement(By.id("tableResult")).findElement(By.tagName("tbody")).findElements(By.tagName("tr"));
 		for (WebElement webElement : tr) {
-			System.out.println(webElement.findElement(By.cssSelector("td:nth-child(3)")).getText());
-			if(webElement.findElement(By.cssSelector("td:nth-child(3)")).getText().contains(date.substring(8,10)+":"+date.substring(10,12))){
+//			if(webElement.findElement(By.cssSelector("td:nth-child(3)")).getText().contains(date.substring(8,10)+":"+date.substring(10,12))){
+			if(webElement.findElement(By.cssSelector("td:nth-child(3)")).getText().contains(date)){
 				webElement.findElements(By.cssSelector("td:nth-child(6) a")).get(0).click();
 				break;
 			}
 		}//for
+		
+//		int i=0;
+//		while(true){
+//			try{
+//				driver.switchTo().frame("embeded-modal-traininfo");
+//				driver.findElement(By.cssSelector("p.btn_c a")).click();
+//				Alert alert2 = driver.switchTo().alert();
+//				alert2.accept();	
+//				driver.switchTo().window(this.getHandle());
+//				Alert alert = driver.switchTo().alert();
+//				alert.accept();	
+//			}catch(WebDriverException e){
+//				e.printStackTrace();
+//				i++;
+//				if(i==6) break;
+//			}
+//		}
+		
 	}
 	
 	
-	public void login(ArrayList<String> info){
+	public ArrayList<String> login(ArrayList<String> info){
 		driver.switchTo().window(this.getHandle());
-		if(info.get(0).equals("1")){
+		if(info.get(0).equals("0")){
 			driver.findElement(By.id("radInputFlg0")).click();
 		}else if(info.get(1).equals("2")){
 			driver.findElement(By.id("radInputFlg2")).click();
@@ -139,42 +166,59 @@ public class TrainNavigator {
 		driver.findElement(By.className("btn_login")).findElement(By.tagName("a")).click();
 		
 		boolean flag = true;
+		int i=0;
+		
 		while(flag){
-			Alert alert = driver.switchTo().alert();
-			if(alert!=null){
-				alert.accept();
-			}else{
-				flag=false;
+			try{
+				Alert alert = driver.switchTo().alert();
+				if(alert!=null){
+					alert.accept();
+					i++;
+				}
+			}catch(WebDriverException e){
+				if(i==2) flag=false;
 			}
 		}//while
+		
+		ArrayList<WebElement> infotd = (ArrayList<WebElement>) driver.findElements(By.cssSelector("div.mt40 > table tbody td"));
+		ArrayList<WebElement> infotd2 = (ArrayList<WebElement>) driver.findElements(By.cssSelector("tbody#infos td"));
+		ArrayList<String> result = new ArrayList<>();
+		result.add(infotd.get(0).getText().trim()+" "+infotd.get(4).getText().trim()+" ~ "+infotd.get(6).getText().trim()); //일시
+		result.add(infotd.get(3).getText().trim()+" → "+infotd.get(5).getText().trim()); //출발지 도착지
+		
+		result.add(infotd2.get(0).getText().trim());//등급
+		result.add(infotd2.get(1).getText().trim()); //좌석
+		result.add(infotd2.get(5).getText());//가격
+		result.add("2");
+		driver.findElement(By.id("btn_next")).click();
+		return result;
 	}
 	
-	public void pay(ArrayList<String> info){
+	public boolean pay(ArrayList<String> info){
 		driver.switchTo().window(this.getHandle());
-		if(info.get(0).equals("0")){ //법인카드는 0
+		if(info.get(0).equals("1")){ //법인카드는 1
 			driver.findElement(By.id("chk_card02")).click();
 		}
-		driver.findElement(By.id("btn_next")).click();
 		driver.findElement(By.name("txtCardNo1")).clear();
-		driver.findElement(By.name("txtCardNo1")).sendKeys(info.get(1).substring(0,5));
+		driver.findElement(By.name("txtCardNo1")).sendKeys(info.get(1).substring(0,4));
 		driver.findElement(By.name("txtCardNo2")).clear();
-		driver.findElement(By.name("txtCardNo2")).sendKeys(info.get(1).substring(5,9));
+		driver.findElement(By.name("txtCardNo2")).sendKeys(info.get(1).substring(4,8));
 		driver.findElement(By.name("txtCardNo3")).clear();
-		driver.findElement(By.name("txtCardNo3")).sendKeys(info.get(1).substring(9,13));
+		driver.findElement(By.name("txtCardNo3")).sendKeys(info.get(1).substring(8,12));
 		driver.findElement(By.name("txtCardNo4")).clear();
-		driver.findElement(By.name("txtCardNo4")).sendKeys(info.get(1).substring(13,17));
+		driver.findElement(By.name("txtCardNo4")).sendKeys(info.get(1).substring(12,16));
 		
 		ArrayList<WebElement> month = (ArrayList<WebElement>) driver.findElement(By.id("month")).findElements(By.tagName("option"));
 		ArrayList<WebElement> year = (ArrayList<WebElement>) driver.findElement(By.id("year")).findElements(By.tagName("option"));
 		for (WebElement webElement : month) {
-			if(webElement.getAttribute("value").equals(info.get(2))){
+			if(webElement.getAttribute("value").equals(info.get(3))){
 				webElement.click();
 				break;
 			}
 		}
 
 		for (WebElement webElement : year) {
-			if(webElement.getText().equals(info.get(3))){ 
+			if(webElement.getText().equals(info.get(2))){ 
 				webElement.click();
 				break;
 			}
@@ -187,6 +231,18 @@ public class TrainNavigator {
 		driver.findElement(By.cssSelector(".inp120.jsNumOnly")).sendKeys(info.get(5));
 		
 		driver.findElement(By.id("fnIssuing")).click();
+		driver.findElement(By.cssSelector("a#tabSale3")).click();
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		driver.switchTo().frame("mainframeSaleInfo");
+		driver.findElement(By.cssSelector("input#radSmart1")).click();
+		driver.findElement(By.cssSelector("a#btn_next")).click();
+		
+		return true;
 	}
 	
 }

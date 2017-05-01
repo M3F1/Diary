@@ -18,15 +18,17 @@ import com.diary.smart.dao.MemberDAO;
 import com.diary.smart.util.ExpressBusNavigator;
 import com.diary.smart.vo.Diary;
 import com.diary.smart.vo.Member;
-//@Controller
+@Controller
 public class BusController {
 	@Autowired
 	private DiaryDAO diaryDAO;
 	
 	@Autowired
+	private ExpressBusNavigator ebn;
+	
+	@Autowired
 	private MemberDAO memberDAO;
 	
-	private ExpressBusNavigator ebn = new ExpressBusNavigator();
 	
 	@ResponseBody
 	@RequestMapping(value = "setStartingPoint", method=RequestMethod.GET)
@@ -42,6 +44,14 @@ public class BusController {
 			ebn.setDestination(area);
 		}
 	}
+	
+	@ResponseBody
+	@RequestMapping(value = "getBusTimes", method=RequestMethod.GET)
+	public ArrayList<String> getBusTimes(){
+		return ebn.getBusTimes();
+	}
+	
+	
 	
 	@ResponseBody
 	@RequestMapping(value = "showPayWindow", method=RequestMethod.GET)
@@ -62,9 +72,9 @@ public class BusController {
 		diary.setSc_con(time+"_"+busarea+"_"+seat+"_"+busdate+"_"+flag);
 		diary.setSc_wt("SU");
 		diary.setSc_stdt(date);
-		if(diaryDAO.insertDiary(diary)==1){
-			session.setAttribute("lastscno", diaryDAO.lastSchedule());
-		}
+		diaryDAO.insertDiary(diary);
+		session.setAttribute("lastscno", diaryDAO.lastSchedule());
+		
 	}
 	
 	@ResponseBody
@@ -101,11 +111,12 @@ public class BusController {
 	
 	@ResponseBody
 	@RequestMapping(value = "selectTicket", method=RequestMethod.GET)
-	public void selectTicket(String time){
+	public ArrayList<String> selectTicket(String time){
 		if(ebn.getNow().equals("kobus")){
-			ebn.selectTicket2(time);
+			return ebn.selectTicket2(time);
 		}else{
 			ebn.selectTicket(time);
+			return null;
 		}
 		
 	}
@@ -169,11 +180,11 @@ public class BusController {
 	}
 	
 	@ResponseBody
-	@RequestMapping(value = "cancleBusTicket", method=RequestMethod.GET)
-	public boolean cancleBusTicket(String cardno, String terminal){
+	@RequestMapping(value = "cancelBusTicket", method=RequestMethod.GET)
+	public boolean cancelBusTicket(String cardno, String terminal){
 			//매개변수로 예약번호 넘김.
 			//디비에서 꺼내서 전달.
-			if(ebn.cancleTicket(cardno,"예약번호 넘기기.")){
+			if(ebn.cancelTicket(cardno,"예약번호 넘기기.")){
 				//디비에서 일정 삭제 처리(삭제플래그 업데이트)
 				return true;
 			}else{
@@ -182,10 +193,10 @@ public class BusController {
 	}
 	
 	@ResponseBody
-	@RequestMapping(value = "cancleKOBUS", method=RequestMethod.GET)
-	public boolean cancleKOBUS(int scno, String cardno, String startdate, 
+	@RequestMapping(value = "cancelKOBUS", method=RequestMethod.GET)
+	public boolean cancelKOBUS(int scno, String cardno, String startdate, 
 			String time, String area, String year, String month){
-		if(ebn.cancleTicket2(cardno, startdate, time, area, year, month)){
+		if(ebn.cancelTicket2(cardno, startdate, time, area, year, month)){
 			if(diaryDAO.deleteDiary(scno)==1){
 				return true;
 			}

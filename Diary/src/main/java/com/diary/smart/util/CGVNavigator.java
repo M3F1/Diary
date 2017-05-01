@@ -16,11 +16,13 @@ import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.remote.server.handler.WebElementHandler;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.springframework.stereotype.Repository;
 
 import com.diary.smart.vo.Member;
-
+@Repository
 public class CGVNavigator {
 	private ChromeOptions options;
 	private WebDriver driver;
@@ -69,13 +71,36 @@ public class CGVNavigator {
 
 		}
 
+		public ArrayList<String> getMovie2() {
+			driver.switchTo().window(this.getHandle());
+			driver.switchTo().frame("ticket_iframe");
+
+			// 무비리스트 div태그 가져오기
+			WebElement movieListTag = driver.findElement(By.id("movie_list"));
+			ArrayList<String> mvList = new ArrayList<>();
+			// 영화목록태그 전부 가져오기
+			List<WebElement> movie = movieListTag.findElements(By.cssSelector("span.text"));
+			List<WebElement> movie2 = movieListTag.findElements(By.cssSelector("span.sreader"));
+			
+			for(int i=0 ; i<movie2.size() ; i++){
+				if(movie2.get(i).getText().equals("선택불가")){
+				}else{
+					mvList.add(movie.get(i).getText());
+				}
+			}
+			
+			return mvList;
+
+		}
+		
+		
 		// 사용자가 영화 선택하면 셀레늄에서 영화 클릭하는 메소드
 		public boolean setMovie(String movie) {
 			driver.switchTo().window(this.getHandle());
 			driver.switchTo().frame("ticket_iframe");
 			
 			for (String webElement : movieList) {
-				if(webElement.equals(movie)){
+				if(webElement.contains(movie)){
 //					driver.findElement(By.id("movie_list")).findElements(By.tagName("li")).get(movieList.indexOf(webElement)).findElement(By.tagName("a")).click();
 					driver.findElement(By.id("movie_list")).findElements(By.tagName("a")).get(movieList.indexOf(webElement)).click();
 //					driver.findElement(By.cssSelector("div#movie_list li:nth-child(" + (movieList.indexOf(webElement)+1) + ") span.icon")).click();
@@ -86,7 +111,7 @@ public class CGVNavigator {
 		}
 
 		//영화선택 하기위해 정보 끌어오기.
-		public void movieSelectHelper(String theater) {
+		public boolean movieSelectHelper(String theater) {
 
 			driver.switchTo().window(this.getHandle());
 			driver.switchTo().frame("ticket_iframe");
@@ -96,14 +121,20 @@ public class CGVNavigator {
 			int i = 1;
 			ArrayList<WebElement> list = new ArrayList<WebElement>(); 
 			boolean check = true;
-			
+			areaTag.findElement(By.cssSelector("ul > li:nth-child(1) span.name")).click();
 			while(true){
 				list = (ArrayList<WebElement>) areaTag.findElements(By.cssSelector("li.selected ul.content.scroll-y a"));
 				
 				for (WebElement webElement : list) {
-					if(theater.equals(webElement.getText())){
+					if(webElement.getText().contains(theater)){
 						webElement.click();
-//						areaTag.findElement(By.linkText(theater)).click();
+						try{
+							Alert alert = driver.switchTo().alert();
+							alert.dismiss();
+							driver.get("http://www.cgv.co.kr/ticket/");
+							return false;
+						}catch(WebDriverException e){							
+						}
 						check = false;
 						break;
 					}					
@@ -111,8 +142,9 @@ public class CGVNavigator {
 				if(!check)
 					break;
 				i++;
+				if(i>10) return false;
 				list.clear();			
-				areaTag.findElement(By.cssSelector("ul > li:nth-child("+i+") span.name")).click();			
+				areaTag.findElement(By.cssSelector("ul > li:nth-child("+i+") span.name")).click();
 			}
 			try {
 				Thread.sleep(700);
@@ -120,14 +152,41 @@ public class CGVNavigator {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			return true;
 			
 		}
 		
+		//영화선택 하기위해 정보 끌어오기.
+		public ArrayList<String> getTheater() {
+
+					driver.switchTo().window(this.getHandle());
+					driver.switchTo().frame("ticket_iframe");
+					ArrayList<String> result = new ArrayList<>();
+					// 지역정보 id태그 가져오기
+					WebElement areaTag = driver.findElement(By.id("theater_area_list"));
+					ArrayList<WebElement> list = new ArrayList<WebElement>(); 
+					boolean check = true;
+
+					for(int i=1 ; i<=9 ; i++){
+						list = (ArrayList<WebElement>) areaTag.findElements(By.cssSelector("li.selected ul.content.scroll-y a"));
+						
+						for (WebElement webElement : list) {
+							result.add(webElement.getText());
+						}
+						list.clear();		
+						areaTag.findElement(By.cssSelector("ul > li:nth-child("+i+") span.name")).click();
+					}
+					return result;
+					
+				}
+		
+		
 		//날짜 선택 메소드
-		public void selectDate(String date){
+		public boolean selectDate(String date){
 			driver.switchTo().window(this.getHandle());
 			driver.switchTo().frame("ticket_iframe");
 			driver.findElement(By.cssSelector("div#date_list li[date='" + date + "']")).click();
+			return true;
 		}
 
 		//선택한 영화의 전체 상영시간 출력
@@ -226,6 +285,7 @@ public class CGVNavigator {
 	public Object selectMovieSeat(String humanCount){
 		driver.switchTo().window(this.getHandle());
 		driver.switchTo().frame("ticket_iframe");
+		
 		driver.findElement(By.cssSelector("div.group.adult li[data-count='"+humanCount+"']")).click();
 		return js.executeScript("return document.getElementById('seats_list').outerHTML;");
 	}
@@ -235,6 +295,14 @@ public class CGVNavigator {
 	public HashMap<String,Object> showMovieSeat(String humanCount){
 		driver.switchTo().window(this.getHandle());
 		driver.switchTo().frame("ticket_iframe");
+		try{
+			WebElement ff = driver.findElements(By.className("ft_layer_popup")).get(3);
+			ff.findElement(By.cssSelector("div.ft > a[title='확인']")).click();
+		}catch(WebDriverException e){
+			e.printStackTrace();
+		}catch(Exception e){
+			e.printStackTrace();
+		}
 		driver.findElement(By.cssSelector("div.group.adult li[data-count='"+humanCount+"']")).click();
 //		driver.findElement(By.cssSelector("div.block_wrap > span.seat_block.block1.enabled input")).click();
 		HashMap<String,Object> result = new HashMap<String, Object>();
@@ -252,6 +320,7 @@ public class CGVNavigator {
 		ArrayList<WebElement> click = new ArrayList<WebElement>();
 		div =(ArrayList<WebElement>)driver.findElements(By.className("row"));
 		ArrayList<String> result = new ArrayList<>();
+		boolean flag = true;
 		for(int i = 0 ; i<arrayList.size() ; i++){
 			if(i%2 == 0){
 				span = (ArrayList<WebElement>) div.get(arrayList.get(i)).findElements(By.cssSelector("span.no"));
@@ -259,9 +328,12 @@ public class CGVNavigator {
 					if(webElement.getText().equals(arrayList.get(i+1).toString())){
 						webElement.click();
 						click.add(webElement);
+						flag = false;
+						break;
 					}
 				}//for
 			}//if
+			if(!flag) break;
 			span = new ArrayList<WebElement>();
 		}
 		
@@ -331,36 +403,31 @@ public class CGVNavigator {
 		}
 		
 		WebElement popup = driver.findElement(By.cssSelector(".ft_layer_popup.popup_reservation_check"));
-	/*	try {
-			Thread.sleep(500);
-		} catch (InterruptedException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}*/
+
 		popup.findElement(By.id("agreementAll")).click();
 		popup.findElement(By.id("resvConfirm")).click();
 		popup.findElement(By.cssSelector("div.ft > .reservation")).click();
 		
-		try {
-			Thread.sleep(800);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 		Alert alert = null;
-		try{
-			alert = driver.switchTo().alert();
-			if(alert!=null){
-				alert.accept();
-				return false;
-			}else{
-				driver.get("http://www.cgv.co.kr/ticket/");
-				return true;
+		int i= 0;
+		while(true){
+			try{
+				alert = driver.switchTo().alert();
+				if(alert!=null){
+					if(alert.getText().contains("선택") || alert.getText().contains("카드번호") ||
+							alert.getText().contains("유효기간") || alert.getText().contains("신용카드")){
+						return false;
+					}
+					alert.accept();
+					break;
+				}
+			}catch(WebDriverException e){
+				i++;
+				if(i==3) break;
 			}
-		}catch(WebDriverException e){
-			driver.get("http://www.cgv.co.kr/ticket/");
-			return true;
-		}
+		} 
+		driver.get("http://www.cgv.co.kr/ticket/");
+		return true;
 	}
 		
 	//셀레늄 종료 메서드
@@ -368,7 +435,7 @@ public class CGVNavigator {
 		driver.quit();
 	}
 
-	public boolean cancleMovieCGV(String mvtime, String mvname, Member member) {
+	public boolean cancelMovieCGV(String mvtime, String mvname, Member member) {
 		driver.switchTo().window(this.getHandle());
 		driver.get("http://www.cgv.co.kr/user/guest/");
 		driver.findElement(By.cssSelector("div.wrap-login a.round.inblack > span")).click();
