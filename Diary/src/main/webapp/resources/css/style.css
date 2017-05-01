@@ -4102,6 +4102,10 @@ nav.category-navigation {
 	overflow-y: scroll;
 }
 
+#myFriendListModal .friendListDiv td {
+	font-size: 2.5rem;
+}
+
 #myFriendListModal .requestListDiv {
 	width: inherit;
 	overflow-y: auto;
