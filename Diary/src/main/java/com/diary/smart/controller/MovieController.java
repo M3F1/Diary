@@ -95,8 +95,14 @@ public class MovieController {
 	
 	@ResponseBody
 	@RequestMapping(value = "payment", method=RequestMethod.POST)
-	public boolean payment(String card, String cardno, String sno, String year,
-			String month, String birth, String paymentInfo, String date, HttpSession session){
+	public boolean payment(@RequestBody HashMap<String, Object> object, HttpSession session) {
+		String card = (String) object.get("card");
+		String cardno = (String) object.get("cardno");
+		String sno = (String) object.get("sno");
+		String year = (String) object.get("year");
+		String month = (String) object.get("month");
+		String birth = (String) object.get("birth");
+		ArrayList<String> frList = (ArrayList<String>) object.get("selectedFriendList");
 		//HashMap<String, Object> map = (HashMap<String, Object>) obj;
 //		wc.selectSeats((ArrayList<Integer>)map.get("seats"));
 		ArrayList<String> ex = new ArrayList<String>();

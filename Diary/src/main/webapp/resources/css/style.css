@@ -4015,7 +4015,6 @@ nav.category-navigation {
 	display: none;
 	text-align: center;
 	letter-spacing: 0.5em;
-	z-index: 5;
 }
 
 .iconList>a>i {
@@ -4111,6 +4110,11 @@ nav.category-navigation {
 #myFriendListModal .requestListDiv td {
 	font-size: 1.8rem;
 }
+
+#myFriendListModal .requestListDiv td:nth-child(2) {
+	width: 37%;
+}
+
 #myFriendListModal th, #myFriendListModal td {
 	border-top: none;
 	text-align: center;

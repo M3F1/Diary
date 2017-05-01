@@ -30,6 +30,7 @@ var ccscno = new Array();
 var kobusscno = new Array();
 var easybusscno = new Array();
 var trainscno = new Array();
+var defaultscno = new Array();
 var returnData ;
 var tasteInfo="";
 var mvPaymentInfo="";
@@ -206,9 +207,22 @@ function eventActive() {
 	// 영화 목록 가져오기
 	movieList();
 
+	$(".iconList > a:first-child").on("click", function () {
+		if ($(".iconList *").hasClass("popover")) {
+			$(".iconList").css("z-index", "1");
+		} else {
+			$(".iconList").css("z-index", "0");
+		}
+	});
+	
 	// iconList 버튼 활성화
 	for (var index = 2; index < 6; index++) {
 		$(".iconList > a:nth-child(" + index + ")").on("click", function () {
+			if ($(".iconList *").hasClass("popover")) {
+				$(".iconList").css("z-index", "1");
+			} else {
+				$(".iconList").css("z-index", "0");
+			}
 			showTextBlock();
 		});
 	}
@@ -313,7 +327,7 @@ function makeRequestList(requestList) {
 		html += "<tr>";
 		html += "<td>" + value.USER_NM + "(" + value.USER_ID + ")" + "님의 친구 요청이 들어왔습니다." + "</td>";
 		html += "<td>" + "<button>수락</button>";
-		html += "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+		html += "&nbsp;&nbsp;&nbsp;&nbsp;";
 		html += "<button>거절</button>" + "</td>";
 		html += "</tr>";
 	});
@@ -339,6 +353,7 @@ function acceptFriend(key, value) {
 		data : {
 			user_no_pk : value.USER_NO_PK
 		},
+		async: false,
 		success : function (data) {
 			$(".requestListDiv table tr").eq(key).html("<td colspan='2'>" + value.USER_NM + "(" + value.USER_ID + ")" + "님의 친구 요청을 수락했습니다." + "</td>");
 			
@@ -365,6 +380,7 @@ function rejectFriend(key, value) {
 		data : {
 			user_no_pk : value.USER_NO_PK
 		},
+		async: false,
 		success : function (data) {
 			$(".requestListDiv table tr").eq(key).html("<td colspan='2'>" + value.USER_NM + "(" + value.USER_ID + ")" + "님의 친구 요청을 거절했습니다." + "</td>");
 			
@@ -397,7 +413,6 @@ function searchMemberList() {
 			var html = "";
 			var friendArray = new Array();
 			
-			console.log(nm.length);
 			html += "<tr>";
 			html += "<th>이름</th>";
 			html += "<th>생년월일</th>";
@@ -942,12 +957,14 @@ function write() {
 		var num = 0;
 		 $.ajax({
 	           url : "directWrite",
-	           type : "get",
+	           type : "post",
 	           dataType : "json",
-	           data : {
+	           contentType : "application/json",
+	           data : JSON.stringify ({
+	        	   date : dateNow,
 	        	   query : input,
-	        	   date : dateNow
-	           },
+	        	   selectedFriendList
+	           }),
 	           success : function(data) {
 	        	   spinnerEnd();
 	        	   if(data.fail=='fail'){
@@ -1020,9 +1037,12 @@ function write() {
 	  	        	    		$(".write").popover("show");
 	  	        		   }
 	        	        }
-	        	   }else if(data.FLAG=='bus'){
-	        	   }else if(data.FLAG=='train'){
+	        	   } else if (data.FLAG=='bus') {
+	        	   } else if (data.FLAG=='train') {
 	        		   
+	        	   } else {
+	        		   directWrite();
+	        		   location.href = "diary";
 	        	   }
 	        	   
 	        	   
@@ -1065,8 +1085,6 @@ function write() {
 		
 		console.log('scFinish');
 	}
-
-directWrite(); //어디서 호출할지 결정
 
 	process = ["", scheduleWrite, scheduleFinish];
 }
@@ -1287,7 +1305,7 @@ function makePopover() {
 		/*html[i]+='<div class="left-box">'+dt.getFullYear() + '년 ' + (dt.getMonth() + 1) + '월 ' + p.html() + '일 일정</div>';*/
 		$.each(scheduleList, function(key, value) {
 			if (p.parent().parent().attr("id") == value.SC_STDT) {
-				if(value.SC_DFLAG=='Y') {
+				if(value.SC_DFLAG == 'Y') {
 					p.attr("data-toggle", "popover");
 					//p.attr("content", dt.getFullYear() + "년 " + (dt.getMonth() + 1) + "월 " + p.html() + "일 일정");
 					
@@ -1337,7 +1355,7 @@ function makePopover() {
 						html[i]+='</table>';
 					}
 					*/
-					if(value.SC_CON.split("_")[4]=="mv"){
+					if(value.SC_CON.split("_")[4]=="mv") {
 						mvscno[i] = value.SC_NO_PK;
 						mvtimecancel[i] = value.SC_CON.split("_")[0];
 						mvnamecancel[i] = value.SC_CON.split("_")[1];
@@ -1346,8 +1364,9 @@ function makePopover() {
 						html[i] += '<div class="left-box">TITLE<br>THEATER<br>SEAT</div>';
 						html[i] += '<div class="right-box">' + value.SC_CON.split("_")[1] + '<br>'+ value.SC_CON.split("_")[2] +'<br>'+ value.SC_CON.split("_")[3]+'</div>';
 						html[i] += '</div>';
+						
 					}
-					else if(value.SC_CON.split("_")[4]=="kobus"){
+					else if(value.SC_CON.split("_")[4]=="kobus") {
 						kobusscno[i] = value.SC_NO_PK;
 						kobuscancel[i] = value.SC_CON.split("_")[3]+"_"+value.SC_CON.split("_")[0]+"_"+value.SC_CON.split("_")[2];
 						html[i] += '<button class="accordion"><img src="resources/img/icon/bus.png" width="20px" height="20px">&nbsp;&nbsp;' + value.SC_CON.split("_")[0] + '<div class="scheCancelBtn" onclick="kobusCancelModal('+i+')">X</div></button>';
@@ -1356,9 +1375,9 @@ function makePopover() {
 						html[i] += '<div class="right-box">' + value.SC_CON.split("_")[1] + '<br>'+ value.SC_CON.split("_")[2] +'</div>';
 						html[i] += '</div>';
 					}
-					else if(value.SC_CON.split("_")[4]=="easy"){
+					else if(value.SC_CON.split("_")[4]=="easy") {
 						easybusscno[i] = value.SC_NO_PK;
-						html[i] += '<button class="accordion"><img src="resources/img/icon/bus.png" width="20px" height="20px">&nbsp;&nbsp;' + value.SC_CON.split("_")[0] + '<div class="scheCancelBtn" onclick="easyCancel('+i+')">X</div></button>';
+						html[i] += '<button class="accordion"><img src="resources/img/icon/bus.png" width="20px" height="20px">&nbsp;&nbsp;' + value.SC_CON.split("_")[0] + '<div class="scheCancelBtn" onclick="trainCancel()">X</div></button>';
 						html[i] += '<div class="panel">';
 						html[i] += '<div class="left-box">AREA<br>SEAT</div>';
 						html[i] += '<div class="right-box">' + value.SC_CON.split("_")[1] + '<br>'+ value.SC_CON.split("_")[2] +'</div>';
@@ -1371,6 +1390,12 @@ function makePopover() {
 						html[i] += '<div class="panel">';
 						html[i] += '<div class="left-box">AREA<br>SEAT</div>';
 						html[i] += '<div class="right-box">' + value.SC_CON.split("_")[1] + '<br>'+ value.SC_CON.split("_")[2] +'</div>';
+						html[i] += '</div>';
+					} else {
+						defaultscno[i] = value.SC_NO_PK;
+						html[i] += '<button class="accordion"><img src="resources/img/icon/trainIcon.png" width="20px" height="20px">&nbsp;&nbsp;' + value.SC_CON.split("_")[0] + '<div class="scheCancelBtn" onclick="defaultCancel('+i+')">X</div></button>';
+						html[i] += '<div class="panel">';
+						html[i] += '<div>' + value.SC_CON.split("_")[1] +'</div>';
 						html[i] += '</div>';
 					}
 					p.attr("data-title", pastHtml);
@@ -1835,21 +1860,24 @@ function payment(){
 	
 	spinnerStart();
 	
+	/************************************************* 수정중 *************************************************/
 	$.ajax({
 		type : "post",
 		url : "payment",
-		data : {
-			card : card,
-			cardno : cardno,
-			sno : sno,
-			year : year,
-			month : month,
-			birth : birth,
+		contentType : "application/json",
+		data : JSON.stringify({
+			"card" : card,
+			"cardno" : cardno,
+			"sno" : sno,
+			"year" : year,
+			"month" : month,
+			"birth" : birth,
 			paymentInfo : mvPaymentInfo,
-			date : dateNow.substring(2,8)
-		},
+			date : dateNow.substring(2,8),
+			"selectedFriendList" : selectedFriendList
+		}),
 		dataType : "json",
-		success : function(data){
+		success : function(data) {
 			if(data){
 				//예매완료.
 				if(typeof tasteInfo == "undefined" || tasteInfo==''){
@@ -2303,6 +2331,7 @@ function trainDestSelect(){
 			console.log(e);
 		}
 	});
+	
 }
 
 function showTrainTime(){
@@ -2656,6 +2685,26 @@ function ccCancel(num){
 			}
 		},
 		error : function(e){
+			console.log(e);
+		}
+	});
+}
+
+function defaultCancel(num) {
+	$.ajax({
+		type : "get",
+		url : "defaultCancel",
+		data : {
+			scno : defaultscno[num]
+		},
+		success : function(data) {
+			if (data) {
+				location.href = "diary";
+			} else {
+				alert("취소 도중 오류발생 다시 시도 해주세요.");
+			}
+		},
+		error : function (e) {
 			console.log(e);
 		}
 	});
