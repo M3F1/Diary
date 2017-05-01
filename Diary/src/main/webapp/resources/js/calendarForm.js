@@ -1069,13 +1069,13 @@ directWrite(); //어디서 호출할지 결정
 }
 
 function directWrite() {
-	selectedFriendList.push(dateNow);
-	selectedFriendList.push($(".active .written").html().split("&nbsp;")[0]);
 	$.ajax({
 		type : "post",
 		url : "write",
 		contentType : "application/json",
 		data : JSON.stringify ({
+			"date" : dateNow,
+			"sc_con" : $(".active .written").html().split("&nbsp;")[0],
 			"selectedFriendList" : selectedFriendList
 		}),
 		success : function (data) {

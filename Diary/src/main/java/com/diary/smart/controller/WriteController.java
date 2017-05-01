@@ -37,12 +37,10 @@ public class WriteController {
 	@ResponseBody
 	@RequestMapping(value = "write", method = RequestMethod.POST)
 	public void write(@RequestBody HashMap<String, Object> object, HttpSession session) {
+		String sc_stdt = (String) object.get("date");
+		String sc_con = (String) object.get("sc_con");
 		ArrayList<String> data = (ArrayList<String>) object.get("selectedFriendList");
 		int user_no_fk = memberDAO.selectMember((String) session.getAttribute("user_id")).getUser_no_pk();
-		String sc_stdt = data.get(data.size() - 2);
-		String sc_con = data.get(data.size() - 1);
-		data.remove(data.size() - 1);
-		data.remove(data.size() - 1);
 		
 		ArrayList<Integer> frnoList = new ArrayList<>();
 		
