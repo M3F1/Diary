@@ -4015,7 +4015,7 @@ nav.category-navigation {
 	display: none;
 	text-align: center;
 	letter-spacing: 0.5em;
-	z-index: 10;
+	z-index: 5;
 }
 
 .iconList>a>i {
@@ -4075,17 +4075,21 @@ nav.category-navigation {
 .popover {
 	color: black;
 	border-radius: inherit;
+	max-width: 400px;
+	width: 275px;
 	font-family: 'NanumSquare', sans-serif;
+	z-index: 10;
 }
 
 /******************* 스케줄 일정 popover창 *******************/
 .carousel-caption .table .popover{
-	width: 300px;
+	width: 310px;
 	border-radius: initial;
 	font-family: 'NanumSquare', sans-serif;
-	/* font-family: 'Hanna', serif; */
 	
 }
+
+
 
 /************** myFriendListModal **************/
 
@@ -4189,10 +4193,11 @@ nav.category-navigation {
 
 .mvinfoSet {
     color: #777;
+    font-size: 23px;
 }
 
 .mvinfoMenu {
-    font-size: 28px;
+    font-size: 18px;
     color: #337ab7;
 }
 
@@ -4208,10 +4213,11 @@ nav.category-navigation {
 
 .businfoSet {
     color: #777;
+    font-size: 23px;
 }
 
 .businfoMenu {
-    font-size: 28px;
+    font-size: 18px;
     color: #337ab7;
 }
 
@@ -4355,9 +4361,21 @@ option{
 
 /********** 스케쥴 popover 레이아웃 **********/
 
-.title-box{
-	font-size: 65px;
+.temperature{
+	font-size: 55px;
 }
+
+.temperatureWeek{
+	font-size: 30px;
+}
+
+.pastDate{
+	
+    font-size: 35px;
+    padding-top: 19px;	
+}
+
+
 
 /************ 스케쥴 Accordian ************/
 .accordion {
@@ -4371,6 +4389,15 @@ option{
 	outline: none;
 	font-size: 15px;
 	transition: 0.4s;
+	padding-bottom: 5px;
+    padding-top: 5px;
+    padding-left: inherit;
+}
+
+
+.accordion{
+	padding-left: 8px;
+	padding-right: 1px;
 }
 
 .accordion.active, 
@@ -4378,13 +4405,54 @@ option{
 	background-color: #ddd;
 }
 
-div.panel {
-	padding: 0 18px;
+.panel {
+	padding: 0 12px;
 	background-color: white;
 	max-height: 0;
 	overflow: hidden;
 	transition: max-height 0.2s ease-out;
+	padding-left: 8px;
+    padding-right: 0px;
+    margin-bottom: 0px;
 }
+
+.left-box {
+  	float: left;
+  	width: 31%;
+ 	color: #999;
+}
+.right-box {
+  	float: right;
+  	width: 69%;
+}
+
+
+.leftbtn {
+  	float: left;
+  	width: 90%;
+}
+
+.scheCancelBtn {
+	float: right;
+	width: 10%;
+	cursor:pointer;
+	color: #fefeff;
+    text-align: center;
+}
+
+.scheCancelBtn:hover{
+	background-color: #c02b5a;
+}
+
+
+
+/**********텍스트 블록 설정**********/
+.written{
+	font-family: 'NanumSquare', sans-serif;
+	font-size: 15px;
+	background-color: rgba(34, 51, 66, 0.61);
+}
+
 
 
 /*******************************/

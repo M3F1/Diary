@@ -1276,6 +1276,8 @@ function makePopover() {
 	var weather = new Array(); // 일정 내용 및 날씨 넣는곳.
 	for (var i = 0; i < $("#" + dt.getFullYear() + "-" + (dt.getMonth() + 1) + " > table > tbody > tr > td div").length; i++) {
 		var p = $("#" + dt.getFullYear() + "-" + (dt.getMonth() + 1) + "> table > tbody > tr > td a").eq(i);
+		var pastHtml = "<div class = 'pastDate' style = 'background-image:url(resources/img/icon/past.png); background-size: 312px;'>"+p.html()+"</div>";
+		
 		html[i]="";
 		weather[i]="";
 		/* 일정 가져오는 부분 */
@@ -1332,13 +1334,43 @@ function makePopover() {
 						html[i]+='</table>';
 					}
 					*/
-					html[i] += '<button class="accordion">' + value.SC_CON.split("_")[0] + '&nbsp;' + value.SC_CON.split("_")[4] + '</button>';
-					html[i] += '<div class="panel">';
-					html[i] += '영화 제목 : ' + value.SC_CON.split("_")[1] + '<br>';
-					html[i] += '영화관 : ' + value.SC_CON.split("_")[2] + '<br>';
-					html[i] += '자리 : ' + value.SC_CON.split("_")[3];
-					html[i] += '</div>';
-					
+					if(value.SC_CON.split("_")[4]=="mv"){
+						mvscno[i] = value.SC_NO_PK;
+						mvtimecancel[i] = value.SC_CON.split("_")[0];
+						mvnamecancel[i] = value.SC_CON.split("_")[1];
+						html[i] += '<button class="accordion"><img src="resources/img/icon/cinema.png" width="20px" height="20px">&nbsp;&nbsp;' + value.SC_CON.split("_")[0] + '<div class="scheCancelBtn" onclick="mvCancel('+i+')">X</div></button>';
+						html[i] += '<div class="panel">';
+						html[i] += '<div class="left-box">TITLE<br>THEATER<br>SEAT</div>';
+						html[i] += '<div class="right-box">' + value.SC_CON.split("_")[1] + '<br>'+ value.SC_CON.split("_")[2] +'<br>'+ value.SC_CON.split("_")[3]+'</div>';
+						html[i] += '</div>';
+						
+					}
+					else if(value.SC_CON.split("_")[4]=="kobus"){
+						kobusscno[i] = value.SC_NO_PK;
+						kobuscancel[i] = value.SC_CON.split("_")[3]+"_"+value.SC_CON.split("_")[0]+"_"+value.SC_CON.split("_")[2];
+						html[i] += '<button class="accordion"><img src="resources/img/icon/bus.png" width="20px" height="20px">&nbsp;&nbsp;' + value.SC_CON.split("_")[0] + '<div class="scheCancelBtn" onclick="kobusCancelModal('+i+')">X</div></button>';
+						html[i] += '<div class="panel">';
+						html[i] += '<div class="left-box">AREA<br>SEAT</div>';
+						html[i] += '<div class="right-box">' + value.SC_CON.split("_")[1] + '<br>'+ value.SC_CON.split("_")[2] +'</div>';
+						html[i] += '</div>';
+					}
+					else if(value.SC_CON.split("_")[4]=="easy"){
+						easybusscno[i] = value.SC_NO_PK;
+						html[i] += '<button class="accordion"><img src="resources/img/icon/bus.png" width="20px" height="20px">&nbsp;&nbsp;' + value.SC_CON.split("_")[0] + '<div class="scheCancelBtn" onclick="trainCancel()">X</div></button>';
+						html[i] += '<div class="panel">';
+						html[i] += '<div class="left-box">AREA<br>SEAT</div>';
+						html[i] += '<div class="right-box">' + value.SC_CON.split("_")[1] + '<br>'+ value.SC_CON.split("_")[2] +'</div>';
+						html[i] += '</div>';
+					}
+					else if(value.SC_CON.split("_")[4]=="train"){
+						trainscno[i] = value.SC_NO_PK; 
+						html[i] += '<button class="accordion"><img src="resources/img/icon/trainIcon.png" width="20px" height="20px">&nbsp;&nbsp;' + value.SC_CON.split("_")[0] + '<div class="scheCancelBtn" onclick="easyCancel('+i+')">X</div></button>';
+						html[i] += '<div class="panel">';
+						html[i] += '<div class="left-box">AREA<br>SEAT</div>';
+						html[i] += '<div class="right-box">' + value.SC_CON.split("_")[1] + '<br>'+ value.SC_CON.split("_")[2] +'</div>';
+						html[i] += '</div>';
+					}
+					p.attr("data-title", pastHtml);
 					p.attr("data-content", html[i]);
 					
 				}
@@ -1351,7 +1383,6 @@ function makePopover() {
 			
 			if (p.parent().parent().attr("id") == item.date) {
 				weather[i]+=item.html;
-				weather[i]+='<div class="title-box">'+p.html()+'</div></div>';
 				p.attr("data-title", weather[i]);
 				p.attr("data-content", html[i]);
 				
@@ -1362,7 +1393,6 @@ function makePopover() {
 			if (p.parent().parent().attr("id") == item.date) {
 				weather[i+3]="";
 				weather[i+3]+=item.html;
-				weather[i+3]+='<div class="title-box">'+p.html()+'</div></div>';
 				p.attr("data-title", weather[i+3]);
 				p.attr("data-content", html[i+3]);
 			}
@@ -1385,13 +1415,27 @@ function makePopover() {
 				}
 			}, 10);
 		});
-		
-		// hover 시 날짜 숫자색 변경
-		p.on("hover", function() {
-			p.css("color", "red");
-		});
-		
 	}
+	
+	// accordian 이벤트 활성화
+	$(document).on("click", ".accordion", function() {
+		$(this).toggleClass("active");
+		
+		var panel = $(this).next();
+		console.log(panel.css("maxHeight"));
+		console.log(panel.prop("scrollHeight"));
+		
+		if (panel.css("maxHeight") == "0px") {
+			panel.css("maxHeight", panel.prop("scrollHeight") + "px");
+		} else {
+			panel.css("maxHeight", "0px");
+		}
+	});
+	
+	// hover 시 날짜 숫자색 변경
+	p.on("hover", function() {
+		p.css("color", "red");
+	});
 	
 	markToday();
 }
@@ -1410,7 +1454,8 @@ function markToday() {
 function markCircle(p) {
 	p.css("border-radius", "50%");
 	p.css("background", "rgb(162, 189, 350)");
-	p.css("width", "50%");
+	p.css("width", "40px");
+	p.css("height", "40px");
 	p.css("margin", "auto");
 }
 
@@ -1444,23 +1489,25 @@ function todayWeather() {
         	 $.each(json.weather.forecast3days,function(i,item){
         		
 
-        		 whtml += "<div class='backweather'  style = 'background-image:url(resources/img/weather_icons/"+item.fcst3hour.sky.code4hour+"b.png); background-size: 273px;'> '<img src='resources/img/weather_icons/"+item.fcst3hour.sky.code4hour+".png' width='40px' height='40px'>"+item.fcst3hour.sky.name4hour+
-        		 		  "     temperature "+item.fcst3hour.temperature.temp4hour+"℃";
-        		 whtml1 +="<div class='backweather'  style = 'background-image:url(resources/img/weather_icons/"+item.fcst3hour.sky.code25hour+"b.png); background-size: 273px;'> '<img src='resources/img/weather_icons/"+item.fcst3hour.sky.code25hour+".png' width='40px' height='40px'>"+item.fcst3hour.sky.name25hour+
- 		 				  "     temperature "+item.fcst3hour.temperature.temp25hour+"℃";
-        		 whtml2 +="<div class='backweather'  style = 'background-image:url(resources/img/weather_icons/"+item.fcst3hour.sky.code49hour+"b.png); background-size: 273px;'> '<img src='resources/img/weather_icons/"+item.fcst3hour.sky.code49hour+".png' width='40px' height='40px'>"+item.fcst3hour.sky.name49hour+
- 		 				  "     temperature "+item.fcst3hour.temperature.temp49hour+"℃";
+        		 whtml += "<div class='backweather'  style = 'background-image:url(resources/img/weather_icons/"+item.fcst3hour.sky.code4hour+"b.png); background-size: 312px;'> '<img src='resources/img/weather_icons/"+item.fcst3hour.sky.code4hour+".png' width='40px' height='40px'>"+item.fcst3hour.sky.name4hour+
+        		 		  "<br><div class ='temperature'>"+item.fcst3hour.temperature.temp4hour.split('.')[0]+"°</div></div>";
+        		 whtml1 +="<div class='backweather'  style = 'background-image:url(resources/img/weather_icons/"+item.fcst3hour.sky.code25hour+"b.png); background-size: 312px;'> '<img src='resources/img/weather_icons/"+item.fcst3hour.sky.code25hour+".png' width='40px' height='40px'>"+item.fcst3hour.sky.name25hour+
+ 		 				  "<br><div class ='temperature'>"+item.fcst3hour.temperature.temp25hour.split('.')[0]+"°</div></div>";
+        		 whtml2 +="<div class='backweather'  style = 'background-image:url(resources/img/weather_icons/"+item.fcst3hour.sky.code49hour+"b.png); background-size: 312px;'> '<img src='resources/img/weather_icons/"+item.fcst3hour.sky.code49hour+".png' width='40px' height='40px'>"+item.fcst3hour.sky.name49hour+
+ 		 				  "<br><div class ='temperature'>"+item.fcst3hour.temperature.temp49hour.split('.')[0]+"°</div></div>";
         		 
         		 fdate = item.timeRelease.split(' ')[0].substr(0,8);
-        		 date = parseInt(item.timeRelease.split(' ')[0].split('-')[2]);
+        		 var date_num = parseInt(item.timeRelease.split(' ')[0].split('-')[2]);
+        		 
+        		 
         		 
         		 jobj.date = item.timeRelease.split(' ')[0];
         		 jobj.html =  whtml;
         		 
-        		 jobj1.date = fdate+(date+1);
+        		 jobj1.date = fdate+padDigits((date_num+1), 2);
         		 jobj1.html =  whtml1;
         		 
-        		 jobj2.date = fdate+(date+2);
+        		 jobj2.date = fdate+padDigits((date_num+2), 2);
         		 jobj2.html =  whtml2;
         		 
         		 jArray .push(jobj);
@@ -1509,30 +1556,30 @@ function weekWeather() {
         	 $.each(json.weather.forecast6days,function(i,item){
         		
 
-        		 whtml3 += "<div class='backweather'  style = 'background-image:url(resources/img/weather_icons/"+item.sky.pmCode3day+"b.png); background-size: 273px;'> <img src='resources/img/weather_icons/"+item.sky.pmCode3day+".png' width='40px' height='40px'>"+item.sky.pmName3day+"<br>" +
-        		 		"max :"+item.temperature.tmax3day+"℃   min :"+item.temperature.tmin3day+"℃";
-        		 whtml4 += "<div class='backweather'  style = 'background-image:url(resources/img/weather_icons/"+item.sky.pmCode4day+"b.png); background-size: 273px;'> <img src='resources/img/weather_icons/"+item.sky.pmCode4day+".png' width='40px' height='40px'>"+item.sky.pmName4day+"<br>" +
-        		 		"max :"+item.temperature.tmax4day+"℃   min :"+item.temperature.tmin4day+"℃";;
-        		 whtml5 += "<div class='backweather'  style = 'background-image:url(resources/img/weather_icons/"+item.sky.pmCode5day+"b.png); background-size: 273px;'> <img src='resources/img/weather_icons/"+item.sky.pmCode5day+".png' width='40px' height='40px'>"+item.sky.pmName5day+"<br>" +
-        		 		"max :"+item.temperature.tmax5day+"℃   min :"+item.temperature.tmin5day+"℃";;
-        		 whtml6 += "<div class='backweather'  style = 'background-image:url(resources/img/weather_icons/"+item.sky.pmCode6day+"b.png); background-size: 273px;'> <img src='resources/img/weather_icons/"+item.sky.pmCode6day+".png' width='40px' height='40px'>"+item.sky.pmName6day+"<br>" +
-        		 		"max :"+item.temperature.tmax6day+"℃   min :"+item.temperature.tmin6day+"℃";;
-        		 whtml7 += "<div class='backweather'  style = 'background-image:url(resources/img/weather_icons/"+item.sky.pmCode7day+"b.png); background-size: 273px;'> <img src='resources/img/weather_icons/"+item.sky.pmCode7day+".png' width='40px' height='40px'>"+item.sky.pmName7day+"<br>" +
-        		 		"max :"+item.temperature.tmax7day+"℃   min :"+item.temperature.tmin7day+"℃";;
+        		 whtml3 += "<div class='backweather'  style = 'background-image:url(resources/img/weather_icons/"+item.sky.pmCode3day+"b.png); background-size: 312px;'> <img src='resources/img/weather_icons/"+item.sky.pmCode3day+".png' width='40px' height='40px'>"+item.sky.pmName3day+
+        		 		"<br><div class ='temperature'>"+item.temperature.tmax3day.split('.')[0]+"°</div></div>";
+        		 whtml4 += "<div class='backweather'  style = 'background-image:url(resources/img/weather_icons/"+item.sky.pmCode4day+"b.png); background-size: 312px;'> <img src='resources/img/weather_icons/"+item.sky.pmCode4day+".png' width='40px' height='40px'>"+item.sky.pmName4day+"<br>" +
+        		 		"<div class ='temperature'>"+item.temperature.tmax4day.split('.')[0]+"°</div></div>";
+        		 whtml5 += "<div class='backweather'  style = 'background-image:url(resources/img/weather_icons/"+item.sky.pmCode5day+"b.png); background-size: 312px;'> <img src='resources/img/weather_icons/"+item.sky.pmCode5day+".png' width='40px' height='40px'>"+item.sky.pmName5day+"<br>" +
+        		 "<div class ='temperature'>"+item.temperature.tmax5day.split('.')[0]+"°</div></div>";
+        		 whtml6 += "<div class='backweather'  style = 'background-image:url(resources/img/weather_icons/"+item.sky.pmCode6day+"b.png); background-size: 312px;'> <img src='resources/img/weather_icons/"+item.sky.pmCode6day+".png' width='40px' height='40px'>"+item.sky.pmName6day+"<br>" +
+        		 "<div class ='temperature'>"+item.temperature.tmax6day.split('.')[0]+"°</div></div>";
+        		 whtml7 += "<div class='backweather'  style = 'background-image:url(resources/img/weather_icons/"+item.sky.pmCode7day+"b.png); background-size: 312px;'> <img src='resources/img/weather_icons/"+item.sky.pmCode7day+".png' width='40px' height='40px'>"+item.sky.pmName7day+"<br>" +
+        		 "<div class ='temperature'>"+item.temperature.tmax7day.split('.')[0]+"°</div></div>";
         		
         		 fdate = item.timeRelease.split(' ')[0].substr(0,8);
-        		 date = parseInt(item.timeRelease.split(' ')[0].split('-')[2]);
+        		 var date_num = parseInt(item.timeRelease.split(' ')[0].split('-')[2]);
         		 
-        			 
-        		 jobj3.date = fdate+(date+3);
+        		
+        		 jobj3.date = fdate+padDigits((date_num+3), 2);;
         		 jobj3.html =  whtml3;
-        		 jobj4.date = fdate+(date+4);
+        		 jobj4.date = fdate+padDigits((date_num+4), 2);;
         		 jobj4.html =  whtml4;
-        		 jobj5.date = fdate+(date+5);
+        		 jobj5.date = fdate+padDigits((date_num+5), 2);;
         		 jobj5.html =  whtml5;
-        		 jobj6.date = fdate+(date+6);
+        		 jobj6.date = fdate+padDigits((date_num+6), 2);;
         		 jobj6.html =  whtml6;
-        		 jobj7.date = fdate+(date+7);
+        		 jobj7.date = fdate+padDigits((date_num+7), 2);;
         		 jobj7.html =  whtml7;
         		
         		 
@@ -2265,6 +2312,7 @@ function trainDestSelect(){
 	$(".write").off("keydown");
 	$(".write").popover("hide");
 	var destTrain = $(".trainDestSelect2 option:selected").val();
+	console.log(destTrain);
 	for(var i=0; i<destTrain.length ;i++){
 		if(destTrain.charAt(i)=="역"){
 			dest = destTrain.substring(0,i);
@@ -2274,7 +2322,7 @@ function trainDestSelect(){
 	
 	showTextBlock();
 	$.ajax({
-		type : "get",
+		type : "GET",
 		url : "setStartAndDestPoint",
 		data : {
 			area1 : start,

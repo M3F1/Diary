@@ -14,7 +14,7 @@ import com.diary.smart.dao.DiaryDAO;
 import com.diary.smart.dao.MemberDAO;
 import com.diary.smart.util.TrainNavigator;
 import com.diary.smart.vo.Diary;
-//@Controller
+@Controller
 public class TrainController {
 	@Autowired
 	private DiaryDAO diaryDAO;
