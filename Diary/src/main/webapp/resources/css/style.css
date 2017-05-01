@@ -4403,9 +4403,17 @@ option{
 }
 
 
-.accordion{
+.accordion {
 	padding-left: 8px;
 	padding-right: 1px;
+}
+
+.accordion.addedByFriend {
+	background-color: #e2f178;
+}
+
+.accordion.addedByFriend:hover {
+	background-color: #cce617;
 }
 
 .accordion.active, 
