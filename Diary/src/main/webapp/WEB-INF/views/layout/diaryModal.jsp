@@ -971,8 +971,8 @@
 							<label for="id">Password</label> <input type="password"
 								class="form-control" id="pwtrainCancel" name="pwtrainCancel">
 						</div>
-						<div class="form-group">
-							<input type="button" class="form-control" onclick="trainCancelFnc()" value="LOGIN">
+						<div class="form-group cancle">
+							<input type="button" class="form-control canclebtn" onclick="trainCancelFnc()" value="LOGIN">
 						</div>
 				</form>
 			</div>

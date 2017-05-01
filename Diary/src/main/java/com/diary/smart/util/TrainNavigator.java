@@ -168,7 +168,7 @@ public class TrainNavigator {
 		driver.switchTo().window(this.getHandle());
 		if(info.get(0).equals("0")){
 			driver.findElement(By.id("radInputFlg0")).click();
-		}else if(info.get(1).equals("2")){
+		}else if(info.get(0).equals("2")){
 			driver.findElement(By.id("radInputFlg2")).click();
 		}
 		driver.findElement(By.id("txtMember")).clear();
@@ -259,12 +259,11 @@ public class TrainNavigator {
 	
 	public boolean cancelKTX(String date, String time){
 		boolean result = false;
-//		date - 승차일 time - 출발시간
 		driver.switchTo().window(this.getHandle());
 		ArrayList<WebElement> tds = (ArrayList<WebElement>) driver.findElement(By.cssSelector("table.jsClickLayer")).findElements(By.cssSelector("td"));
-		if(tds.get(2).findElement(By.cssSelector("label")).getText().contains(date)){
+		if(tds.get(2).findElement(By.cssSelector("label")).getText().contains(date.replaceAll("0", ""))){
 			if(tds.get(4).findElements(By.cssSelector("div label")).get(1).getText().contains(time)){
-				tds.get(11).findElement(By.cssSelector("a")).click();
+				tds.get(11).findElement(By.tagName("a")).click();
 			}
 		}
 		driver.findElement(By.cssSelector("input#radio0")).click();
@@ -279,11 +278,25 @@ public class TrainNavigator {
 	public boolean cancelCheck() {
 		driver.switchTo().window(this.getHandle());
 		driver.get("https://www.letskorail.com/ebizprd/EbizPrdTicketpr13500W_pr13510.do?1493632744277");
-		try{
-			driver.findElement(By.cssSelector("#txtMember")).clear();
-		}catch(WebDriverException e){
-			return false;
+		
+			if(driver.findElement(By.id("ebizPrdPageTitle")).getText().contains("로그인"))
+				return false;
+			else return true;
+		
+	}
+
+	public boolean loginForCancel(String type, String id, String key) {
+		driver.switchTo().window(this.getHandle());
+		if(type.equals("0")){
+			driver.findElement(By.id("radInputFlg0")).click();
+		}else if(type.equals("2")){
+			driver.findElement(By.id("radInputFlg2")).click();
 		}
+		driver.findElement(By.id("txtMember")).clear();
+		driver.findElement(By.id("txtMember")).sendKeys(id);
+		driver.findElement(By.id("txtPwd")).clear();
+		driver.findElement(By.id("txtPwd")).sendKeys(key);
+		driver.findElement(By.className("btn_login")).findElement(By.tagName("a")).click();
 		return true;
 	}
 }

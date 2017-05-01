@@ -1836,7 +1836,6 @@ function payment() {
 	
 	spinnerStart();
 	
-	/************************************************* 수정중 *************************************************/
 	$.ajax({
 		type : "post",
 		url : "payment",
@@ -2401,8 +2400,9 @@ function mvCancel(num){
 }
 
 function trainCancelModal(num){
+	spinnerStart();
 	$.ajax({
-		type : "get",
+		type : "POST",
 		url : "cancelLoginCheckKTX",
 		data : {
 		},
@@ -2410,6 +2410,7 @@ function trainCancelModal(num){
 			if(data){
 				trainCancelFnc(num);
 			}else{
+				spinnerEnd();
 				$("#ktxcancelFlag").val(num);
 				$("#ktxCancelModal").modal();
 			}
@@ -2421,40 +2422,54 @@ function trainCancelModal(num){
 }
 
 function trainCancelFnc(num){
-	if(typeof num == "undefined" || tasteInfo==''){
+	if(typeof num == "undefined" || num=='' || num==null){
 		$("#ktxCancelModal").modal('hide');
 		spinnerStart();
-		var num = $("#ktxcancelFlag").val();
+		var num2 = $("#ktxcancelFlag").val();
 		var id = $("#idtrainCancel").val();
 		var key = $("#pwtrainCancel").val();
-		
-		
-		
-	}else{
+		var type = $(":input:radio[name=logintypeCancel]:checked").val();
 		$.ajax({
-			type : "get",
-			url : "cancelKTX",
+			type : "POST",
+			url : "loginForCancel",
 			data : {
-				date : traincancel[num].split(" ")[0],
-				time : traincancel[num].split(" ")[1]
+				type : type,
+				id : id,
+				key : key
 			},
 			success : function(data){
+				trainCancelFnc2(num2);
 			},
 			error : function(e){
 				console.log(e);
 			}
 		});
-		
+	}else{
+		trainCancelFnc2(num);
 	}
-		
+}
+
+function trainCancelFnc2(num){
+	console.log(traincancel[num].split(" ")[0]);
+	console.log(traincancel[num].split(" ")[1]);
+	console.log(trainscno[num]);
 	
-	
-	
-	
-	
-	
-	
-	
+	$.ajax({
+		type : "POST",
+		url : "cancelKTX",
+		data : {
+			date : traincancel[num].split(" ")[0],
+			time : traincancel[num].split(" ")[1],
+			scno : trainscno[num]
+		},
+		success : function(data){
+			location.href="diary";
+			spinnerEnd();
+		},
+		error : function(e){
+			console.log(e);
+		}
+	});
 }
 
 function kobusCancelModal(num){

@@ -107,15 +107,20 @@ public class TrainController {
 	}
 	
 	@ResponseBody
-	@RequestMapping(value = "cancelLoginCheckKTX", method=RequestMethod.GET)
+	@RequestMapping(value = "cancelLoginCheckKTX", method=RequestMethod.POST)
 	public boolean cancelLoginCheckKTX(){
 		return tn.cancelCheck();
 	}
 	
 	@ResponseBody
-	@RequestMapping(value = "cancelKTX", method=RequestMethod.GET)
+	@RequestMapping(value = "loginForCancel", method=RequestMethod.POST)
+	public boolean loginForCancel(String type, String id, String key){
+		return tn.loginForCancel(type, id, key);
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "cancelKTX", method=RequestMethod.POST)
 	public boolean cancelKTX(String date, String time, int scno, HttpSession session){
-		
 		if(tn.cancelKTX(date, time)){
 			if(diaryDAO.deleteDiary(scno)==1)
 				return true;
