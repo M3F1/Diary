@@ -58,7 +58,7 @@ public class DiaryDAO {
 	/**
 	 * @param diary
 	 *            입력할 일정 정보
-	 * @return 입력된 일정의 개수
+	 * @return 입력된 일정의 번호
 	 */
 	public int insertDiary(Diary diary) {
 		DiaryMapper mapper = sqlSession.getMapper(DiaryMapper.class);
@@ -72,12 +72,12 @@ public class DiaryDAO {
 		return result;
 	}
 
-	public int insertCompagnie(int sc_frno) {
+	public int insertCompanions(int sc_no_fk, int user_no_fk, int sc_frno) {
 		DiaryMapper mapper = sqlSession.getMapper(DiaryMapper.class);
 		int result = 0;
 
 		try {
-			result = mapper.insertCompagnie(sc_frno);
+			result = mapper.insertCompanions(sc_no_fk, user_no_fk, sc_frno);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

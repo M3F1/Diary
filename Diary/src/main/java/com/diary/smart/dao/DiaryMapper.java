@@ -16,8 +16,11 @@ public interface DiaryMapper {
 	 */
 	public int insertDiary(Diary diary);			// 일정 입력
 	
-	
-	public int insertCompagnie(int sc_frno);
+	/**
+	 * @param diary 입력할 일정 정보
+	 * @return 입력된 일정의 개수
+	 */
+	public int insertCompanions(int sc_no_fk, int user_no_fk, int sc_frno);
 	
 	/**
 	 * @param scno 삭제할 일정번호

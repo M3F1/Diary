@@ -1087,7 +1087,7 @@ function makePopover() {
 		/*html[i]+='<div class="left-box">'+dt.getFullYear() + '년 ' + (dt.getMonth() + 1) + '월 ' + p.html() + '일 일정</div>';*/
 		$.each(scheduleList, function(key, value) {
 			if (p.parent().parent().attr("id") == value.SC_STDT) {
-				if(value.SC_FIN=='Y' && value.SC_DFLAG=='Y') {
+				if(value.SC_DFLAG=='Y') {
 					p.attr("data-toggle", "popover");
 					//p.attr("content", dt.getFullYear() + "년 " + (dt.getMonth() + 1) + "월 " + p.html() + "일 일정");
 					

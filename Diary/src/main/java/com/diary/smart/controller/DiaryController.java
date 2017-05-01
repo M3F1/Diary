@@ -53,25 +53,6 @@ public class DiaryController {
 	}
 
 	@ResponseBody
-	@RequestMapping(value = "insertDiary", method = RequestMethod.GET)
-	public String insertDiary(Diary diary, int sc_frno) {
-
-		int result = dao.insertDiary(diary);
-		int result2 = dao.insertCompagnie(sc_frno);
-
-		return "";
-	}
-
-	@RequestMapping(value = "selectDiary", method = RequestMethod.POST)
-	public String selectDiary(int sc_no_pk, Model model) {
-
-//		Diary diary = dao.selectDiary(sc_no_pk);
-//		model.addAttribute("diary", diary);
-
-		return "";
-	}
-
-	@ResponseBody
 	@RequestMapping(value = "searchSchedule", method = RequestMethod.POST)
 	public ArrayList<HashMap<String, Object>> selectDiaryList(String sc_stdt, HttpSession session) {
 		
@@ -96,7 +77,6 @@ public class DiaryController {
 		model.addAttribute("diary", nDiary);
 
 		return "";
-
 	}
 
 	@RequestMapping(value = "deleteDiary", method = RequestMethod.POST)
@@ -105,7 +85,6 @@ public class DiaryController {
 		int result = dao.deleteDiary(sc_no_pk);
 
 		return null;
-
 	}
 
 }

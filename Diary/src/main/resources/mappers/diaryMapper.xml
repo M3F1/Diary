@@ -8,6 +8,12 @@
 
 	<!-- 일정 정보 저장 -->
 	<insert id="insertDiary" parameterType="Diary">
+		<selectKey keyProperty="sc_no_pk" resultType="int" order="BEFORE">
+			select
+				seq_id_sc_tb_sc_no_pk.nextval
+			from
+				dual
+		</selectKey>
 		insert into
 			ID_SC_TB(
 				sc_no_pk
@@ -15,13 +21,19 @@
 				,sc_stdt
 				,sc_con
 				,sc_wt
-				)
-		values(
-			SEQ_ID_SC_TB_sc_no_pk.nextval
-			,#{user_no_fk}
-			,#{sc_stdt}
-			,#{sc_con}
-			,#{sc_wt}
+			<if test="sc_fin != null">
+				,sc_fin
+			</if>
+			)
+			values(
+				#{sc_no_pk}
+				,#{user_no_fk}
+				,#{sc_stdt}
+				,#{sc_con}
+				,#{sc_wt}
+			<if test="sc_fin != null">
+				,#{sc_fin}
+			</if>
 			)
 	</insert>
 
@@ -98,13 +110,32 @@
 			,to_char(sc_endt, 'YYYY-MM-DD') as sc_endt
 			,sc_con
 			,sc_fin
-			,sc_dflag 
+			,sc_dflag
 		from
-			ID_SC_TB 
-		where 
-		user_no_fk = #{user_no_fk}
+			ID_SC_TB
+		where
+			user_no_fk = #{user_no_fk}
+		union
+		select
+			sc_no_pk
+			,to_char(sc_stdt, 'YYYY-MM-DD') as sc_stdt
+			,to_char(sc_endt, 'YYYY-MM-DD') as sc_endt
+			,sc_con
+			,(select 'N' from dual)
+			,sc_dflag
+		from
+			ID_SC_TB
+			,(select
+				sc_no_fk
+			from
+				ID_SCFRNO_TB
+			where
+				sc_frno = #{user_no_fk}
+			)
+		where
+			sc_no_pk = sc_no_fk
 		order by
-			sc_stdt 
+			sc_stdt
 	</select>
 	
 	<!-- 단일 일정 내용 조회 -->
@@ -145,10 +176,15 @@
 	</select> -->
 
 	<!-- 동행 친구 등록 -->
-	<insert id="insertCompagnie">
-		insert into ID_SCFRNO_TB values ( 
-	    #{0}, #{1}
+	<insert id="insertCompanions">
+		insert into
+			ID_SCFRNO_TB
+		values ( 
+	    	#{0}
+	    	,#{1}
+	    	,#{2}
 		)
 	</insert>
+	
 
 </mapper> 
