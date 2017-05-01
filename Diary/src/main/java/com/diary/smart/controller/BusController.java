@@ -64,20 +64,6 @@ public class BusController {
 	}
 	
 	@ResponseBody
-	@RequestMapping(value = "beforePaymentBusSchedule", method=RequestMethod.GET)
-	public void beforePaymentSchedule(String date, String busdate, String time, String busarea, String seat, String flag,
-			HttpSession session){
-		Diary diary = new Diary();
-		diary.setUser_no_fk(memberDAO.selectMember((String)session.getAttribute("user_id")).getUser_no_pk());
-		diary.setSc_con(time+"_"+busarea+"_"+seat+"_"+busdate+"_"+flag);
-		diary.setSc_wt("SU");
-		diary.setSc_stdt(date);
-		diaryDAO.insertDiary(diary);
-		session.setAttribute("lastscno", diaryDAO.lastSchedule());
-		
-	}
-	
-	@ResponseBody
 	@RequestMapping(value = "setBusdate", method=RequestMethod.GET)
 	public void setdate(String date){
 		if(ebn.getNow().equals("kobus")){
@@ -144,10 +130,12 @@ public class BusController {
 	}
 	
 	@ResponseBody
-	@RequestMapping(value = "writeCardInfo", method=RequestMethod.GET)
-	public boolean writeCardInfo(String cardno, String year, String month, String birth, HttpSession session){
+	@RequestMapping(value = "writeCardInfo", method=RequestMethod.POST)
+	public boolean writeCardInfo(String cardno, String year, String month,
+			String birth, String paymentInfo, String date, HttpSession session){
 		boolean result = false;
 		Member member = memberDAO.selectMember((String)session.getAttribute("user_id"));
+		//이때만 결제 작업 진행하면돼 진수야 보면지워
 		if(ebn.getNow().equals("kobus")){
 			ArrayList<String> cardInfo = new ArrayList<String>();
 			cardInfo.add(cardno);
@@ -156,11 +144,18 @@ public class BusController {
 			cardInfo.add(birth);
 			if(ebn.writeCardInfo2(cardInfo)){
 				result = true;
-				diaryDAO.paymentFin((Integer)session.getAttribute("lastscno"));
+				Diary diary = new Diary();
+				diary.setUser_no_fk(memberDAO.selectMember((String)session.getAttribute("user_id")).getUser_no_pk());
+				diary.setSc_con(paymentInfo);
+				diary.setSc_wt("SU");
+				diary.setSc_stdt(date);
+				diaryDAO.insertDiary(diary);
+				
 			}else{
 				result = false;
 			}
 			return result;
+			//밑에 엘스는 안해도돼 보면지워
 		}else{
 			ArrayList<String> cardInfo = new ArrayList<String>();
 			cardInfo.add(cardno);

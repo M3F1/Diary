@@ -93,26 +93,10 @@ public class MovieController {
 		return cn.selectSeats((ArrayList<Integer>)map.get("seats"));
 	}
 	
-	
-	@ResponseBody
-	@RequestMapping(value = "beforePaymentSchedule", method=RequestMethod.GET)
-	public void beforePaymentSchedule(String date, String time, String mvname, String mvarea, String seat, String flag,
-			HttpSession session){
-		Diary diary = new Diary();
-		diary.setUser_no_fk(memberDAO.selectMember((String)session.getAttribute("user_id")).getUser_no_pk());
-		diary.setSc_con(time+"_"+mvname+"_"+mvarea+"_"+seat+"_"+flag);
-		diary.setSc_wt("SU");
-		diary.setSc_stdt(date);
-		diaryDAO.insertDiary(diary);
-		session.setAttribute("lastscno", diaryDAO.lastSchedule());
-		
-	}
-	
-	
 	@ResponseBody
 	@RequestMapping(value = "payment", method=RequestMethod.POST)
 	public boolean payment(String card, String cardno, String sno, String year,
-			String month, String birth, HttpSession session){
+			String month, String birth, String paymentInfo, String date, HttpSession session){
 		//HashMap<String, Object> map = (HashMap<String, Object>) obj;
 //		wc.selectSeats((ArrayList<Integer>)map.get("seats"));
 		ArrayList<String> ex = new ArrayList<String>();
@@ -128,9 +112,15 @@ public class MovieController {
 		ex.add(birth);
 		
 		result = cn.payment(ex);
-//		if(result){
-//			diaryDAO.paymentFin((Integer)session.getAttribute("lastscno"));
-//		}
+		if(result){
+			Diary diary = new Diary();
+			diary.setUser_no_fk(memberDAO.selectMember((String)session.getAttribute("user_id")).getUser_no_pk());
+			diary.setSc_con(paymentInfo);
+			diary.setSc_wt("SU");
+			diary.setSc_stdt(date);
+			diaryDAO.insertDiary(diary);
+		}
+		
 		return result;
 	}
 	
@@ -151,11 +141,7 @@ public class MovieController {
 		if(cn.cancelMovieCGV(mvtime, mvname, member)){
 			if(diaryDAO.deleteDiary(scno)==1)
 				return true;
-			else{
-				return false;
-			}
-		}else{
-			return false;
 		}
+		return false;
 	}
 }

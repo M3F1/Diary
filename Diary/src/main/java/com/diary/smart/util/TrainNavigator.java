@@ -5,6 +5,7 @@ import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
+import org.openqa.selenium.By.ByCssSelector;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverException;
@@ -121,36 +122,48 @@ public class TrainNavigator {
 		}//for
 	}
 		
-	public void getSeat(String date){
+	public boolean setKTXSeat(String date){
 		driver.switchTo().window(this.getHandle());
 		ArrayList<WebElement> tr = (ArrayList<WebElement>) driver.findElement(By.id("tableResult")).findElement(By.tagName("tbody")).findElements(By.tagName("tr"));
+		boolean result = false;
 		for (WebElement webElement : tr) {
 //			if(webElement.findElement(By.cssSelector("td:nth-child(3)")).getText().contains(date.substring(8,10)+":"+date.substring(10,12))){
+			
 			if(webElement.findElement(By.cssSelector("td:nth-child(3)")).getText().contains(date)){
-				webElement.findElements(By.cssSelector("td:nth-child(6) a")).get(0).click();
-				break;
+				try{
+					webElement.findElements(By.cssSelector("td:nth-child(6) a")).get(0).click();
+					result = true;
+					break;
+				}
+				catch(WebDriverException e){
+					result = false;
+					break;
+				}
 			}
 		}//for
-		
-//		int i=0;
-//		while(true){
-//			try{
-//				driver.switchTo().frame("embeded-modal-traininfo");
-//				driver.findElement(By.cssSelector("p.btn_c a")).click();
-//				Alert alert2 = driver.switchTo().alert();
-//				alert2.accept();	
-//				driver.switchTo().window(this.getHandle());
-//				Alert alert = driver.switchTo().alert();
-//				alert.accept();	
-//			}catch(WebDriverException e){
-//				e.printStackTrace();
-//				i++;
-//				if(i==6) break;
-//			}
-//		}
-		
+		int i=0;
+		while(true){
+			try{
+				driver.switchTo().frame("embeded-modal-traininfo");
+				i++;
+				driver.findElement(By.cssSelector("p.btn_c a")).click();
+				driver.switchTo().window(this.getHandle());
+				Alert alert2 = driver.switchTo().alert();
+				System.out.println(alert2);
+				alert2.accept();	
+				driver.switchTo().window(this.getHandle());
+				Alert alert = driver.switchTo().alert();
+				alert.accept();	
+			}catch(WebDriverException e){
+				e.printStackTrace();
+				if(i==0) break;
+				i++;
+				System.out.println(i);
+				if(i==6) break;
+			}
+		}
+		return result;
 	}
-	
 	
 	public ArrayList<String> login(ArrayList<String> info){
 		driver.switchTo().window(this.getHandle());
@@ -235,14 +248,43 @@ public class TrainNavigator {
 		try {
 			Thread.sleep(1000);
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		driver.switchTo().frame("mainframeSaleInfo");
 		driver.findElement(By.cssSelector("input#radSmart1")).click();
 		driver.findElement(By.cssSelector("a#btn_next")).click();
 		
+		driver.get("http://www.letskorail.com/ebizprd/EbizPrdTicketpr21100W_pr21110.do");
 		return true;
 	}
 	
+	public boolean cancelKTX(String date, String time){
+		boolean result = false;
+//		date - 승차일 time - 출발시간
+		driver.switchTo().window(this.getHandle());
+		ArrayList<WebElement> tds = (ArrayList<WebElement>) driver.findElement(By.cssSelector("table.jsClickLayer")).findElements(By.cssSelector("td"));
+		if(tds.get(2).findElement(By.cssSelector("label")).getText().contains(date)){
+			if(tds.get(4).findElements(By.cssSelector("div label")).get(1).getText().contains(time)){
+				tds.get(11).findElement(By.cssSelector("a")).click();
+			}
+		}
+		driver.findElement(By.cssSelector("input#radio0")).click();
+		driver.findElement(By.cssSelector(".btn_r a")).click();
+		driver.findElements(By.cssSelector(".btn_r")).get(0).findElement(By.cssSelector("a")).click();
+		driver.findElements(By.cssSelector(".btn_r")).get(1).findElement(By.cssSelector("a.btn_blue_ang")).click();
+		driver.get("http://www.letskorail.com/ebizprd/EbizPrdTicketpr21100W_pr21110.do");
+		result = true;
+		return result;
+	}
+
+	public boolean cancelCheck() {
+		driver.switchTo().window(this.getHandle());
+		driver.get("https://www.letskorail.com/ebizprd/EbizPrdTicketpr13500W_pr13510.do?1493632744277");
+		try{
+			driver.findElement(By.cssSelector("#txtMember")).clear();
+		}catch(WebDriverException e){
+			return false;
+		}
+		return true;
+	}
 }

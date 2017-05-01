@@ -38,9 +38,9 @@ public class TrainController {
 	}
 	
 	@ResponseBody
-	@RequestMapping(value = "getSeat", method=RequestMethod.GET)
-	public void getSeat(String date){
-		tn.getSeat(date);
+	@RequestMapping(value = "setKTXSeat", method=RequestMethod.GET)
+	public boolean setKTXSeat(String date){
+		return tn.setKTXSeat(date);
 	}
 	
 	@ResponseBody
@@ -60,25 +60,10 @@ public class TrainController {
 	}
 	
 	@ResponseBody
-	@RequestMapping(value = "beforePaymentKTXSchedule", method=RequestMethod.GET)
-	public void beforePaymentSchedule(String date, String ktxdate, String time, String ktxarea, String seat, String flag,
-			HttpSession session){
-		Diary diary = new Diary();
-		diary.setUser_no_fk(memberDAO.selectMember((String)session.getAttribute("user_id")).getUser_no_pk());
-		diary.setSc_con(time+"_"+ktxarea+"_"+seat+"_"+ktxdate+"_"+flag);
-		diary.setSc_wt("SU");
-		diary.setSc_stdt(date);
-		diaryDAO.insertDiary(diary);
-		session.setAttribute("lastscno", diaryDAO.lastSchedule());
-		
-	}
-	
-	@ResponseBody
-	@RequestMapping(value = "KTXwriteCardInfo", method=RequestMethod.GET)
-	public boolean KTXwriteCardInfo(String type, String cardno, String year, String month, String key, String birth, HttpSession session){
-		boolean result = false;
-//		Member member = memberDAO.selectMember((String)session.getAttribute("user_id"));
-		
+	@RequestMapping(value = "KTXwriteCardInfo", method=RequestMethod.POST)
+	public boolean KTXwriteCardInfo(String type, String cardno, String year, String month, 
+			String key, String birth, String paymentInfo, String date, HttpSession session){
+
 		ArrayList<String> cardInfo = new ArrayList<String>();
 		cardInfo.add(type);
 		cardInfo.add(cardno);
@@ -86,10 +71,34 @@ public class TrainController {
 		cardInfo.add(month);
 		cardInfo.add(key);
 		cardInfo.add(birth);
-		tn.pay(cardInfo);
-		diaryDAO.paymentFin((Integer)session.getAttribute("lastscno"));
+		if(tn.pay(cardInfo)){
+			Diary diary = new Diary();
+			diary.setUser_no_fk(memberDAO.selectMember((String)session.getAttribute("user_id")).getUser_no_pk());
+			diary.setSc_con(paymentInfo);
+			diary.setSc_wt("SU");
+			diary.setSc_stdt(date);
+			diaryDAO.insertDiary(diary);
+			return true;
+		}else{
+			return false;
+		}
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "cancelLoginCheckKTX", method=RequestMethod.GET)
+	public boolean cancelLoginCheckKTX(){
+		return tn.cancelCheck();
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "cancelKTX", method=RequestMethod.GET)
+	public boolean cancelKTX(String date, String time, int scno, HttpSession session){
 		
-		return true;
+		if(tn.cancelKTX(date, time)){
+			if(diaryDAO.deleteDiary(scno)==1)
+				return true;
+		}//outer if
+		return false;
 	}
 	
 }

@@ -943,6 +943,44 @@
 	</div>
 </div>
 <!-- KTX LOGIN MODAL END -->
+<!-- KTX CANCEL MODAL START -->
+<div class="modal fade" id="ktxCancelModal" tabindex="-1" role="dialog"
+	aria-labelledby="myModalLabel">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<h4 class="modal-title" id="myModalLabel"><img src='resources/img/icon/login.png' width='30px' height='30px'></h4>
+			</div>
+			<div class="modal-body">
+				<form>
+				<div class="form-group">
+						<input type="hidden" id="ktxcancelFlag" name="ktxcancelFlag" value=''/>
+						<label for="normal">카드 종류</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						 <input type="radio" value="1" name="logintypeCancel" checked="checked"> KORAIL
+							&nbsp;&nbsp;&nbsp;
+							<input type="radio" value="2" name="logintypeCancel"> Telephone
+					</div>
+						<div class="form-group">
+							<label for="id">ID</label> <input type="text" class="form-control"
+								id="idtrainCancel" name="idtrainCancel"> 
+						</div>
+						<div class="form-group">
+							<label for="id">Password</label> <input type="password"
+								class="form-control" id="pwtrainCancel" name="pwtrainCancel">
+						</div>
+						<div class="form-group">
+							<input type="button" class="form-control" onclick="trainCancelFnc()" value="LOGIN">
+						</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- KTX CANCEL MODAL END -->
+
 <!-- KTX CONFIRM CHECK START -->
 <div class="modal fade" id="trainCheckModal" tabindex="-1" role="dialog"
 	aria-labelledby="myModalLabel">

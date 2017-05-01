@@ -82,6 +82,7 @@ public class WriteController {
 		result2.put("TASTY", "");
 		result2.put("BUS", "");
 		result2.put("KTX", "");
+		result2.put("COMMON", "");
 		fail.put("fail", "fail");
 		ArrayList<String> mvList = cn.getMovie();
 		ArrayList<String> thList = cn.getTheater();
@@ -195,6 +196,11 @@ public class WriteController {
 			}
 			//나머지..
 			
+			if(result2.get("KTX").equals("") && result2.get("BUS").equals("") && result2.get("TASTY").equals("")  
+					&& mvnm.equals("") && time.equals("") && theater.equals("")){
+				
+			}
+			
 		}//outer for
 		
 		if(result2.get("FLAG").equals("movie")){
@@ -296,7 +302,7 @@ public class WriteController {
 	}//method end
 	
 	@ResponseBody
-	@RequestMapping(value = "commonsc", method=RequestMethod.GET)
+	@RequestMapping(value = "commonsc", method=RequestMethod.POST)
 	public void commonsc(String text, String link, String telephone, String date, String flag, HttpSession session){
 		Diary diary = new Diary();
 		diary.setUser_no_fk(memberDAO.selectMember((String)session.getAttribute("user_id")).getUser_no_pk());
@@ -311,10 +317,8 @@ public class WriteController {
 		}
 		diary.setSc_wt("SU");
 		diary.setSc_stdt(date);
-		if(diaryDAO.insertDiary(diary)==1){
-			session.setAttribute("lastscno", diaryDAO.lastSchedule());
-			diaryDAO.paymentFin((Integer)session.getAttribute("lastscno"));
-		}
+		diaryDAO.insertDiary(diary);
+		
 	}
 	
 	@ResponseBody

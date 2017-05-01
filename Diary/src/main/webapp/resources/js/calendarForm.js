@@ -24,6 +24,7 @@ var selectBusInfo="";
 var mvnamecancel = new Array();
 var mvtimecancel = new Array();
 var kobuscancel = new Array();
+var traincancel = new Array();
 var mvscno = new Array();
 var ccscno = new Array();
 var kobusscno = new Array();
@@ -31,7 +32,9 @@ var easybusscno = new Array();
 var trainscno = new Array();
 var returnData ;
 var tasteInfo="";
-
+var mvPaymentInfo="";
+var busPaymentInfo="";
+var ktxPaymentInfo="";
 // 회원 정보 수정 처리
 function updateInfo() {
 	if ($("#user_pw").val() == "") {
@@ -1343,7 +1346,6 @@ function makePopover() {
 						html[i] += '<div class="left-box">TITLE<br>THEATER<br>SEAT</div>';
 						html[i] += '<div class="right-box">' + value.SC_CON.split("_")[1] + '<br>'+ value.SC_CON.split("_")[2] +'<br>'+ value.SC_CON.split("_")[3]+'</div>';
 						html[i] += '</div>';
-						
 					}
 					else if(value.SC_CON.split("_")[4]=="kobus"){
 						kobusscno[i] = value.SC_NO_PK;
@@ -1356,15 +1358,16 @@ function makePopover() {
 					}
 					else if(value.SC_CON.split("_")[4]=="easy"){
 						easybusscno[i] = value.SC_NO_PK;
-						html[i] += '<button class="accordion"><img src="resources/img/icon/bus.png" width="20px" height="20px">&nbsp;&nbsp;' + value.SC_CON.split("_")[0] + '<div class="scheCancelBtn" onclick="trainCancel()">X</div></button>';
+						html[i] += '<button class="accordion"><img src="resources/img/icon/bus.png" width="20px" height="20px">&nbsp;&nbsp;' + value.SC_CON.split("_")[0] + '<div class="scheCancelBtn" onclick="easyCancel('+i+')">X</div></button>';
 						html[i] += '<div class="panel">';
 						html[i] += '<div class="left-box">AREA<br>SEAT</div>';
 						html[i] += '<div class="right-box">' + value.SC_CON.split("_")[1] + '<br>'+ value.SC_CON.split("_")[2] +'</div>';
 						html[i] += '</div>';
 					}
-					else if(value.SC_CON.split("_")[4]=="train"){
+					else if(value.SC_CON.split("_")[4]=="ktx"){
 						trainscno[i] = value.SC_NO_PK; 
-						html[i] += '<button class="accordion"><img src="resources/img/icon/trainIcon.png" width="20px" height="20px">&nbsp;&nbsp;' + value.SC_CON.split("_")[0] + '<div class="scheCancelBtn" onclick="easyCancel('+i+')">X</div></button>';
+						traincancel[i] = value.SC_CON.split("_")[3]+" "+value.SC_CON.split("_")[0];
+						html[i] += '<button class="accordion"><img src="resources/img/icon/trainIcon.png" width="20px" height="20px">&nbsp;&nbsp;' + value.SC_CON.split("_")[0] + '<div class="scheCancelBtn" onclick="trainCancelModal('+i+')">X</div></button>';
 						html[i] += '<div class="panel">';
 						html[i] += '<div class="left-box">AREA<br>SEAT</div>';
 						html[i] += '<div class="right-box">' + value.SC_CON.split("_")[1] + '<br>'+ value.SC_CON.split("_")[2] +'</div>';
@@ -1801,24 +1804,8 @@ function check_movieform(){
 	var mvname = $("#mvname").text();
 	var mvarea = $("#mvarea").text();
 	var seat = $("#seatinfo").text();
-	
-	$.ajax({
-		type : "get",
-		url : "beforePaymentSchedule",
-		data : {
-			date : dateNow.substring(2,8),
-			time : date.split(" ")[1],
-			mvname : mvname,
-			mvarea : mvarea,
-			seat : seat,
-			flag : "mv"
-		},
-		success : function(data){
-		},
-		error : function(e){
-			console.log(e);
-		}
-	});
+	mvPaymentInfo="";
+	mvPaymentInfo += (date.split(" ")[1]+"_"+mvname+"_"+mvarea+"_"+seat+"_mv");
 	
 	$('div#MoviePayModal').modal();
 }
@@ -1830,7 +1817,6 @@ function mvSetting(){
 		data : {
 		},
 		success : function(data){
-			
 		},
 		error : function(e){
 			console.log(e);
@@ -1847,7 +1833,6 @@ function payment(){
 	var birth = $("#birthmv").val();
 	$('div#MoviePayModal').modal('hide');
 	
-	//spinner
 	spinnerStart();
 	
 	$.ajax({
@@ -1859,15 +1844,13 @@ function payment(){
 			sno : sno,
 			year : year,
 			month : month,
-			birth, birth			
+			birth : birth,
+			paymentInfo : mvPaymentInfo,
+			date : dateNow.substring(2,8)
 		},
 		dataType : "json",
 		success : function(data){
 			if(data){
-				$.ajax({
-					type : "get",
-					url : "updatePaymentFIN",
-				});
 				//예매완료.
 				if(typeof tasteInfo == "undefined" || tasteInfo==''){
 					location.href="diary";
@@ -1876,7 +1859,7 @@ function payment(){
 				}else{ 
 					if(tasteInfo!='' || tasteInfo!=null || typeof tasteInfo != "undefined"){
 						$.ajax({
-							type : "get",
+							type : "POST",
 							url : "commonsc",
 							data : {
 								text : tasteInfo.split("`")[0],
@@ -2183,26 +2166,10 @@ function check_form(){
 	var time = $("#busdate").text();
 	var busarea = $("#busarea").text();
 	var seat = $("#busseat").text();
-		$.ajax({
-			type : "get",
-			url : "beforePaymentBusSchedule",
-			data : {
-				date : dateNow.substring(2,8),
-				busdate : time.split(" ")[0],
-				time : time.split(" ")[1],
-				busarea : busarea,
-				seat : seat,
-				flag : $("#busflag").val()
-			},
-			success : function(data){
-			},
-			error : function(e){
-				console.log(e);
-			}
-		});
+	busPaymentInfo="";
+	busPaymentInfo = (time.split(" ")[1]+"_"+busarea+"_"+seat+"_"+time.split(" ")[0]+"_"+$("#busflag").val());
 	$('div#payModal').modal();
 }
-
 
 function writeCardInfo() {
 	$('div#payModal').modal('hide');
@@ -2212,17 +2179,18 @@ function writeCardInfo() {
 	var birth = $("#birth").val();
 	spinnerStart();
 	$.ajax({
-		type : "get",
+		type : "POST",
 		url : "writeCardInfo",
 		data : {
 			cardno : cardno,
 			year : year,
 			month : month,
-			birth : birth
+			birth : birth,
+			paymentInfo : busPaymentInfo,
+			date : dateNow.substring(2,8)
 		},
 		dataType : "json",
 		success : function(data){
-			//다이어리에 찍어줌..
 			if(data){
 				spinnerEnd();
 				location.href="diary";
@@ -2335,7 +2303,6 @@ function trainDestSelect(){
 			console.log(e);
 		}
 	});
-	
 }
 
 function showTrainTime(){
@@ -2424,6 +2391,63 @@ function mvCancel(num){
 			console.log(e);
 		}
 	});
+}
+
+function trainCancelModal(num){
+	$.ajax({
+		type : "get",
+		url : "cancelLoginCheckKTX",
+		data : {
+		},
+		success : function(data){
+			if(data){
+				trainCancelFnc(num);
+			}else{
+				$("#ktxcancelFlag").val(num);
+				$("#ktxCancelModal").modal();
+			}
+		},
+		error : function(e){
+			console.log(e);
+		}
+	});
+}
+
+function trainCancelFnc(num){
+	if(typeof num == "undefined" || tasteInfo==''){
+		$("#ktxCancelModal").modal('hide');
+		spinnerStart();
+		var num = $("#ktxcancelFlag").val();
+		var id = $("#idtrainCancel").val();
+		var key = $("#pwtrainCancel").val();
+		
+		
+		
+	}else{
+		$.ajax({
+			type : "get",
+			url : "cancelKTX",
+			data : {
+				date : traincancel[num].split(" ")[0],
+				time : traincancel[num].split(" ")[1]
+			},
+			success : function(data){
+			},
+			error : function(e){
+				console.log(e);
+			}
+		});
+		
+	}
+		
+	
+	
+	
+	
+	
+	
+	
+	
 }
 
 function kobusCancelModal(num){
@@ -2672,12 +2696,16 @@ function realTrainTimeSelect(){
 
 	$.ajax({
 		type : "get",
-		url : "getSeat",
+		url : "setKTXSeat",
 		data : {
 			date : time.split(" ")[1]
 		},
 		success : function(data){
-			$("#trainLoginModal").modal();
+			if(data){
+				$("#trainLoginModal").modal();
+			}else{
+				alert("죄송합니다. 해당 열차는 매진입니다. 다시 선택해주세요.");
+			}
 		},
 		error : function(e){
 			console.log(e);
@@ -2718,27 +2746,10 @@ function checkKtx_form(){
 	var time = $("#ktxdate").text();
 	var ktxarea = $("#ktxarea").text();
 	var seat = $("#ktxseat").text();
-		$.ajax({
-			type : "get",
-			url : "beforePaymentKTXSchedule",
-			data : {
-				date : dateNow.substring(2,8),
-				ktxdate : time.split(" ")[0],
-				time : time.split(" ")[1],
-				ktxarea : ktxarea,
-				seat : seat,
-				flag : "ktx"
-			},
-			success : function(data){
-			},
-			error : function(e){
-				console.log(e);
-			}
-		});
-	
+	ktxPaymentInfo="";
+	ktxPaymentInfo += (time.split(" ")[1]+"_"+ktxarea+"_"+seat+"_"+time.split(" ")[0]+"_ktx");
 	$('div#KTXpayModal').modal();
 }
-
 
 function KTXwriteCardInfo(){
 	$('div#KTXpayModal').modal('hide');
@@ -2749,9 +2760,8 @@ function KTXwriteCardInfo(){
 	var key = $("#pwktx").val();
 	var birth = $("#birthktx").val();
 	spinnerStart();
-	console.log(cardno);
 	$.ajax({
-		type : "get",
+		type : "POST",
 		url : "KTXwriteCardInfo",
 		data : {
 			type : type, 
@@ -2759,7 +2769,9 @@ function KTXwriteCardInfo(){
 			year : year,
 			month : month,
 			key : key,
-			birth : birth
+			birth : birth,
+			paymentInfo : ktxPaymentInfo,
+			date : dateNow.substring(2,8)
 		},
 		dataType : "json",
 		success : function(data){

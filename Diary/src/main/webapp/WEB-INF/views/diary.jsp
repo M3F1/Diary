@@ -84,7 +84,7 @@ $(document).ready(function() {
 					<div class="item active">
 						<!-- SLIDE BACKGROUND START -->
 						<div class="slider-bg-img"
-							style="background-image: url(resources/img/diary-bg.jpg);"></div>
+							style="background-image: url(resources/img/333.gif);"></div>
 						<!-- SLIDE BACKGROUND END -->
 						<!-- SLIDE CAPTION START -->
 						<div class="carousel-caption">
