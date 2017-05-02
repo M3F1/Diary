@@ -3,14 +3,14 @@ var today = new Date(); // 오늘 날짜 객체
 var tooltiptext; // tooltiptext 배열
 var process; // 선택된 icon의 절차 배열
 var i = 0;
-var selectMemberList;	// 전체 유저 목록
-var selectedFriendList = new Array();	// 선택된 친구 목록
-var scheduleList;	// 전체 스케쥴 목록
-var writeInput="";
+var selectMemberList; // 전체 유저 목록
+var selectedFriendList = new Array(); // 선택된 친구 목록
+var scheduleList; // 전체 스케쥴 목록
+var writeInput = "";
 var movieflag = 0;
-var dateNow="";
-var start="";
-var dest="";
+var dateNow = "";
+var start = "";
+var dest = "";
 var map = new Map();
 var busGrade;
 var full_seat = 0;
@@ -20,7 +20,7 @@ var flag = 0;
 var busReserveInfo;
 var ktxinfos;
 var starttime;
-var selectBusInfo="";
+var selectBusInfo = "";
 var mvnamecancel = new Array();
 var mvtimecancel = new Array();
 var kobuscancel = new Array();
@@ -31,11 +31,12 @@ var kobusscno = new Array();
 var easybusscno = new Array();
 var trainscno = new Array();
 var defaultscno = new Array();
-var returnData ;
-var tasteInfo="";
-var mvPaymentInfo="";
-var busPaymentInfo="";
-var ktxPaymentInfo="";
+var returnData;
+var tasteInfo = "";
+var mvPaymentInfo = "";
+var busPaymentInfo = "";
+var ktxPaymentInfo = "";
+
 // 회원 정보 수정 처리
 function updateInfo() {
 	if ($("#user_pw").val() == "") {
@@ -188,10 +189,10 @@ function eventActive() {
 	});
 
 	// 스케쥴 입력창 blur
-	 $(".write").on("blur", function () {
-	 	$(".tooltiptext").css("visibility", "hidden");
-	 	$(".tooltiptext").css("opacity", "0");
-	 });
+	$(".write").on("blur", function () {
+		$(".tooltiptext").css("visibility", "hidden");
+		$(".tooltiptext").css("opacity", "0");
+	});
 
 	// 스케쥴 입력창 enter key 동작하게 하기
 	$(".write").on("keydown", function (e) {
@@ -253,12 +254,12 @@ function hideTextBlock() {
 
 /** ******************** textBlock() 밑에 입력한 값 추가하기 ********************* */
 function inputText(param) {
-//	var html = "<input type='text' value='" + $(".write").val() +
-//		"' size='" + $(".write").val().length + "'>" + "&nbsp;";
-	
-	if(param!=null){
+	//	var html = "<input type='text' value='" + $(".write").val() +
+	//		"' size='" + $(".write").val().length + "'>" + "&nbsp;";
+
+	if (param != null) {
 		var html = param + "&nbsp;/&nbsp;";
-	}else{
+	} else {
 		var html = $(".active .write").val() + "&nbsp;/&nbsp;";
 	}
 	$(".written").html($(".written").html() + html);
@@ -516,76 +517,75 @@ function movie() {
 		});
 		$(".write").on("keyup",function(){
 			var cgv = "CGV";
-		   	var mega = "메가박스";
-		   	var lotcine = "롯데시네마";
-		   	var html="";
-		    $.ajax({
-		        url : "movielocationList",
-		        type : "post",
-		        dataType : "json",
-		        data : {
-		           query : $(".active .write").val()
-		        },
-		        success : function(json) {
-		           html += '<form>';
-		    	   html += '<select multiple class="movieAreaSelect">';
-		           $.each(json.items,function(i,item){
-		              if(item.title.indexOf(cgv)!=-1 || item.title.indexOf(mega)!=-1 || item.title.indexOf(lotcine)!=-1){
-		            	  if(item=='blank'){
-		            		  movieflag=1;
-		            		  return false;
-		            	  }
-		            	  html+='<option>'+item.title+'</option>';
-		            	 if(i>=2)  return false;
-		              }
-		           }); //each
-		           html+='</select>';
-		           html +='<input type="image" img src="resources/img/icon/right-arrow.png" class="form-control" value="선택" onclick="settheater();return false;">';
-		           html+='</form>';
-		           if(movieflag!=1){
-				    	$(".write").attr("data-toggle", "popover");
-				     	$(".write").attr("title", "<img src='resources/img/icon/theater.png'>");
-				     	$(".write").attr("data-content", html);
-				     	$(".write").attr("data-html", "true");
-				     	$(".write").attr("data-placement", "bottom");
-				     	$(".write").popover("show");
-		           }
-		        },
-		        error : function(err) {
-		          // alert("에러");
-		        }
-		     });//ajax
-		});//on. keyup
+			var mega = "메가박스";
+			var lotcine = "롯데시네마";
+			var html = "";
+			$.ajax({
+				url: "movielocationList",
+				type: "post",
+				dataType: "json",
+				data: {
+					query: $(".active .write").val()
+				},
+				success: function (json) {
+					html += '<form>';
+					html += '<select multiple class="movieAreaSelect">';
+					$.each(json.items, function (i, item) {
+						if (item.title.indexOf(cgv) != -1 || item.title.indexOf(mega) != -1 || item.title.indexOf(lotcine) != -1) {
+							if (item == 'blank') {
+								movieflag = 1;
+								return false;
+							}
+							html += '<option>' + item.title + '</option>';
+							if (i >= 2) return false;
+						}
+					}); //each
+					html += '</select>';
+					html += '<input type="image" img src="resources/img/icon/right-arrow.png" class="form-control" value="선택" onclick="settheater();return false;">';
+					html += '</form>';
+					if (movieflag != 1) {
+						$(".write").attr("data-toggle", "popover");
+						$(".write").attr("title", "<img src='resources/img/icon/theater.png'>");
+						$(".write").attr("data-content", html);
+						$(".write").attr("data-html", "true");
+						$(".write").attr("data-placement", "bottom");
+						$(".write").popover("show");
+					}
+				},
+				error: function (err) {
+					// alert("에러");
+				}
+			}); //ajax
+		}); //on. keyup
 	};
 
 	// 영화관 선택 후 처리 부분
 	var movieTime = function () {
-		var html="";
+		var html = "";
 		$.ajax({
-			type : "get",
-			url : "gettime",
-			data : {
+			type: "get",
+			url: "gettime",
+			data: {},
+			success: function (data) {
+				html += '<form>';
+				html += '<select multiple class="movieTimeSelect">';
+				$.each(data, function (i, item) {
+					html += '<option>' + item + '</option>';
+				}); //each
+				html += '</select>';
+				html += '<input type="image" img src="resources/img/icon/right-arrow.png" class="form-control" value="선택" onclick="settime();return false;">';
+				html += '</form>';
+				if (movieflag != 1) {
+					$(".write").attr("data-toggle", "popover");
+					$(".write").attr("title", "<img src='resources/img/icon/time.png'>");
+					$(".write").attr("data-content", html);
+					$(".write").attr("data-html", "true");
+					$(".write").attr("data-placement", "bottom");
+					$(".write").popover("show");
+				}
 			},
-			success : function(data){
-				 html += '<form>';
-			     html += '<select multiple class="movieTimeSelect">';
-			     $.each(data,function(i,item){
-			            html+='<option>'+item+'</option>';
-			      }); //each
-			       html+='</select>';
-			       html +='<input type="image" img src="resources/img/icon/right-arrow.png" class="form-control" value="선택" onclick="settime();return false;">';
-			       html+='</form>';
-			       if(movieflag!=1){
-					 $(".write").attr("data-toggle", "popover");
-					 $(".write").attr("title", "<img src='resources/img/icon/time.png'>");
-					 $(".write").attr("data-content", html);
-					 $(".write").attr("data-html", "true");
-					 $(".write").attr("data-placement", "bottom");
-					 $(".write").popover("show");
-			       }	
-			},
-			error : function(request,status,error){
-				console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+			error: function (request, status, error) {
+				console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
 			}
 		});
 	}
@@ -626,57 +626,57 @@ function bus() {
 	$(".write").on("keydown",function(){
 		$(".write").popover("hide");
 	});
-		$(".write").on("keyup",function(){
-		var html="";
-		
-		 $.ajax({
-	           url : "terminalCode",
-	           type : "post",
-	           dataType : "json",
-	           data : {
-	              query : $(".active .write").val()
-	           },
-	           success : function(json) {
-	           	html += '<form>';
-	           	html += '<select multiple class="busStartSelect">';
-	         	if(json.response.body.items.item!=null)
-	           	if(Object.keys(json.response.body.items.item).length>2){
-	           		$.each(json.response.body.items.item,function(i,item){
-	           			if(item=='blank'){
-	           				movieflag=1;
-		            		  return false;
-		            	  }
-	           			map.put(item.terminalNm,item.terminalId);
-	           			html+="<option>"+item.terminalNm+"</option>"
-			         });            	
-	           	}else{
-	           		$.each(json.response.body.items,function(i,item){
-	           			if(item=='blank'){
-	           				movieflag=1;
-		            		  return false;
-		            	  }
-	           			map.put(item.terminalNm,item.terminalId);
-	           			html+="<option>"+item.terminalNm+"</option>"
-			         });    
-	           	}
-	           	html +='</select>';
-	           	//html +='<input type="button" class="form-control" value="선택" onclick="selectBusArea()">';
-	           	html +='<input type="image" img src="resources/img/icon/right-arrow.png" class="form-control" value="선택" onclick="selectBusArea();return false;">';
-	    		html +='</form>';
-	    		if(movieflag!=1){
-	    			$(".write").attr("data-toggle", "popover");
-	    			$(".write").attr("title", "<img src='resources/img/icon/departure.png'>");
-	    			$(".write").attr("data-content", html);
-	    			$(".write").attr("data-html", "true");
-	    			$(".write").attr("data-placement", "bottom");
-	    			$(".write").popover("show");  
-	    		}
-	           },
-	           error : function(err) {
-	              //alert("에러");
-	           }
-	        });
+	$(".write").on("keyup", function () {
+		var html = "";
+
+		$.ajax({
+			url: "terminalCode",
+			type: "post",
+			dataType: "json",
+			data: {
+				query: $(".active .write").val()
+			},
+			success: function (json) {
+				html += '<form>';
+				html += '<select multiple class="busStartSelect">';
+				if (json.response.body.items.item != null)
+					if (Object.keys(json.response.body.items.item).length > 2) {
+						$.each(json.response.body.items.item, function (i, item) {
+							if (item == 'blank') {
+								movieflag = 1;
+								return false;
+							}
+							map.put(item.terminalNm, item.terminalId);
+							html += "<option>" + item.terminalNm + "</option>"
+						});
+					} else {
+						$.each(json.response.body.items, function (i, item) {
+							if (item == 'blank') {
+								movieflag = 1;
+								return false;
+							}
+							map.put(item.terminalNm, item.terminalId);
+							html += "<option>" + item.terminalNm + "</option>"
+						});
+					}
+				html += '</select>';
+				//html +='<input type="button" class="form-control" value="선택" onclick="selectBusArea()">';
+				html += '<input type="image" img src="resources/img/icon/right-arrow.png" class="form-control" value="선택" onclick="selectBusArea();return false;">';
+				html += '</form>';
+				if (movieflag != 1) {
+					$(".write").attr("data-toggle", "popover");
+					$(".write").attr("title", "<img src='resources/img/icon/departure.png'>");
+					$(".write").attr("data-content", html);
+					$(".write").attr("data-html", "true");
+					$(".write").attr("data-placement", "bottom");
+					$(".write").popover("show");
+				}
+			},
+			error: function (err) {
+				//alert("에러");
+			}
 		});
+	});
 
 	// 버스 출발지 선택 후 처리 부분
 	var busDest = function () {
@@ -689,54 +689,54 @@ function bus() {
 			$(".write").on("keyup",function(){
 			var html="";
 			var input = $(".active .write").val();
-			 $.ajax({
-		           url : "terminalCode",
-		           type : "post",
-		           dataType : "json",
-		           data : {
-		              query : input
-		           },
-		           success : function(json) {
-		           	html += '<form>';
-		           	html += '<select multiple class="busDestSelect">';
-		           	if(json.response.body.items.item!=null)
-		           	if(Object.keys(json.response.body.items.item).length>2){
-		           		$.each(json.response.body.items.item,function(i,item){
-		           			if(item=='blank'){
-		           				movieflag=1;
-			            		  return false;
-			            	  }
-		           			map.put(item.terminalNm,item.terminalId);
-		           			html+="<option>"+item.terminalNm+"</option>"
-				         });            	
-		           	}else{
-		           		$.each(json.response.body.items,function(i,item){
-		           			if(item=='blank'){
-		           				movieflag=1;
-			            		  return false;
-			            	  }
-		           			map.put(item.terminalNm,item.terminalId);
-		           			html+="<option>"+item.terminalNm+"</option>"
-				         });    
-		           	}
-		           	html +='</select>';
-		           	//html +='<input type="button" class="form-control" value="선택" onclick="selectBusArea2()">';
-		           	html +='<input type="image" img src="resources/img/icon/right-arrow.png" class="form-control" value="선택" onclick="selectBusArea2();return false;">';
-		    		html +='</form>';
-		    		if(movieflag!=1){
-		    			$(".write").attr("data-toggle", "popover");
-		    			$(".write").attr("title", "<img src='resources/img/icon/arrival.png'>");
-		    			$(".write").attr("data-content", html);
-		    			$(".write").attr("data-html", "true");
-		    			$(".write").attr("data-placement", "bottom");
-		    			$(".write").popover("show");  
-		    		}
-		           },
-		           error : function(err) {
-		              //alert("에러");
-		           }
-		        });
+			$.ajax({
+				url: "terminalCode",
+				type: "post",
+				dataType: "json",
+				data: {
+					query: input
+				},
+				success: function (json) {
+					html += '<form>';
+					html += '<select multiple class="busDestSelect">';
+					if (json.response.body.items.item != null)
+						if (Object.keys(json.response.body.items.item).length > 2) {
+							$.each(json.response.body.items.item, function (i, item) {
+								if (item == 'blank') {
+									movieflag = 1;
+									return false;
+								}
+								map.put(item.terminalNm, item.terminalId);
+								html += "<option>" + item.terminalNm + "</option>"
+							});
+						} else {
+							$.each(json.response.body.items, function (i, item) {
+								if (item == 'blank') {
+									movieflag = 1;
+									return false;
+								}
+								map.put(item.terminalNm, item.terminalId);
+								html += "<option>" + item.terminalNm + "</option>"
+							});
+						}
+					html += '</select>';
+					//html +='<input type="button" class="form-control" value="선택" onclick="selectBusArea2()">';
+					html += '<input type="image" img src="resources/img/icon/right-arrow.png" class="form-control" value="선택" onclick="selectBusArea2();return false;">';
+					html += '</form>';
+					if (movieflag != 1) {
+						$(".write").attr("data-toggle", "popover");
+						$(".write").attr("title", "<img src='resources/img/icon/arrival.png'>");
+						$(".write").attr("data-content", html);
+						$(".write").attr("data-html", "true");
+						$(".write").attr("data-placement", "bottom");
+						$(".write").popover("show");
+					}
+				},
+				error: function (err) {
+					//alert("에러");
+				}
 			});
+		});
 	}
 
 	// 버스 도착지 선택 후 처리 부분
@@ -748,11 +748,11 @@ function bus() {
 
 		html += '<form>';
 		html += '<select multiple class="busWantTimeSelect">';
-		for(var i=0;i<=24;i++){
-			if(i<10){
-				html+='<option value="0'+i+'00">0'+i+':00</option>';
-			}else if(i>9) {
-				html+='<option value="'+i+'00">'+i+':00</option>';
+		for (var i = 0; i <= 24; i++) {
+			if (i < 10) {
+				html += '<option value="0' + i + '00">0' + i + ':00</option>';
+			} else if (i > 9) {
+				html += '<option value="' + i + '00">' + i + ':00</option>';
 			}
 		}
 		html +='</select>';
@@ -785,33 +785,32 @@ function bus() {
 
 	var busRealTime = function () {
 		$.ajax({
-			type : "get",
-			url : "getBusTimes",
-			data : {
-			},
-			success : function(data){
-				var html="";
+			type: "get",
+			url: "getBusTimes",
+			data: {},
+			success: function (data) {
+				var html = "";
 				html += '<form>';
-	           	html += '<select multiple class="realTimeBusSelect">';
-				 $.each(data,function(i,item){
-        	    	 html += "<option>"+item+"</option>";
-               });
-				 html +='</select>';
-				 html +='<input type="image" img src="resources/img/icon/right-arrow.png" class="form-control" value="선택" onclick="busTimeSelect();return false;">';
-				 html +='</form>';
-	    			$(".write").attr("data-toggle", "popover");
-	    			$(".write").attr("title", "<img src='resources/img/icon/time.png'>");
-	    			$(".write").attr("data-content", html);
-	    			$(".write").attr("data-html", "true");
-	    			$(".write").attr("data-placement", "bottom");
-	    			$(".write").popover("show");  
+				html += '<select multiple class="realTimeBusSelect">';
+				$.each(data, function (i, item) {
+					html += "<option>" + item + "</option>";
+				});
+				html += '</select>';
+				html += '<input type="image" img src="resources/img/icon/right-arrow.png" class="form-control" value="선택" onclick="busTimeSelect();return false;">';
+				html += '</form>';
+				$(".write").attr("data-toggle", "popover");
+				$(".write").attr("title", "<img src='resources/img/icon/time.png'>");
+				$(".write").attr("data-content", html);
+				$(".write").attr("data-html", "true");
+				$(".write").attr("data-placement", "bottom");
+				$(".write").popover("show");
 			},
-			error : function(e){
+			error: function (e) {
 				console.log(e);
 			}
 		});
 	}
-	var busFinish = function(){
+	var busFinish = function () {
 		showBusSeat2();
 	}
 
@@ -820,8 +819,8 @@ function bus() {
 
 /** ******************************** 기차 예매 ********************************* */
 function train() {
-	var placeholderArray = ["영등포", "부산","",""];
-	tooltiptext = ["출발지는?", "도착지는?", "몇 명?", "출발 시간은?" ];
+	var placeholderArray = ["영등포", "부산", "", ""];
+	tooltiptext = ["출발지는?", "도착지는?", "몇 명?", "출발 시간은?"];
 	$(".write").attr("placeholder", placeholderArray[i]);
 	$(".tooltiptext").html(tooltiptext[i]);
 	
@@ -838,11 +837,11 @@ function train() {
 	// 기차 인원 선택 시 처리 부분
 	var trainPerson = function () {
 		$(".write").attr("placeholder", placeholderArray[i]);
-		var html="";
+		var html = "";
 		html += '<form>';
 		html += '<select multiple class="trainCountSelect">';
-		for(var i=1;i<9;i++){
-			html+="<option>"+i+"</option>"
+		for (var i = 1; i < 9; i++) {
+			html += "<option>" + i + "</option>"
 		}
 		html +='</select>';
 		//html +='<input type="button" class="form-control" value="선택" onclick="showTrainTime()">';
@@ -859,23 +858,23 @@ function train() {
 	// 기차 시간 선택 시 처리 부분
 	var trainTime = function () {
 		$(".write").attr("placeholder", placeholderArray[i]);
-		var html="";
+		var html = "";
 		html += '<form>';
 		html += '<select multiple class="trainTimeSelect">';
-		var j=0;
-		for(var i=0;i<24;i++){
-			if(i<10){
-				html+='<option value="0'+i+'">'+i+'(오전0'+i+')</option>';
-			}else if(i<12){
-				html+='<option value="'+i+'">'+i+'(오전'+i+')</option>';
-			}else if(i>11){
-				html+='<option value="'+i+'">'+i+'(오후0'+(j++)+')</option>';
+		var j = 0;
+		for (var i = 0; i < 24; i++) {
+			if (i < 10) {
+				html += '<option value="0' + i + '">' + i + '(오전0' + i + ')</option>';
+			} else if (i < 12) {
+				html += '<option value="' + i + '">' + i + '(오전' + i + ')</option>';
+			} else if (i > 11) {
+				html += '<option value="' + i + '">' + i + '(오후0' + (j++) + ')</option>';
 			}
 		}
-		html +='</select>';
-		html +='<input type="button" class="form-control" value="선택" onclick="showTimeModal()">';
-		html +='</form>';
-		
+		html += '</select>';
+		html += '<input type="button" class="form-control" value="선택" onclick="showTimeModal()">';
+		html += '</form>';
+
 		$(".modal-body4").html(html);
 		$("#TrainTimeModal").modal();
 	}
@@ -893,8 +892,8 @@ function restaurant() {
 	tooltiptext = ["약속 장소는?","메뉴는?"];
 	$(".tooltiptext").html(tooltiptext[i]);
 	var num = 0;
-	var input="";
-	$(".write").on("keyup",function(){
+	var input = ""; //입력값
+	$(".write").on("keyup", function () {
 		input = $(".active .write").val();
 	});
 	
@@ -932,9 +931,9 @@ function restaurant() {
 	        }
 	     });
 	}
-	
-	var foodResult = function(){
-		
+
+	var foodResult = function () {
+
 	}
 	
 	process = ["", foodSelect, foodResult];
@@ -1127,6 +1126,8 @@ function dateInitialize() {
 	i = 0;
 	$(".slider-area .carousel-caption").css("top", "10%");
 	$(".table > tbody > tr > td").css("outline", "");
+	$(".written").html("");
+	selectedFriendList = new Array();
 	$(".iconList").css("display", "none");
 	$(".textBlock").css("display", "none");
 }
@@ -1274,9 +1275,12 @@ function calendarHtml(date) {
 // 날짜 선택
 function selectedDate(date) {
 	dateNow="";
+	i = 0;
+	selectedFriendList = new Array();
 	$(".table > tbody > tr > td").css("outline", "");
 	$("#" + date).css("outline", "lightsteelblue solid 2px");
 	$(".iconList").addClass("animated fadeInDown");
+	$(".textBlock").css("display", "none");
 	$(".iconList").css("display", "block");
 	dateNow += date.split('-')[0];
 	dateNow += date.split('-')[1];
@@ -1915,69 +1919,70 @@ function payment() {
 	});
 }
 
-Map = function(){
-	 this.map = new Object();
-	};   
-	Map.prototype = {   
-	    put : function(key, value){   
-	        this.map[key] = value;
-	    },   
-	    get : function(key){   
-	        return this.map[key];
-	    },
-	    containsKey : function(key){    
-	     return key in this.map;
-	    },
-	    containsValue : function(value){    
-	     for(var prop in this.map){
-	      if(this.map[prop] == value) return true;
-	     }
-	     return false;
-	    },
-	    isEmpty : function(key){    
-	     return (this.size() == 0);
-	    },
-	    clear : function(){   
-	     for(var prop in this.map){
-	      delete this.map[prop];
-	     }
-	    },
-	    remove : function(key){    
-	     delete this.map[key];
-	    },
-	    keys : function(){   
-	        var keys = new Array();   
-	        for(var prop in this.map){   
-	            keys.push(prop);
-	        }   
-	        return keys;
-	    },
-	    values : function(){   
-	     var values = new Array();   
-	        for(var prop in this.map){   
-	         values.push(this.map[prop]);
-	        }   
-	        return values;
-	    },
-	    size : function(){
-	      var count = 0;
-	      for (var prop in this.map) {
-	        count++;
-	      }
-	      return count;
-	    }
-	};
-	
-function selectBusArea(){
-	start="";
+Map = function () {
+	this.map = new Object();
+};
+Map.prototype = {
+	put: function (key, value) {
+		this.map[key] = value;
+	},
+	get: function (key) {
+		return this.map[key];
+	},
+	containsKey: function (key) {
+		return key in this.map;
+	},
+	containsValue: function (value) {
+		for (var prop in this.map) {
+			if (this.map[prop] == value) return true;
+		}
+		return false;
+	},
+	isEmpty: function (key) {
+		return (this.size() == 0);
+	},
+	clear: function () {
+		for (var prop in this.map) {
+			delete this.map[prop];
+		}
+	},
+	remove: function (key) {
+		delete this.map[key];
+	},
+	keys: function () {
+		var keys = new Array();
+		for (var prop in this.map) {
+			keys.push(prop);
+		}
+		return keys;
+	},
+	values: function () {
+		var values = new Array();
+		for (var prop in this.map) {
+			values.push(this.map[prop]);
+		}
+		return values;
+	},
+	size: function () {
+		var count = 0;
+		for (var prop in this.map) {
+			count++;
+		}
+		return count;
+	}
+};
+
+function selectBusArea() {
+	start = "";
 	start = $(".active .busStartSelect option:selected").val();
 	$(".active .write").popover("destroy");
 	showTextBlock();
 	inputText(start);
 	
 }
-function selectBusArea2(){
-	dest="";
+
+function selectBusArea2() {
+	dest = "";
 	dest = $(".active .busDestSelect option:selected").val();
 	$(".active .write").popover("destroy");
 	$.ajax({
@@ -2246,43 +2251,43 @@ function trainAreaSelect(param) {
 	$(".write").on("keydown",function(){
 		$(".write").popover("hide");
 	});
-		$(".write").on("keyup",function(){
-		var html="";
-		
-		 $.ajax({
-	           url : "stationLocation",
-	           type : "post",
-	           dataType : "json",
-	           data : {
-	        	   query : $(".active .write").val()
-	           },
-	           success : function(json) {
-	           	html += '<form>';
-	           	html += '<select multiple class="'+param+'2">';
-	           	if(json.display==0){
-	           		html += "<option>검색결과없음</option>";
-	           	}else{
-		            $.each(json.items,function(i,item){
-		            	     if(item.title.indexOf(train)!=-1||item.title.indexOf(train1)!=-1||item.title.indexOf(train2)!=-1||item.title.indexOf(train3)!=-1||item.title.indexOf(train4)!=-1||item.title.indexOf(train5)!=-1 ){
-		            	    	 html += "<option>"+item.title+"</option>";
-		                 }   //if
-		               });
-	           	}
-	           	html +='</select>';
-	            html +='<input type="image" img src="resources/img/icon/right-arrow.png" class="form-control" value="선택" onclick="'+param+'();return false;">';
-	    		html +='</form>';
-	    			$(".write").attr("data-toggle", "popover");
-	    			$(".write").attr("title", "<img src='resources/img/icon/train.png'>");
-	    			$(".write").attr("data-content", html);
-	    			$(".write").attr("data-html", "true");
-	    			$(".write").attr("data-placement", "bottom");
-	    			$(".write").popover("show");  
-	           },
-	           error : function(err) {
-	              console.log(err);
-	           }
-	        });
+	$(".write").on("keyup", function () {
+		var html = "";
+
+		$.ajax({
+			url: "stationLocation",
+			type: "post",
+			dataType: "json",
+			data: {
+				query: $(".active .write").val()
+			},
+			success: function (json) {
+				html += '<form>';
+				html += '<select multiple class="' + param + '2">';
+				if (json.display == 0) {
+					html += "<option>검색결과없음</option>";
+				} else {
+					$.each(json.items, function (i, item) {
+						if (item.title.indexOf(train) != -1 || item.title.indexOf(train1) != -1 || item.title.indexOf(train2) != -1 || item.title.indexOf(train3) != -1 || item.title.indexOf(train4) != -1 || item.title.indexOf(train5) != -1) {
+							html += "<option>" + item.title + "</option>";
+						} //if
+					});
+				}
+				html += '</select>';
+				html += '<input type="image" img src="resources/img/icon/right-arrow.png" class="form-control" value="선택" onclick="' + param + '();return false;">';
+				html += '</form>';
+				$(".write").attr("data-toggle", "popover");
+				$(".write").attr("title", "<img src='resources/img/icon/train.png'>");
+				$(".write").attr("data-content", html);
+				$(".write").attr("data-html", "true");
+				$(".write").attr("data-placement", "bottom");
+				$(".write").popover("show");
+			},
+			error: function (err) {
+				console.log(err);
+			}
 		});
+	});
 }
 
 function trainStartSelect(){
@@ -2854,8 +2859,8 @@ function KTXwriteCardInfo(){
 				spinnerEnd();
 			}
 		},
-		error :function(request,status,error) {
-	        console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error); 
+		error: function (request, status, error) {
+			console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
 		}
 	});
 	return true;
