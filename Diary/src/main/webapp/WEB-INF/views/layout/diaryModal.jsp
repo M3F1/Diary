@@ -648,21 +648,21 @@
 			<div class="modal-body">
 				<form>						
 				<div class="form-group">
-						<label for="normal">카드 종류</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						<label for="normal">CREDIT CARD TYPE</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 						 <select id="lp_card_type_mv"><option selected="selected">카드를 선택하세요</option><option>BC카드</option><option>국민카드</option><option>삼성카드(올앳포함)</option><option>신한카드</option><option>현대카드</option><option>KEB하나카드(구,외환)</option><option>우리(평화)카드</option><option>롯데/아멕스카드</option><option>시티카드(구,한미)</option><option>신세계카드</option><option>NH카드</option><option>하나카드(구,하나SK)</option><option>광주VISA카드</option><option>산은캐피탈</option><option>수협카드</option><option>KDB산업은행카드</option><option>전북은행카드</option><option>제주은행카드</option><option>우체국카드</option><option>스탠다드차타드은행카드</option><option>MG체크카드</option><option>현대증권카드</option><option>기업은행카드</option></select> 
 					</div>
 					<div class="form-group">
-						<label for="cardno">카드번호</label> <input type="text" class="form-control" id="cardnomv"
+						<label for="cardno">CREDIT CARD NUMBER</label> <input type="text" class="form-control" id="cardnomv"
 							name="cardnomv" placeholder="숫자만 입력하세요. 예)0000111122223333">
 					</div>
 					<div class="form-group">
-						<label for="validdate">비밀번호 (앞2자리)</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+						<label for="validdate">PASSWORD (FORNT 2 DIGITS)</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
 						<input type="password" class="form-control" id="pwmv"
 							name="pwmv">
 
 					</div>
 					<div class="form-group">
-						<label for="validdate">유효기간</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+						<label for="validdate">EXPIRATION DATE</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
 						<select id="validyearmv" name="validyear">
 							<option value='17'>2017년</option> <option value='18'>2018년</option> <option value='19'>2019년</option>
 							<option value='20'>2020년</option> <option value='21'>2021년</option> <option value='22'>2022년</option>
@@ -680,7 +680,7 @@
 							</select>
 					</div>
 					<div class="form-group">
-						<label for="cardno">생년월일</label> <input type="text" class="form-control" id="birthmv"
+						<label for="cardno">BIRTH</label> <input type="text" class="form-control" id="birthmv"
 							name="bitrhmv" placeholder="예)990201">
 					</div>
 					<div class="form-group">
@@ -746,7 +746,7 @@
 					</div>
 					<div class="form-group">
 						<input type="hidden" id="busflag" value=''/>
-						<input type="button" class="form-control" onclick="return check_form()" value="확인">
+						<input type="button" class="form-control" onclick="return check_form()" value="CONFIRM">
 					</div>					
 				</form>
 			</div>
@@ -786,18 +786,18 @@
 			<div class="modal-body">
 				<form>
 				<div class="form-group">
-						<label for="normal">카드 종류</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-						 <input type="radio" id="normal" value="0" name="card" checked="checked"> 일반
+						<label for="normal">CREDIT CARD TYPE</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						 <input type="radio" id="normal" value="0" name="card" checked="checked"> COMMON
 							&nbsp;&nbsp;&nbsp;
 							<input type="radio" id="company"
-							name="card"> 법인
+							name="card"> BUSINESS
 					</div>
 					<div class="form-group">
-						<label for="cardno">카드번호</label> <input type="text" class="form-control" id="cardno"
+						<label for="cardno">CREDIT CARD NUMBER</label> <input type="text" class="form-control" id="cardno"
 							name="cardno" placeholder="숫자만 입력하세요. 예)0000111122223333">
 					</div>
 					<div class="form-group">
-						<label for="validdate">유효기간</label> <select id="validyear" name="validyear">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						<label for="validdate">EXPIRATION DATE</label> <select id="validyear" name="validyear">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 							<option value='2017'>2017년</option> <option value='2018'>2018년</option> <option value='2019'>2019년</option>
 							<option value='2020'>2020년</option> <option value='2021'>2021년</option> <option value='2022'>2022년</option>
 							<option value='2023'>2023년</option> <option value='2024'>2024년</option> <option value='2025'>2025년</option>
@@ -815,11 +815,11 @@
 							</select> 
 					</div>
 					<div class="form-group">
-						<label for="cardno">생년월일</label> <input type="text" class="form-control" id="birth"
+						<label for="cardno">BIRTH</label> <input type="text" class="form-control" id="birth"
 							name="bitrh" placeholder="예)990201">
 					</div>
 					<div class="form-group">
-						<input type="button" class="form-control" onclick="return writeCardInfo();" value="예매">
+						<input type="button" class="form-control" onclick="return writeCardInfo();" value="CONFIRM">
 					</div>
 				</form>
 			</div>
@@ -836,16 +836,16 @@
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
-				<h4 class="modal-title" id="myModalLabel">카드번호입력</h4>
+				<h4 class="modal-title" id="myModalLabel"><img src='resources/img/icon/refund.png' width='30px' height='30px'></h4>
 			</div>
 			<div class="modal-body">
 					<div class="form-group">
-						<label for="id">CardNo</label> <input type="text" class="form-control" id="buscancel_card_no"
+						<label for="id">CREDIT CARD NUMBER</label> <input type="text" class="form-control" id="buscancel_card_no"
 							name="buscancel_card_no" placeholder="숫자만 입력하세요. 예)0000111122223333">
 							<input type="hidden" id="buscancelFlag" name="buscancelFlag" value=''/>
 					</div>
 					<div class="form-group">
-						<label for="validdate">유효기간</label> <select id="cvalidyear" name="validyear">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						<label for="validdate">EXPIRATION DATE</label> <select id="cvalidyear" name="validyear">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 							<option value='2017'>2017년</option> <option value='2018'>2018년</option> <option value='2019'>2019년</option>
 							<option value='2020'>2020년</option> <option value='2021'>2021년</option> <option value='2022'>2022년</option>
 							<option value='2023'>2023년</option> <option value='2024'>2024년</option> <option value='2025'>2025년</option>
@@ -862,7 +862,7 @@
 							</select>
 					</div>
 					<div class="form-group">
-						<input type="button" class="form-control" onclick="return kobusCancel();" value="확인">
+						<input type="button" class="form-control" onclick="return kobusCancel();" value="CONFIRM">
 					</div>
 			</div>
 		</div>
@@ -919,18 +919,18 @@
 			<div class="modal-body">
 				<form>
 				<div class="form-group">
-						<label for="normal">카드 종류</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						<label for="normal">CREDIT CARD TYPE</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 						 <input type="radio" id="normal" value="1" name="logintype" checked="checked"> KORAIL
 							&nbsp;&nbsp;&nbsp;
 							<input type="radio" value="2" id="company"
-							name="logintype"> Telephone
+							name="logintype"> TELEPHONE
 					</div>
 						<div class="form-group">
 							<label for="id">ID</label> <input type="text" class="form-control"
 								id="idtrain" name="idtrain"> 
 						</div>
 						<div class="form-group">
-							<label for="id">Password</label> <input type="password"
+							<label for="id">PASSWORD</label> <input type="password"
 								class="form-control" id="pwtrain" name="pwtrain">
 						</div>
 						<div class="form-group">
@@ -958,7 +958,7 @@
 				<form>
 				<div class="form-group">
 						<input type="hidden" id="ktxcancelFlag" name="ktxcancelFlag" value=''/>
-						<label for="normal">카드 종류</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						<label for="normal">CREDIT CARD TYPE</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 						 <input type="radio" value="1" name="logintypeCancel" checked="checked"> KORAIL
 							&nbsp;&nbsp;&nbsp;
 							<input type="radio" value="2" name="logintypeCancel"> Telephone
@@ -1016,7 +1016,7 @@
 					</div>
 					<div class="form-group">
 						<input type="hidden" id="busflag" value=''/>
-						<input type="button" class="form-control" onclick="return checkKtx_form()" value="확인">
+						<input type="button" class="form-control" onclick="return checkKtx_form()" value="CONFIRM">
 					</div>					
 				</form>
 			</div>
@@ -1038,18 +1038,18 @@
 			<div class="modal-body">
 				<form>
 				<div class="form-group">
-						<label for="normal">카드 종류</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-						 <input type="radio" id="normal" value="0" name="cardtype" checked="checked"> 일반
+						<label for="normal">CREDIT CARD TYPE</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						 <input type="radio" id="normal" value="0" name="cardtype" checked="checked"> COMMON
 							&nbsp;&nbsp;&nbsp;
 							<input type="radio" value="1" id="company"
-							name="cardtype"> 법인
+							name="cardtype"> BUSINESS
 					</div>
 					<div class="form-group">
-						<label for="cardno">카드번호</label> <input type="text" class="form-control" id="cardnoktx"
+						<label for="cardno">CREDIT CARD NUMBER</label> <input type="text" class="form-control" id="cardnoktx"
 							name="cardno" placeholder="숫자만 입력하세요. 예)0000111122223333">
 					</div>
 					<div class="form-group">
-						<label for="validdate">유효기간</label> <select id="validyear" class="validyear" name="validyear">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						<label for="validdate">EXPIRATION DATE</label> <select id="validyear" class="validyear" name="validyear">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 							<option value='2017'>2017년</option> <option value='2018'>2018년</option> <option value='2019'>2019년</option>
 							<option value='2020'>2020년</option> <option value='2021'>2021년</option> <option value='2022'>2022년</option>
 							<option value='2023'>2023년</option> <option value='2024'>2024년</option> <option value='2025'>2025년</option>
@@ -1067,17 +1067,17 @@
 							</select> 
 					</div>
 					<div class="form-group">
-						<label for="validdate">비밀번호 (앞2자리)</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+						<label for="validdate">PASSWORD (FORNT 2 DIGITS)</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
 						<input type="password" class="form-control" id="pwktx"
 							name="pwktx">
 
 					</div>
 					<div class="form-group">
-						<label for="cardno">생년월일</label> <input type="text" class="form-control" id="birthktx"
+						<label for="cardno">BIRTH</label> <input type="text" class="form-control" id="birthktx"
 							name="bitrh" placeholder="예)990201">
 					</div>
 					<div class="form-group">
-						<input type="button" class="form-control" onclick="return KTXwriteCardInfo();" value="예매">
+						<input type="button" class="form-control" onclick="return KTXwriteCardInfo();" value="CONFIRM">
 					</div>
 				</form>
 			</div>

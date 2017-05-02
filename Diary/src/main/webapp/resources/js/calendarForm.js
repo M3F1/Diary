@@ -289,7 +289,7 @@ function makeFriendList(friendList) {
 	
 	// 친구 목록 popover 만들기
 	$(".friendList").attr("data-toggle", "popover");
-	$(".friendList").attr("title", "친구 목록");
+	$(".friendList").attr("title", "<img src='resources/img/icon/friends.png'>");
 	$(".friendList").attr("data-content", html);
 	$(".friendList").attr("data-html", "true");
 	$(".friendList").attr("data-placement", "bottom");
@@ -298,7 +298,7 @@ function makeFriendList(friendList) {
 	$(".friendList").on("click", function() {
 		var fl = $(".friendList + div > .popover-content a");
 		$(this).next().css("overflow-y", "scroll");
-		$(this).next().css("height", "200px");
+		$(this).next().css("height", "154px");
 
 		$.each(fl, function (key, value) {
 			if ($.inArray($(this).html().substring($(this).html().indexOf("(") + 1, $(this).html().indexOf(")")), selectedFriendList) != -1) {
@@ -414,8 +414,8 @@ function searchMemberList() {
 			var friendArray = new Array();
 			
 			html += "<tr>";
-			html += "<th>이름</th>";
-			html += "<th>생년월일</th>";
+			html += "<th>NAME</th>";
+			html += "<th>BIRTH</th>";
 			html += "<th></th>";
 			html += "</tr>";
 			if (nm.length == 0) {
@@ -893,7 +893,7 @@ function restaurant() {
 	tooltiptext = ["약속 장소는?","메뉴는?"];
 	$(".tooltiptext").html(tooltiptext[i]);
 	var num = 0;
-	var input = ""; //입력값
+	var input="";
 	$(".write").on("keyup",function(){
 		input = $(".active .write").val();
 	});
@@ -909,7 +909,7 @@ function restaurant() {
 	           query : input
 	        },
 	        success : function(json) {
-	        	html += '<table>';
+	        	html += '<div class="tastyList"><table class="table borderless">';
 	           $.each(json.items,function(i,item){
 	        	   
 	        	   if(item.link!=''){
@@ -923,7 +923,7 @@ function restaurant() {
 					   else html+='</tr>';
 				   }
 	           });
-	           html+='</table>';
+	           html+='</table></div>';
 			   $(".modal-body3").html(html);
 			   $("#tastyModal").modal();
 	        },
@@ -1335,8 +1335,8 @@ function makePopover() {
 							html[i] += '<button class="accordion"><img src="resources/img/icon/bus.png" width="20px" height="20px">&nbsp;&nbsp;' + value.SC_CON.split("_")[0] + '<div class="scheCancelBtn" onclick="kobusCancelModal('+i+')">X</div></button>';
 						}
 						html[i] += '<div class="panel">';
-						html[i] += '<div class="left-box">AREA<br>SEAT</div>';
-						html[i] += '<div class="right-box">' + value.SC_CON.split("_")[1] + '<br>'+ value.SC_CON.split("_")[2] +'</div>';
+						html[i] += '<div class="left-box">AREA<br>SEAT<br>GRADE</div>';
+						html[i] += '<div class="right-box">' + value.SC_CON.split("_")[1] + '<br>'+ value.SC_CON.split("_")[2] +'<br>'+ value.SC_CON.split("_")[3] +'</div>';
 						html[i] += '</div>';
 					}
 					else if(value.SC_CON.split("_")[4]=="easy") {
@@ -1347,8 +1347,8 @@ function makePopover() {
 							html[i] += '<button class="accordion"><img src="resources/img/icon/bus.png" width="20px" height="20px">&nbsp;&nbsp;' + value.SC_CON.split("_")[0] + '<div class="scheCancelBtn" onclick="trainCancel()">X</div></button>';
 						}
 						html[i] += '<div class="panel">';
-						html[i] += '<div class="left-box">AREA<br>SEAT</div>';
-						html[i] += '<div class="right-box">' + value.SC_CON.split("_")[1] + '<br>'+ value.SC_CON.split("_")[2] +'</div>';
+						html[i] += '<div class="left-box">AREA<br>SEAT<br>GRADE</div>';
+						html[i] += '<div class="right-box">' + value.SC_CON.split("_")[1] + '<br>'+ value.SC_CON.split("_")[2] +'<br>'+ value.SC_CON.split("_")[3] +'</div>';
 						html[i] += '</div>';
 					}
 					else if(value.SC_CON.split("_")[4]=="ktx"){
@@ -1360,18 +1360,39 @@ function makePopover() {
 							html[i] += '<button class="accordion"><img src="resources/img/icon/trainIcon.png" width="20px" height="20px">&nbsp;&nbsp;' + value.SC_CON.split("_")[0] + '<div class="scheCancelBtn" onclick="trainCancelModal('+i+')">X</div></button>';
 						}
 						html[i] += '<div class="panel">';
-						html[i] += '<div class="left-box">AREA<br>SEAT</div>';
-						html[i] += '<div class="right-box">' + value.SC_CON.split("_")[1] + '<br>'+ value.SC_CON.split("_")[2] +'</div>';
+						html[i] += '<div class="left-box">AREA<br>SEAT<br>GRADE</div>';
+						html[i] += '<div class="right-box">' + value.SC_CON.split("_")[1] + '<br>'+ value.SC_CON.split("_")[2] +'<br>'+ value.SC_CON.split("_")[3] +'</div>';
 						html[i] += '</div>';
-					} else {
+					}
+					else if(value.SC_CON.split("_")[4]=="common"){
+						console.log(value);
+						ccscno[i] = value.SC_NO_PK;
+						html[i] += '<button class="accordion"><img src="resources/img/icon/restaurant.png" width="20px" height="20px">&nbsp;&nbsp;' + value.SC_CON.split("_")[1] + '<div class="scheCancelBtn" onclick="ccCancel('+i+')">X</div></button>';
+						html[i] += '<div class="panel">';
+						html[i] += '<div class="left-box">TITLE<br>HP<br>TEL</div>';
+						
+						if(value.SC_CON.split("_")[2]==''){
+							html[i] += '<div class="right-box">'+value.SC_CON.split("_")[1]+'<br>'+" "+'<br>'+value.SC_CON.split("_")[3]+'</div>';
+						}
+						else if(value.SC_CON.split("_")[3]==''){
+							html[i] += '<div class="right-box">'+value.SC_CON.split("_")[1]+'<br><a href="'+value.SC_CON.split("_")[2]+'" target="_blank" style="color: #666666;">홈페이지</a><br>'+" "+'</div>';
+						}
+						else{
+							html[i] += '<div class="right-box">'+value.SC_CON.split("_")[1]+'<br><a href="'+value.SC_CON.split("_")[2]+'" target="_blank" style="color: #666666;">홈페이지</a><br>'+value.SC_CON.split("_")[3]+'</div>';
+						}
+							html[i] += '</div>';
+						}					
+					else {
 						defaultscno[i] = value.SC_NO_PK;
 						if (value.SC_FIN == 'N') {
-							html[i] += '<button class="accordion addedByFriend"><img src="resources/img/icon/trainIcon.png" width="20px" height="20px">&nbsp;&nbsp;' + value.SC_CON.split("_")[0] + '</button>';
+							html[i] += '<button class="accordion addedByFriend"><img src="resources/img/icon/keyboard.png" width="20px" height="20px">&nbsp;&nbsp;' + value.SC_CON.split("_")[0] + '</button>';
 						} else {
-							html[i] += '<button class="accordion"><img src="resources/img/icon/trainIcon.png" width="20px" height="20px">&nbsp;&nbsp;' + value.SC_CON.split("_")[0] + '<div class="scheCancelBtn" onclick="defaultCancel('+i+')">X</div></button>';
+							html[i] += '<button class="accordion"><img src="resources/img/icon/keyboard.png" width="20px" height="20px">&nbsp;&nbsp;' + value.SC_CON.split("_")[0] + '<div class="scheCancelBtn" onclick="defaultCancel('+i+')">X</div></button>';
 						}
+						console.log(value);
 						html[i] += '<div class="panel">';
-						html[i] += '<div>' + value.SC_CON.split("_")[1] +'</div>';
+						html[i] += '<div class="left-box">CONTENT</div>';
+						html[i] += '<div>' + value.SC_CON.split("_")[0] +'</div>';
 						html[i] += '</div>';
 					}
 					p.attr("data-title", pastHtml);
@@ -2169,6 +2190,7 @@ function check_form(){
 	var time = $("#busdate").text();
 	var busarea = $("#busarea").text();
 	var seat = $("#busseat").text();
+	
 	busPaymentInfo="";
 	busPaymentInfo = (time.split(" ")[1]+"_"+busarea+"_"+seat+"_"+time.split(" ")[0]+"_"+$("#busflag").val());
 	$('div#payModal').modal();

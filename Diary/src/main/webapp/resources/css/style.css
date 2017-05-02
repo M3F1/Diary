@@ -4015,6 +4015,7 @@ nav.category-navigation {
 	display: none;
 	text-align: center;
 	letter-spacing: 0.5em;
+	z-index: 5;
 }
 
 .iconList>a>i {
@@ -4222,6 +4223,7 @@ nav.category-navigation {
 .businfoSet {
     color: #777;
     font-size: 23px;
+    margin: auto;
 }
 
 .businfoMenu {
@@ -4272,7 +4274,7 @@ option{
 }
 
 
-#movieAreaSelect{
+.movieAreaSelect{
 	border-color: rgba(255,255,255,.15);
 	font-size: 15px;
 	background-color: #f0f3f5;
@@ -4280,7 +4282,7 @@ option{
 	
 }
 
-#movieTimeSelect{
+.movieTimeSelect{
 	border-color: rgba(255,255,255,.15);
 	font-size: 15px;
 	background-color: #f0f3f5;
@@ -4288,7 +4290,7 @@ option{
 	
 }
 
-#movieCountSelect{
+.movieCountSelect{
 	border-color: rgba(255,255,255,.15);
 	font-size: 15px;
 	background-color: #f0f3f5;
@@ -4296,7 +4298,7 @@ option{
 	
 }
 
-#busStartSelect{
+.busStartSelect{
 	border-color: rgba(255,255,255,.15);
 	font-size: 15px;
 	background-color: #f0f3f5;
@@ -4304,7 +4306,7 @@ option{
 	
 }
 
-#movieCountSelect{
+.movieCountSelect{
 	border-color: rgba(255,255,255,.15);
 	font-size: 15px;
 	background-color: #f0f3f5;
@@ -4312,12 +4314,19 @@ option{
 	
 }
 
-#busDestSelect{
+.busDestSelect{
 	border-color: rgba(255,255,255,.15);
 	font-size: 15px;
 	background-color: #f0f3f5;
 	color: #555;
 	
+}
+
+.trainDestSelect2{
+	border-color: rgba(255,255,255,.15);
+	font-size: 15px;
+	background-color: #f0f3f5;
+	color: #555;
 }
 
 #busInformation .form-control{
@@ -4331,7 +4340,28 @@ option{
 
 }
 
-#busCountSelect{
+.busCountSelect{
+	border-color: rgba(255,255,255,.15);
+	font-size: 15px;
+	background-color: #f0f3f5;
+	color: #555;
+}
+
+.realTimeBusSelect{
+	border-color: rgba(255,255,255,.15);
+	font-size: 15px;
+	background-color: #f0f3f5;
+	color: #555;
+}
+
+.trainCountSelect{
+	border-color: rgba(255,255,255,.15);
+	font-size: 15px;
+	background-color: #f0f3f5;
+	color: #555;
+}
+
+.realTimeSelect{
 	border-color: rgba(255,255,255,.15);
 	font-size: 15px;
 	background-color: #f0f3f5;
@@ -4360,12 +4390,38 @@ option{
 }
 
 
+/**********친구목록 popover css**********/
+.list-group-item{
+	text-align: center;	
+}
+
+/**********친구검색추가 modal css**********/
+.friendListDiv .table td {
+	font-size: 20px;
+}
+
 /**********popover css (예매부분)**********/
 .popover .popover-content td{
 	    font-size: 15px;
 	    color: #555;
 	    
 	}
+
+/**********맛집검색 modal css**********/
+modal .modal-body3 .table tbody tr td{
+	text-align: center;
+	color : red;
+}
+
+.tastyList td {
+	padding: 1px !important;
+}
+
+.tastyList a, .tastyList td {
+	color: #555 !important;
+	font-size: 1.6rem;
+}
+
 
 /********** 스케쥴 popover 레이아웃 **********/
 
@@ -4412,6 +4468,7 @@ option{
 	background-color: #e2f178;
 }
 
+.accordion.addedByFriend.active,
 .accordion.addedByFriend:hover {
 	background-color: #cce617;
 }
