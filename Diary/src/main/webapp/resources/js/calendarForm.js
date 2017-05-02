@@ -1040,7 +1040,6 @@ function write() {
 	        	   } else if (data.FLAG=='train') {
 	        		   
 	        	   } else {
-	        		   directWrite();
 	        		   location.href = "diary";
 	        	   }
 	        	   
@@ -1086,25 +1085,6 @@ function write() {
 	}
 
 	process = ["", scheduleWrite, scheduleFinish];
-}
-
-function directWrite() {
-	$.ajax({
-		type : "post",
-		url : "write",
-		contentType : "application/json",
-		data : JSON.stringify ({
-			"date" : dateNow,
-			"sc_con" : $(".active .written").html().split("&nbsp;")[0],
-			"selectedFriendList" : selectedFriendList
-		}),
-		success : function (data) {
-			
-		},
-		error : function (e) {
-			console.log(e);
-		}
-	});
 }
 
 /** ******************************** 일정 검색 ********************************* */
@@ -1369,7 +1349,6 @@ function makePopover() {
 						html[i] += '</div>';
 					}
 					else if(value.SC_CON.split("_")[4]=="common"){
-						console.log(value);
 						ccscno[i] = value.SC_NO_PK;
 						html[i] += '<button class="accordion"><img src="resources/img/icon/restaurant.png" width="20px" height="20px">&nbsp;&nbsp;' + value.SC_CON.split("_")[1] + '<div class="scheCancelBtn" onclick="ccCancel('+i+')">X</div></button>';
 						html[i] += '<div class="panel">';

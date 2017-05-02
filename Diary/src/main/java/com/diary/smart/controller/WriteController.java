@@ -382,7 +382,6 @@ public class WriteController {
 	@ResponseBody
 	@RequestMapping(value = "cancelCommonSC", method = RequestMethod.GET)
 	public boolean cancelCommonSC(int scno, HttpSession session) {
-		Member member = memberDAO.selectMember((String) session.getAttribute("user_id"));
 		if (diaryDAO.deleteDiary(scno) == 1)
 			return true;
 		else {
@@ -393,8 +392,6 @@ public class WriteController {
 	@ResponseBody
 	@RequestMapping(value = "defaultCancel", method = RequestMethod.GET)
 	public boolean defaultCancel(int scno, HttpSession session) {
-		Member member = memberDAO.selectMember((String) session.getAttribute("user_id"));
-
 		if (diaryDAO.deleteDiary(scno) == 1)
 			return true;
 		else {

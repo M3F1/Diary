@@ -106,7 +106,6 @@
 	<select id="selectDiaryList" parameterType="Int" resultType="HashMap">
 		select
 			sc_no_pk
-			user_no_fk
 			,to_char(sc_stdt, 'YYYY-MM-DD') as sc_stdt
 			,to_char(sc_endt, 'YYYY-MM-DD') as sc_endt
 			,sc_con
