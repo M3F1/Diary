@@ -87,8 +87,10 @@ $(document).ready(function () {
 	eventActive();
 	
 	// 아무데나 클릭 시 header 숨기기
-	$(".slider-area").on("click", hideHeader);
-
+	$(".slider-area").on("click", function () {
+		hideHeader();
+	});
+	
 	// slider-down mouseenter 시 bounce 추가
 	$(".slider-down").on("mouseenter", function () {
 		$(".slider-down>i").removeClass().addClass("fa fa-angle-down bounce");
@@ -915,11 +917,11 @@ function restaurant() {
 					   html += "<tr><td><a href='javascript:tastyListSelect("+num+")' id='tastyselect"+(num++)+"' value='"+item.title+"`"+item.link+"`"+item.telephone+"'>"+item.title+"</a></td>";
 					   html += '<td><a href="'+item.link+'" target="_blank">홈페이지</a></td>';
 					   if(item.telephone!='')  html += '<td>'+item.telephone+'</td></tr>';
-					   else html+='</tr>';
+					   else html+='<td></td></tr>';
 				   }else{
 					   html += "<tr><td><a href='javascript:tastyListSelect("+num+")'  id='tastyselect"+(num++)+"' value='"+item.telephone+"'>"+item.title+"</a></td><td></td>";
 					   if(item.telephone!='')  html += '<td>'+item.telephone+'</td></tr>';
-					   else html+='</tr>';
+					   else html+='<td></td></tr>';
 				   }
 	           });
 	           html+='</table></div>';
@@ -974,17 +976,17 @@ function write() {
 	        		   returnData=data;
 	        	   }
 	        	   if(data.TASTY!=''){
-	        		   html += '<table>';
+	        		   html += '<table class="table borderless">';
 	        		   $.each(JSON.parse(data.TASTY).items,function(i,tasty){
 	        			   if(tasty.link!=''){
 	        				   html += "<tr><td><a href='javascript:directTastyListSelect("+num+")' id='tastyselect"+(num++)+"' value='"+tasty.title+"`"+tasty.link+"`"+tasty.telephone+"'>"+tasty.title+"</a></td>";
 	        				   html += '<td><a href="'+tasty.link+'" target="_blank">홈페이지</a></td>';
 	        				   if(tasty.telephone!='')  html += '<td>'+tasty.telephone+'</td></tr>';
-	        				   else html+='</tr>';
+	        				   else html+='<td></td></tr>';
 	        			   }else{
 	        				   html += "<tr><td><a href='javascript:directTastyListSelect("+num+")'  id='tastyselect"+(num++)+"' value='"+tasty.telephone+"'>"+tasty.title+"</a></td><td></td>";
 	        				   if(tasty.telephone!='')  html += '<td>'+tasty.telephone+'</td></tr>';
-	        				   else html+='</tr>';
+	        				   else html+='<td></td></tr>';
 	        			   }
 	            	    });
 	        		   html+='</table>';
@@ -1034,7 +1036,7 @@ function write() {
 	  	        	    		$(".write").attr("data-html", "true");
 	  	        	    		$(".write").attr("data-placement", "bottom");
 	  	        	    		$(".write").popover("show");
-	  	        		   }
+	        	        	 }
 	        	        }
 	        	   } else if (data.FLAG=='bus') {
 	        	   } else if (data.FLAG=='train') {
@@ -1106,6 +1108,7 @@ function dateInitialize() {
 	i = 0;
 	$(".slider-area .carousel-caption").css("top", "10%");
 	$(".table > tbody > tr > td").css("outline", "");
+	$(".write").val("");
 	$(".written").html("");
 	selectedFriendList = new Array();
 	$(".iconList").css("display", "none");
@@ -1260,8 +1263,7 @@ function selectedDate(date) {
 	$(".table > tbody > tr > td").css("outline", "");
 	$("#" + date).css("outline", "lightsteelblue solid 2px");
 	$(".iconList").addClass("animated fadeInDown");
-	$(".textBlock").css("display", "none");
-	$(".iconList").css("display", "block");
+	hideTextBlock();
 	dateNow += date.split('-')[0];
 	dateNow += date.split('-')[1];
 	dateNow += date.split('-')[2];
@@ -1295,6 +1297,13 @@ function makePopover() {
 					
 					markCircle(p.parent());
 					
+					var frList = value.SC_COMPLIST;
+					var frListToString = "";
+					
+					$.each(frList, function (key, value) {
+						frListToString += value + "&nbsp;&nbsp;";
+					});
+					
 					if(value.SC_CON.split("_")[4]=="mv") {
 						mvscno[i] = value.SC_NO_PK;
 						mvtimecancel[i] = value.SC_CON.split("_")[0];
@@ -1305,8 +1314,8 @@ function makePopover() {
 							html[i] += '<button class="accordion"><img src="resources/img/icon/cinema.png" width="20px" height="20px">&nbsp;&nbsp;' + value.SC_CON.split("_")[0] + '<div class="scheCancelBtn" onclick="mvCancel('+i+')">X</div></button>';
 						}
 						html[i] += '<div class="panel">';
-						html[i] += '<div class="left-box">TITLE<br>THEATER<br>SEAT</div>';
-						html[i] += '<div class="right-box">' + value.SC_CON.split("_")[1] + '<br>'+ value.SC_CON.split("_")[2] +'<br>'+ value.SC_CON.split("_")[3]+'</div>';
+						html[i] += '<div class="left-box">TITLE<br>THEATER<br>SEAT<br>WITH</div>';
+						html[i] += '<div class="right-box">' + value.SC_CON.split("_")[1] + '<br>'+ value.SC_CON.split("_")[2] +'<br>'+ value.SC_CON.split("_")[3] + '<br>' + frListToString + '</div>';
 						html[i] += '</div>';
 						
 					}
@@ -1319,8 +1328,8 @@ function makePopover() {
 							html[i] += '<button class="accordion"><img src="resources/img/icon/bus.png" width="20px" height="20px">&nbsp;&nbsp;' + value.SC_CON.split("_")[0] + '<div class="scheCancelBtn" onclick="kobusCancelModal('+i+')">X</div></button>';
 						}
 						html[i] += '<div class="panel">';
-						html[i] += '<div class="left-box">AREA<br>SEAT<br>GRADE</div>';
-						html[i] += '<div class="right-box">' + value.SC_CON.split("_")[1] + '<br>'+ value.SC_CON.split("_")[2] +'<br>'+ value.SC_CON.split("_")[3] +'</div>';
+						html[i] += '<div class="left-box">AREA<br>SEAT<br>GRADE<br>WITH</div>';
+						html[i] += '<div class="right-box">' + value.SC_CON.split("_")[1] + '<br>'+ value.SC_CON.split("_")[2] +'<br>'+ value.SC_CON.split("_")[3] + '<br>' + frListToString + '</div>';
 						html[i] += '</div>';
 					}
 					else if(value.SC_CON.split("_")[4]=="easy") {
@@ -1331,8 +1340,8 @@ function makePopover() {
 							html[i] += '<button class="accordion"><img src="resources/img/icon/bus.png" width="20px" height="20px">&nbsp;&nbsp;' + value.SC_CON.split("_")[0] + '<div class="scheCancelBtn" onclick="trainCancel()">X</div></button>';
 						}
 						html[i] += '<div class="panel">';
-						html[i] += '<div class="left-box">AREA<br>SEAT<br>GRADE</div>';
-						html[i] += '<div class="right-box">' + value.SC_CON.split("_")[1] + '<br>'+ value.SC_CON.split("_")[2] +'<br>'+ value.SC_CON.split("_")[3] +'</div>';
+						html[i] += '<div class="left-box">AREA<br>SEAT<br>GRADE<br>WITH</div>';
+						html[i] += '<div class="right-box">' + value.SC_CON.split("_")[1] + '<br>'+ value.SC_CON.split("_")[2] +'<br>'+ value.SC_CON.split("_")[3] + '<br>' + frListToString + '</div>';
 						html[i] += '</div>';
 					}
 					else if(value.SC_CON.split("_")[4]=="ktx"){
@@ -1344,24 +1353,24 @@ function makePopover() {
 							html[i] += '<button class="accordion"><img src="resources/img/icon/trainIcon.png" width="20px" height="20px">&nbsp;&nbsp;' + value.SC_CON.split("_")[0] + '<div class="scheCancelBtn" onclick="trainCancelModal('+i+')">X</div></button>';
 						}
 						html[i] += '<div class="panel">';
-						html[i] += '<div class="left-box">AREA<br>SEAT<br>GRADE</div>';
-						html[i] += '<div class="right-box">' + value.SC_CON.split("_")[1] + '<br>'+ value.SC_CON.split("_")[2] +'<br>'+ value.SC_CON.split("_")[3] +'</div>';
+						html[i] += '<div class="left-box">AREA<br>SEAT<br>GRADE<br>WITH</div>';
+						html[i] += '<div class="right-box">' + value.SC_CON.split("_")[1] + '<br>'+ value.SC_CON.split("_")[2] +'<br>'+ value.SC_CON.split("_")[3] + '<br>' + frListToString + '</div>';
 						html[i] += '</div>';
 					}
 					else if(value.SC_CON.split("_")[4]=="common"){
 						ccscno[i] = value.SC_NO_PK;
 						html[i] += '<button class="accordion"><img src="resources/img/icon/restaurant.png" width="20px" height="20px">&nbsp;&nbsp;' + value.SC_CON.split("_")[1] + '<div class="scheCancelBtn" onclick="ccCancel('+i+')">X</div></button>';
 						html[i] += '<div class="panel">';
-						html[i] += '<div class="left-box">TITLE<br>HP<br>TEL</div>';
+						html[i] += '<div class="left-box">TITLE<br>HP<br>TEL<br>WITH</div>';
 						
 						if(value.SC_CON.split("_")[2]==''){
-							html[i] += '<div class="right-box">'+value.SC_CON.split("_")[1]+'<br>'+" "+'<br>'+value.SC_CON.split("_")[3]+'</div>';
+							html[i] += '<div class="right-box">'+value.SC_CON.split("_")[1]+'<br>'+" "+'<br>'+value.SC_CON.split("_")[3] + '<br>' + frListToString + '</div>';
 						}
 						else if(value.SC_CON.split("_")[3]==''){
-							html[i] += '<div class="right-box">'+value.SC_CON.split("_")[1]+'<br><a href="'+value.SC_CON.split("_")[2]+'" target="_blank" style="color: #666666;">홈페이지</a><br>'+" "+'</div>';
+							html[i] += '<div class="right-box">'+value.SC_CON.split("_")[1]+'<br><a href="'+value.SC_CON.split("_")[2]+'" target="_blank" style="color: #666666;">홈페이지</a><br>'+" " + '<br>' + frListToString + '</div>';
 						}
 						else{
-							html[i] += '<div class="right-box">'+value.SC_CON.split("_")[1]+'<br><a href="'+value.SC_CON.split("_")[2]+'" target="_blank" style="color: #666666;">홈페이지</a><br>'+value.SC_CON.split("_")[3]+'</div>';
+							html[i] += '<div class="right-box">'+value.SC_CON.split("_")[1]+'<br><a href="'+value.SC_CON.split("_")[2]+'" target="_blank" style="color: #666666;">홈페이지</a><br>'+value.SC_CON.split("_")[3] + '<br>' + frListToString + '</div>';
 						}
 							html[i] += '</div>';
 						}					
@@ -1372,10 +1381,9 @@ function makePopover() {
 						} else {
 							html[i] += '<button class="accordion"><img src="resources/img/icon/keyboard.png" width="20px" height="20px">&nbsp;&nbsp;' + value.SC_CON.split("_")[0] + '<div class="scheCancelBtn" onclick="defaultCancel('+i+')">X</div></button>';
 						}
-						console.log(value);
 						html[i] += '<div class="panel">';
-						html[i] += '<div class="left-box">CONTENT</div>';
-						html[i] += '<div>' + value.SC_CON.split("_")[0] +'</div>';
+						html[i] += '<div class="left-box">CONTENT<br>WITH</div>';
+						html[i] += '<div>' + value.SC_CON.split("_")[0] + '<br>' + frListToString +'</div>';
 						html[i] += '</div>';
 					}
 					p.attr("data-title", pastHtml);

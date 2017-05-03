@@ -186,5 +186,22 @@
 		)
 	</insert>
 	
+	<!-- 동행 친구 검색 -->
+	<select id="selectCompanions" parameterType="int" resultType="String">
+		select
+			user_nm
+		from
+			ID_USER_TB
+      	,(select
+			sc_frno
+		from
+			ID_SCFRNO_TB
+		where
+			sc_no_fk = #{sc_no_pk}
+		)
+		where
+			user_no_pk = sc_frno
+	</select>
+	
 
 </mapper> 

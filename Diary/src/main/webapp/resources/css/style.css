@@ -4422,6 +4422,10 @@ modal .modal-body3 .table tbody tr td{
 	font-size: 1.6rem;
 }
 
+.tastyList .table tr:hover {
+	background-color: rgba(49, 112, 143, 0.2);
+}
+
 
 /********** 스케쥴 popover 레이아웃 **********/
 

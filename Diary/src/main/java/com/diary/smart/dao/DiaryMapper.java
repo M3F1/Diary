@@ -20,7 +20,13 @@ public interface DiaryMapper {
 	 * @param diary 입력할 일정 정보
 	 * @return 입력된 일정의 개수
 	 */
+
 	public int insertCompanions(int sc_no_fk, int user_no_fk, int sc_frno);
+	/**
+	 * @param diary의 sc_no
+	 * @return 같이 가는 친구 이름 목록
+	 */
+	public ArrayList<String> selectCompanions(int sc_no_fk);
 	
 	/**
 	 * @param scno 삭제할 일정번호

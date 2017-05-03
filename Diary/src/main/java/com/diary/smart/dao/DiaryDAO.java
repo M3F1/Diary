@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
+import org.apache.ibatis.javassist.expr.Instanceof;
 import org.apache.ibatis.session.SqlSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -138,9 +139,19 @@ public class DiaryDAO {
 	public List<HashMap<String, Object>> selectDiaryList(int user_no) {
 		DiaryMapper mapper = sqlSession.getMapper(DiaryMapper.class);
 		List<HashMap<String, Object>> result = null;
+		ArrayList<String> compList = new ArrayList<>();
 
 		try {
 			result = mapper.selectDiaryList(user_no);
+			for (HashMap<String, Object> schedule : result) {
+				String test = String.valueOf(schedule.get("SC_NO_PK"));
+				int sc_no_pk = Integer.parseInt(test);
+				
+				if (schedule.get("SC_FIN").equals("Y")) {
+					compList = mapper.selectCompanions(sc_no_pk);
+					schedule.put("SC_COMPLIST", compList);
+				}
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
