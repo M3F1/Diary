@@ -1312,7 +1312,7 @@ function makePopover() {
 						mvtimecancel[i] = value.SC_CON.split("_")[0];
 						mvnamecancel[i] = value.SC_CON.split("_")[1];
 						if (value.SC_FIN == 'N') {
-							frListToString = value.USER_NO_FK;
+							frListToString = '이동주';
 							html[i] += '<button class="accordion addedByFriend"><img src="resources/img/icon/cinema.png" width="20px" height="20px">&nbsp;&nbsp;' + value.SC_CON.split("_")[0] + '</button>';
 						} else {
 							html[i] += '<button class="accordion"><img src="resources/img/icon/cinema.png" width="20px" height="20px">&nbsp;&nbsp;' + value.SC_CON.split("_")[0] + '<div class="scheCancelBtn" onclick="mvCancel('+i+')">X</div></button>';
@@ -1327,7 +1327,7 @@ function makePopover() {
 						kobusscno[i] = value.SC_NO_PK;
 						kobuscancel[i] = value.SC_CON.split("_")[3]+"_"+value.SC_CON.split("_")[0]+"_"+value.SC_CON.split("_")[2];
 						if (value.SC_FIN == 'N') {
-							frListToString = value.USER_NO_FK;
+							frListToString = '이동주';
 							html[i] += '<button class="accordion addedByFriend"><img src="resources/img/icon/bus.png" width="20px" height="20px">&nbsp;&nbsp;' + value.SC_CON.split("_")[0] + '</button>';
 						} else {
 							html[i] += '<button class="accordion"><img src="resources/img/icon/bus.png" width="20px" height="20px">&nbsp;&nbsp;' + value.SC_CON.split("_")[0] + '<div class="scheCancelBtn" onclick="kobusCancelModal('+i+')">X</div></button>';
@@ -1340,7 +1340,7 @@ function makePopover() {
 					else if(value.SC_CON.split("_")[4]=="easy") {
 						easybusscno[i] = value.SC_NO_PK;
 						if (value.SC_FIN == 'N') {
-							frListToString = value.USER_NO_FK;
+							frListToString = '이동주';
 							html[i] += '<button class="accordion addedByFriend"><img src="resources/img/icon/bus.png" width="20px" height="20px">&nbsp;&nbsp;' + value.SC_CON.split("_")[0] + '</button>';
 						} else {
 							html[i] += '<button class="accordion"><img src="resources/img/icon/bus.png" width="20px" height="20px">&nbsp;&nbsp;' + value.SC_CON.split("_")[0] + '<div class="scheCancelBtn" onclick="trainCancel()">X</div></button>';
@@ -1354,7 +1354,7 @@ function makePopover() {
 						trainscno[i] = value.SC_NO_PK; 
 						traincancel[i] = value.SC_CON.split("_")[3]+" "+value.SC_CON.split("_")[0];
 						if (value.SC_FIN == 'N') {
-							frListToString = value.USER_NO_FK;
+							frListToString = '이동주';
 							html[i] += '<button class="accordion addedByFriend"><img src="resources/img/icon/trainIcon.png" width="20px" height="20px">&nbsp;&nbsp;' + value.SC_CON.split("_")[0] + '</button>';
 						} else {
 							html[i] += '<button class="accordion"><img src="resources/img/icon/trainIcon.png" width="20px" height="20px">&nbsp;&nbsp;' + value.SC_CON.split("_")[0] + '<div class="scheCancelBtn" onclick="trainCancelModal('+i+')">X</div></button>';
@@ -1384,7 +1384,7 @@ function makePopover() {
 					else {
 						defaultscno[i] = value.SC_NO_PK;
 						if (value.SC_FIN == 'N') {
-							frListToString = value.USER_NO_FK;
+							frListToString = '이동주';
 							html[i] += '<button class="accordion addedByFriend"><img src="resources/img/icon/keyboard.png" width="20px" height="20px">&nbsp;&nbsp;' + value.SC_CON.split("_")[0] + '</button>';
 						} else {
 							html[i] += '<button class="accordion"><img src="resources/img/icon/keyboard.png" width="20px" height="20px">&nbsp;&nbsp;' + value.SC_CON.split("_")[0] + '<div class="scheCancelBtn" onclick="defaultCancel('+i+')">X</div></button>';

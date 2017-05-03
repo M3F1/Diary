@@ -24,13 +24,30 @@
 								<!-- POST HEADER END -->
 								<!-- POST VIDEO START -->
 								<div class="post-video">
-									<iframe src="https://player.vimeo.com/video/86842582?autoplay=1&color=ffffff&title=0&byline=0&portrait=0" width="100%" height="479" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+									<iframe src="https://player.vimeo.com/video/215786998"
+												width="640" height="500" frameborder="0"
+												webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
 								</div>
 								<!-- POST VIDEO END -->
 								<!-- POST CONTENT START -->
 								<div class="post-entry">
 									<br /><br /><br /><br /><br /><br />
-									<p class="text-center">다이어리 설명 들어갈 부분</p>
+									<p class="text-center"><img src="" /><span>Check schedule at a glance</span><br>
+											<br> See all your schedules on one screen and check the
+											details via calendar.<br>
+											<br>
+											<br>
+											<br> 
+											<img src="" /><span>Manage schedules in a convenient and
+												easy way</span><br>
+											<br> Add your schedule and we will provide various
+											information and services regarding your schedule content. <br>
+											<br>
+											<br>
+											<br> 
+											<img src="" /><span>Share your schedule!</span><br>
+											<br> Share your schedule with your friends and family!
+										</p>
 									<br /><br /><br /><br /><br />
 								</div>
 								<!-- POST CONTENT END -->
@@ -52,7 +69,7 @@
 										</div>
 									</div>
 								</div>
-							</article>
+
 						</div>
 					</section>
 				</section>
