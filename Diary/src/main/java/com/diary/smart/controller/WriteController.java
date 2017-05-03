@@ -351,6 +351,8 @@ public class WriteController {
 		String telephone = (String) object.get("telephone");
 		String date = (String) object.get("date");
 		String flag = (String) object.get("flag");
+		String time = (String) object.get("time");
+		String original = (String) object.get("original");
 		ArrayList<String> frList = (ArrayList<String>) object.get("selectedFriendList");
 		ArrayList<Integer> frnoList = new ArrayList<>();
 		
@@ -361,13 +363,13 @@ public class WriteController {
 		Diary diary = new Diary();
 		diary.setUser_no_fk(memberDAO.selectMember((String) session.getAttribute("user_id")).getUser_no_pk());
 		if (link == null || link.equals("")) {
-			diary.setSc_con(" " + "_" + text + "_" + " " + "_" + telephone + "_" + flag);
+			diary.setSc_con(" " + "_" + text + "_" + " " + "_" + telephone + "_" + flag + "_" + time + "_" + original );
 		} else if (telephone == null || telephone.equals("")) {
-			diary.setSc_con(" " + "_" + text + "_" + link + "_" + " " + "_" + flag);
+			diary.setSc_con(" " + "_" + text + "_" + link + "_" + " " + "_" + flag + "_" + time + "_" + original);
 		} else if (link.equals("") && telephone.equals("")) {
-			diary.setSc_con(" " + "_" + text + "_" + " " + "_" + " " + "_" + flag);
+			diary.setSc_con(" " + "_" + text + "_" + " " + "_" + " " + "_" + flag + "_" + time + "_" + original);
 		} else {
-			diary.setSc_con(" " + "_" + text + "_" + link + "_" + telephone + "_" + flag);
+			diary.setSc_con(" " + "_" + text + "_" + link + "_" + telephone + "_" + flag + "_" + time + "_" + original);
 		}
 		diary.setSc_wt("SU");
 		diary.setSc_stdt(date);

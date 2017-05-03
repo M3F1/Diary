@@ -10,7 +10,7 @@
 	<!-- SLIDER START -->
 	<section class="slider-area">
 		<div class="slider-bg-img" style="background-image: url(resources/img/home-bg.jpg);">
-			<a href="diary">diary 보기</a>
+			<a href="diary"></a>
 			<div class="title">
 				<img src="resources/img/title.png" />
 			</div>

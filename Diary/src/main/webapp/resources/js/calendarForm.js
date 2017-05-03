@@ -31,6 +31,7 @@ var kobusscno = new Array();
 var easybusscno = new Array();
 var trainscno = new Array();
 var defaultscno = new Array();
+var foodInput = new Array();
 var returnData;
 var tasteInfo = "";
 var mvPaymentInfo = "";
@@ -684,7 +685,7 @@ function bus() {
 	var busDest = function () {
 		$(".write").off("keyup");
 		$(".write").off("keydown");
-		$(".write").popover("hide");
+		$(".write").popover("destroy");
 		$(".write").on("keydown",function(){
 			$(".write").popover("hide");
 		});
@@ -746,7 +747,7 @@ function bus() {
 		var html="";
 		$(".write").off("keyup");
 		$(".write").off("keydown");
-		$(".write").popover("hide");
+		$(".write").popover("destroy");
 
 		html += '<form>';
 		html += '<select multiple class="busWantTimeSelect">';
@@ -891,7 +892,7 @@ function train() {
 /** ******************************** 맛집 검색 ********************************* */
 function restaurant() {
 	$(".write").attr("placeholder", "강남 or 삼겹살");
-	tooltiptext = ["약속 장소는?","메뉴는?"];
+	tooltiptext = ["약속 장소는?","시간은?"];
 	$(".tooltiptext").html(tooltiptext[i]);
 	var num = 0;
 	var input = ""; //입력값
@@ -900,7 +901,9 @@ function restaurant() {
 	});
 	
 	var foodSelect = function () {
-		console.log(input);
+
+		foodInput.push(input);
+
 		var html ="";
 		$.ajax({
 	        url : "searchlocation",
@@ -1309,6 +1312,7 @@ function makePopover() {
 						mvtimecancel[i] = value.SC_CON.split("_")[0];
 						mvnamecancel[i] = value.SC_CON.split("_")[1];
 						if (value.SC_FIN == 'N') {
+							frListToString = value.USER_NO_FK;
 							html[i] += '<button class="accordion addedByFriend"><img src="resources/img/icon/cinema.png" width="20px" height="20px">&nbsp;&nbsp;' + value.SC_CON.split("_")[0] + '</button>';
 						} else {
 							html[i] += '<button class="accordion"><img src="resources/img/icon/cinema.png" width="20px" height="20px">&nbsp;&nbsp;' + value.SC_CON.split("_")[0] + '<div class="scheCancelBtn" onclick="mvCancel('+i+')">X</div></button>';
@@ -1323,18 +1327,20 @@ function makePopover() {
 						kobusscno[i] = value.SC_NO_PK;
 						kobuscancel[i] = value.SC_CON.split("_")[3]+"_"+value.SC_CON.split("_")[0]+"_"+value.SC_CON.split("_")[2];
 						if (value.SC_FIN == 'N') {
+							frListToString = value.USER_NO_FK;
 							html[i] += '<button class="accordion addedByFriend"><img src="resources/img/icon/bus.png" width="20px" height="20px">&nbsp;&nbsp;' + value.SC_CON.split("_")[0] + '</button>';
 						} else {
 							html[i] += '<button class="accordion"><img src="resources/img/icon/bus.png" width="20px" height="20px">&nbsp;&nbsp;' + value.SC_CON.split("_")[0] + '<div class="scheCancelBtn" onclick="kobusCancelModal('+i+')">X</div></button>';
 						}
 						html[i] += '<div class="panel">';
 						html[i] += '<div class="left-box">AREA<br>SEAT<br>GRADE<br>WITH</div>';
-						html[i] += '<div class="right-box">' + value.SC_CON.split("_")[1] + '<br>'+ value.SC_CON.split("_")[2] +'<br>'+ value.SC_CON.split("_")[3] + '<br>' + frListToString + '</div>';
+						html[i] += '<div class="right-box">' + value.SC_CON.split("_")[1] + '<br>'+ value.SC_CON.split("_")[2] +'<br>'+ value.SC_CON.split("_")[5] + '<br>' + frListToString + '</div>';
 						html[i] += '</div>';
 					}
 					else if(value.SC_CON.split("_")[4]=="easy") {
 						easybusscno[i] = value.SC_NO_PK;
 						if (value.SC_FIN == 'N') {
+							frListToString = value.USER_NO_FK;
 							html[i] += '<button class="accordion addedByFriend"><img src="resources/img/icon/bus.png" width="20px" height="20px">&nbsp;&nbsp;' + value.SC_CON.split("_")[0] + '</button>';
 						} else {
 							html[i] += '<button class="accordion"><img src="resources/img/icon/bus.png" width="20px" height="20px">&nbsp;&nbsp;' + value.SC_CON.split("_")[0] + '<div class="scheCancelBtn" onclick="trainCancel()">X</div></button>';
@@ -1348,6 +1354,7 @@ function makePopover() {
 						trainscno[i] = value.SC_NO_PK; 
 						traincancel[i] = value.SC_CON.split("_")[3]+" "+value.SC_CON.split("_")[0];
 						if (value.SC_FIN == 'N') {
+							frListToString = value.USER_NO_FK;
 							html[i] += '<button class="accordion addedByFriend"><img src="resources/img/icon/trainIcon.png" width="20px" height="20px">&nbsp;&nbsp;' + value.SC_CON.split("_")[0] + '</button>';
 						} else {
 							html[i] += '<button class="accordion"><img src="resources/img/icon/trainIcon.png" width="20px" height="20px">&nbsp;&nbsp;' + value.SC_CON.split("_")[0] + '<div class="scheCancelBtn" onclick="trainCancelModal('+i+')">X</div></button>';
@@ -1359,24 +1366,25 @@ function makePopover() {
 					}
 					else if(value.SC_CON.split("_")[4]=="common"){
 						ccscno[i] = value.SC_NO_PK;
-						html[i] += '<button class="accordion"><img src="resources/img/icon/restaurant.png" width="20px" height="20px">&nbsp;&nbsp;' + value.SC_CON.split("_")[1] + '<div class="scheCancelBtn" onclick="ccCancel('+i+')">X</div></button>';
+						html[i] += '<button class="accordion"><img src="resources/img/icon/restaurant.png" width="20px" height="20px">&nbsp;&nbsp;' + value.SC_CON.split("_")[5] + '<div class="scheCancelBtn" onclick="ccCancel('+i+')">X</div></button>';
 						html[i] += '<div class="panel">';
-						html[i] += '<div class="left-box">TITLE<br>HP<br>TEL<br>WITH</div>';
+						html[i] += '<div class="left-box">TITLE<br>HP<br>TEL<br>CONTENT<br>WITH</div>';
 						
-						if(value.SC_CON.split("_")[2]==''){
-							html[i] += '<div class="right-box">'+value.SC_CON.split("_")[1]+'<br>'+" "+'<br>'+value.SC_CON.split("_")[3] + '<br>' + frListToString + '</div>';
+						if(value.SC_CON.split("_")[2]=='' || value.SC_CON.split("_")[2]=='undefined'){ //link 없을떄
+							html[i] += '<div class="right-box">'+value.SC_CON.split("_")[1]+'<br>'+" "+'<br>'+value.SC_CON.split("_")[3] + '<br>' + value.SC_CON.split("_")[6] +'<br>'+frListToString + '</div>';
 						}
 						else if(value.SC_CON.split("_")[3]==''){
-							html[i] += '<div class="right-box">'+value.SC_CON.split("_")[1]+'<br><a href="'+value.SC_CON.split("_")[2]+'" target="_blank" style="color: #666666;">홈페이지</a><br>'+" " + '<br>' + frListToString + '</div>';
+							html[i] += '<div class="right-box">'+value.SC_CON.split("_")[1]+'<br><a href="'+value.SC_CON.split("_")[2]+'" target="_blank" style="color: #666666;">홈페이지</a><br>'+" " + '<br>' + value.SC_CON.split("_")[6]+'<br>' +frListToString + '</div>';
 						}
 						else{
-							html[i] += '<div class="right-box">'+value.SC_CON.split("_")[1]+'<br><a href="'+value.SC_CON.split("_")[2]+'" target="_blank" style="color: #666666;">홈페이지</a><br>'+value.SC_CON.split("_")[3] + '<br>' + frListToString + '</div>';
+							html[i] += '<div class="right-box">'+value.SC_CON.split("_")[1]+'<br><a href="'+value.SC_CON.split("_")[2]+'" target="_blank" style="color: #666666;">홈페이지</a><br>'+value.SC_CON.split("_")[3] + '<br>' + value.SC_CON.split("_")[6]+'<br>'+frListToString + '</div>';
 						}
 							html[i] += '</div>';
 						}					
 					else {
 						defaultscno[i] = value.SC_NO_PK;
 						if (value.SC_FIN == 'N') {
+							frListToString = value.USER_NO_FK;
 							html[i] += '<button class="accordion addedByFriend"><img src="resources/img/icon/keyboard.png" width="20px" height="20px">&nbsp;&nbsp;' + value.SC_CON.split("_")[0] + '</button>';
 						} else {
 							html[i] += '<button class="accordion"><img src="resources/img/icon/keyboard.png" width="20px" height="20px">&nbsp;&nbsp;' + value.SC_CON.split("_")[0] + '<div class="scheCancelBtn" onclick="defaultCancel('+i+')">X</div></button>';
@@ -2184,7 +2192,7 @@ function check_form(){
 	var seat = $("#busseat").text();
 	
 	busPaymentInfo="";
-	busPaymentInfo = (time.split(" ")[1]+"_"+busarea+"_"+seat+"_"+time.split(" ")[0]+"_"+$("#busflag").val());
+	busPaymentInfo = (time.split(" ")[1]+"_"+busarea+"_"+seat+"_"+time.split(" ")[0]+"_"+$("#busflag").val()+"_"+busReserveInfo[2]);
 	$('div#payModal').modal();
 }
 
@@ -2213,6 +2221,7 @@ function writeCardInfo() {
 			if(data) {
 				spinnerEnd();
 				location.href="diary";
+				busReserveInfo="";
 				selectedFriendList = new Array();
 			} else {
 				alert("결제오류. 다시 입력해주세요.");
@@ -2281,7 +2290,7 @@ function trainStartSelect(){
 	$(".write").popover("destroy");
 	$(".write").off("keyup");
 	$(".write").off("keydown");
-	$(".write").popover("hide");
+	$(".write").popover("destroy");
 	var startTrain = $(".trainStartSelect2 option:selected").val();
 	for(var i=0; i<startTrain.length ;i++){
 		if(startTrain.charAt(i)=="역"){
@@ -2297,7 +2306,7 @@ function trainDestSelect(){
 	$(".write").popover("destroy");
 	$(".write").off("keyup");
 	$(".write").off("keydown");
-	$(".write").popover("hide");
+	$(".write").popover("destroy");
 	var destTrain = $(".trainDestSelect2 option:selected").val();
 	console.log(destTrain);
 	for(var i=0; i<destTrain.length ;i++){
@@ -2329,7 +2338,7 @@ function showTrainTime(){
 	$(".write").popover("destroy");
 	$(".write").off("keyup");
 	$(".write").off("keydown");
-	$(".write").popover("hide");
+	$(".write").popover("destroy");
 	var count = $(".active .trainCountSelect option:selected").val();
 	showTextBlock();
 	$.ajax({
@@ -2719,12 +2728,37 @@ function defaultCancel(num) {
 
 
 function tastyListSelect(num){
-	spinnerStart();
+//	spinnerStart();
 	$("#tastyModal").modal('hide');
+	var html="";
 
 	tasteInfo = $("#tastyselect"+num).attr('value');
+	
+	html += '<form>';
+	html += '<select multiple class="tastyTimeSelect">';
+	for(var i=1;i<=24;i++){
+		if(i<10)
+			html+="<option>0"+i+":00</option>";
+		else if(i>10)
+			html+="<option>"+i+":00</option>";	
+	}
+	html +='</select>';
+			html +='<input type="image" img src="resources/img/icon/right-arrow.png" class="form-control" value="선택" onclick="tastySettime();return false;">';
+	html +='</form>';
+	$(".write").attr("data-toggle", "popover");
+	$(".write").attr("title", "<img src='resources/img/icon/time.png'>");
+	$(".write").attr("data-content", html);
+	$(".write").attr("data-html", "true");
+	$(".write").attr("data-placement", "bottom");
+	$(".write").popover("show");
+		
+}
 
-	var html="";
+function tastySettime(){
+	$(".write").popover("destroy");
+	spinnerStart();
+	var time = $(".active .tastyTimeSelect option:selected").val();
+	
 	$.ajax({
 		type : "post",
 		url : "commonsc",
@@ -2735,6 +2769,8 @@ function tastyListSelect(num){
 			"telephone" : tasteInfo.split("`")[2],
 			"date" : dateNow.substring(2,8),
 			"flag" : "common",
+			"time" : time,
+			"original" : foodInput[0],
 			"selectedFriendList" : selectedFriendList
 		}),
 		success : function(data) {

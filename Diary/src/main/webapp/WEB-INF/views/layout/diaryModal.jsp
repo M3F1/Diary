@@ -652,7 +652,7 @@
 						 <select id="lp_card_type_mv"><option selected="selected">카드를 선택하세요</option><option>BC카드</option><option>국민카드</option><option>삼성카드(올앳포함)</option><option>신한카드</option><option>현대카드</option><option>KEB하나카드(구,외환)</option><option>우리(평화)카드</option><option>롯데/아멕스카드</option><option>시티카드(구,한미)</option><option>신세계카드</option><option>NH카드</option><option>하나카드(구,하나SK)</option><option>광주VISA카드</option><option>산은캐피탈</option><option>수협카드</option><option>KDB산업은행카드</option><option>전북은행카드</option><option>제주은행카드</option><option>우체국카드</option><option>스탠다드차타드은행카드</option><option>MG체크카드</option><option>현대증권카드</option><option>기업은행카드</option></select> 
 					</div>
 					<div class="form-group">
-						<label for="cardno">CREDIT CARD NUMBER</label> <input type="text" class="form-control" id="cardnomv"
+						<label for="cardno">CREDIT CARD NUMBER</label> <input type="password" class="form-control" id="cardnomv"
 							name="cardnomv" placeholder="숫자만 입력하세요. 예)0000111122223333">
 					</div>
 					<div class="form-group">
@@ -680,7 +680,7 @@
 							</select>
 					</div>
 					<div class="form-group">
-						<label for="cardno">BIRTH</label> <input type="text" class="form-control" id="birthmv"
+						<label for="cardno">BIRTH</label> <input type="password" class="form-control" id="birthmv"
 							name="bitrhmv" placeholder="예)990201">
 					</div>
 					<div class="form-group">
@@ -793,7 +793,7 @@
 							name="card"> BUSINESS
 					</div>
 					<div class="form-group">
-						<label for="cardno">CREDIT CARD NUMBER</label> <input type="text" class="form-control" id="cardno"
+						<label for="cardno">CREDIT CARD NUMBER</label> <input type="password" class="form-control" id="cardno"
 							name="cardno" placeholder="숫자만 입력하세요. 예)0000111122223333">
 					</div>
 					<div class="form-group">
@@ -815,7 +815,7 @@
 							</select> 
 					</div>
 					<div class="form-group">
-						<label for="cardno">BIRTH</label> <input type="text" class="form-control" id="birth"
+						<label for="cardno">BIRTH</label> <input type="password" class="form-control" id="birth"
 							name="bitrh" placeholder="예)990201">
 					</div>
 					<div class="form-group">
@@ -840,7 +840,7 @@
 			</div>
 			<div class="modal-body">
 					<div class="form-group">
-						<label for="id">CREDIT CARD NUMBER</label> <input type="text" class="form-control" id="buscancel_card_no"
+						<label for="id">CREDIT CARD NUMBER</label> <input type="password" class="form-control" id="buscancel_card_no"
 							name="buscancel_card_no" placeholder="숫자만 입력하세요. 예)0000111122223333">
 							<input type="hidden" id="buscancelFlag" name="buscancelFlag" value=''/>
 					</div>
@@ -919,7 +919,7 @@
 			<div class="modal-body">
 				<form>
 				<div class="form-group">
-						<label for="normal">CREDIT CARD TYPE</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						<label for="normal">ID TYPE</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 						 <input type="radio" id="normal" value="1" name="logintype" checked="checked"> KORAIL
 							&nbsp;&nbsp;&nbsp;
 							<input type="radio" value="2" id="company"
@@ -958,7 +958,7 @@
 				<form>
 				<div class="form-group">
 						<input type="hidden" id="ktxcancelFlag" name="ktxcancelFlag" value=''/>
-						<label for="normal">CREDIT CARD TYPE</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						<label for="normal">ID TYPE</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 						 <input type="radio" value="1" name="logintypeCancel" checked="checked"> KORAIL
 							&nbsp;&nbsp;&nbsp;
 							<input type="radio" value="2" name="logintypeCancel"> Telephone
@@ -1045,7 +1045,7 @@
 							name="cardtype"> BUSINESS
 					</div>
 					<div class="form-group">
-						<label for="cardno">CREDIT CARD NUMBER</label> <input type="text" class="form-control" id="cardnoktx"
+						<label for="cardno">CREDIT CARD NUMBER</label> <input type="password" class="form-control" id="cardnoktx"
 							name="cardno" placeholder="숫자만 입력하세요. 예)0000111122223333">
 					</div>
 					<div class="form-group">
@@ -1073,7 +1073,7 @@
 
 					</div>
 					<div class="form-group">
-						<label for="cardno">BIRTH</label> <input type="text" class="form-control" id="birthktx"
+						<label for="cardno">BIRTH</label> <input type="password" class="form-control" id="birthktx"
 							name="bitrh" placeholder="예)990201">
 					</div>
 					<div class="form-group">
