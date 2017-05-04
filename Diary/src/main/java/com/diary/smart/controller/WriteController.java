@@ -346,6 +346,7 @@ public class WriteController {
 	@RequestMapping(value = "commonsc", method = RequestMethod.POST)
 	public void commonsc(@RequestBody HashMap<String, Object> object, HttpSession session) {
 		int user_no_fk = memberDAO.selectMember((String) session.getAttribute("user_id")).getUser_no_pk();
+		
 		String text = (String) object.get("text");
 		String link = (String) object.get("link");
 		String telephone = (String) object.get("telephone");

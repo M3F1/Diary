@@ -11,6 +11,7 @@ var movieflag = 0;
 var dateNow = "";
 var start = "";
 var dest = "";
+var timeflag=false;
 var map = new Map();
 var busGrade;
 var full_seat = 0;
@@ -37,6 +38,7 @@ var tasteInfo = "";
 var mvPaymentInfo = "";
 var busPaymentInfo = "";
 var ktxPaymentInfo = "";
+var inputparam2="";
 
 // 회원 정보 수정 처리
 function updateInfo() {
@@ -959,6 +961,7 @@ function write() {
 		spinnerStart();
 		var html="";
 		var num = 0;
+		inputparam2 = input;
 		 $.ajax({
 	           url : "directWrite",
 	           type : "post",
@@ -979,7 +982,8 @@ function write() {
 	        		   returnData=data;
 	        	   }
 	        	   if(data.TASTY!=''){
-	        		   html += '<table class="table borderless">';
+	        		   timeflag=true;
+	        		   html += '<div class="tastyList"><table class="table borderless">';
 	        		   $.each(JSON.parse(data.TASTY).items,function(i,tasty){
 	        			   if(tasty.link!=''){
 	        				   html += "<tr><td><a href='javascript:directTastyListSelect("+num+")' id='tastyselect"+(num++)+"' value='"+tasty.title+"`"+tasty.link+"`"+tasty.telephone+"'>"+tasty.title+"</a></td>";
@@ -992,7 +996,7 @@ function write() {
 	        				   else html+='<td></td></tr>';
 	        			   }
 	            	    });
-	        		   html+='</table>';
+	        		   html+='</table></div>';
 	        		   $(".modal-body3").html(html);
 	        		   $("#tastyModal").modal();
 	        		   
@@ -1312,7 +1316,7 @@ function makePopover() {
 						mvtimecancel[i] = value.SC_CON.split("_")[0];
 						mvnamecancel[i] = value.SC_CON.split("_")[1];
 						if (value.SC_FIN == 'N') {
-							frListToString = '이동주';
+							frListToString = '한진수';
 							html[i] += '<button class="accordion addedByFriend"><img src="resources/img/icon/cinema.png" width="20px" height="20px">&nbsp;&nbsp;' + value.SC_CON.split("_")[0] + '</button>';
 						} else {
 							html[i] += '<button class="accordion"><img src="resources/img/icon/cinema.png" width="20px" height="20px">&nbsp;&nbsp;' + value.SC_CON.split("_")[0] + '<div class="scheCancelBtn" onclick="mvCancel('+i+')">X</div></button>';
@@ -1327,7 +1331,7 @@ function makePopover() {
 						kobusscno[i] = value.SC_NO_PK;
 						kobuscancel[i] = value.SC_CON.split("_")[3]+"_"+value.SC_CON.split("_")[0]+"_"+value.SC_CON.split("_")[2];
 						if (value.SC_FIN == 'N') {
-							frListToString = '이동주';
+							frListToString = '한진수';
 							html[i] += '<button class="accordion addedByFriend"><img src="resources/img/icon/bus.png" width="20px" height="20px">&nbsp;&nbsp;' + value.SC_CON.split("_")[0] + '</button>';
 						} else {
 							html[i] += '<button class="accordion"><img src="resources/img/icon/bus.png" width="20px" height="20px">&nbsp;&nbsp;' + value.SC_CON.split("_")[0] + '<div class="scheCancelBtn" onclick="kobusCancelModal('+i+')">X</div></button>';
@@ -1340,7 +1344,7 @@ function makePopover() {
 					else if(value.SC_CON.split("_")[4]=="easy") {
 						easybusscno[i] = value.SC_NO_PK;
 						if (value.SC_FIN == 'N') {
-							frListToString = '이동주';
+							frListToString = '한진수';
 							html[i] += '<button class="accordion addedByFriend"><img src="resources/img/icon/bus.png" width="20px" height="20px">&nbsp;&nbsp;' + value.SC_CON.split("_")[0] + '</button>';
 						} else {
 							html[i] += '<button class="accordion"><img src="resources/img/icon/bus.png" width="20px" height="20px">&nbsp;&nbsp;' + value.SC_CON.split("_")[0] + '<div class="scheCancelBtn" onclick="trainCancel()">X</div></button>';
@@ -1354,7 +1358,7 @@ function makePopover() {
 						trainscno[i] = value.SC_NO_PK; 
 						traincancel[i] = value.SC_CON.split("_")[3]+" "+value.SC_CON.split("_")[0];
 						if (value.SC_FIN == 'N') {
-							frListToString = '이동주';
+							frListToString = '한진수';
 							html[i] += '<button class="accordion addedByFriend"><img src="resources/img/icon/trainIcon.png" width="20px" height="20px">&nbsp;&nbsp;' + value.SC_CON.split("_")[0] + '</button>';
 						} else {
 							html[i] += '<button class="accordion"><img src="resources/img/icon/trainIcon.png" width="20px" height="20px">&nbsp;&nbsp;' + value.SC_CON.split("_")[0] + '<div class="scheCancelBtn" onclick="trainCancelModal('+i+')">X</div></button>';
@@ -1366,7 +1370,13 @@ function makePopover() {
 					}
 					else if(value.SC_CON.split("_")[4]=="common"){
 						ccscno[i] = value.SC_NO_PK;
-						html[i] += '<button class="accordion"><img src="resources/img/icon/restaurant.png" width="20px" height="20px">&nbsp;&nbsp;' + value.SC_CON.split("_")[5] + '<div class="scheCancelBtn" onclick="ccCancel('+i+')">X</div></button>';
+						if(timeflag){
+							html[i] += '<button class="accordion"><img src="resources/img/icon/restaurant.png" width="20px" height="20px">&nbsp;&nbsp;' + value.SC_CON.split("_")[6] + '<div class="scheCancelBtn" onclick="ccCancel('+i+')">X</div></button>';
+							timeflag=false;
+						}
+						else{
+							html[i] += '<button class="accordion"><img src="resources/img/icon/restaurant.png" width="20px" height="20px">&nbsp;&nbsp;' + value.SC_CON.split("_")[5] + '<div class="scheCancelBtn" onclick="ccCancel('+i+')">X</div></button>';
+						}
 						html[i] += '<div class="panel">';
 						html[i] += '<div class="left-box">TITLE<br>HP<br>TEL<br>CONTENT<br>WITH</div>';
 						
@@ -1384,7 +1394,7 @@ function makePopover() {
 					else {
 						defaultscno[i] = value.SC_NO_PK;
 						if (value.SC_FIN == 'N') {
-							frListToString = '이동주';
+							frListToString = '한진수';
 							html[i] += '<button class="accordion addedByFriend"><img src="resources/img/icon/keyboard.png" width="20px" height="20px">&nbsp;&nbsp;' + value.SC_CON.split("_")[0] + '</button>';
 						} else {
 							html[i] += '<button class="accordion"><img src="resources/img/icon/keyboard.png" width="20px" height="20px">&nbsp;&nbsp;' + value.SC_CON.split("_")[0] + '<div class="scheCancelBtn" onclick="defaultCancel('+i+')">X</div></button>';
@@ -1884,14 +1894,18 @@ function payment() {
 						$.ajax({
 							type : "POST",
 							url : "commonsc",
-							data : {
+							contentType : "application/json",
+							data : JSON.stringify({
 								text : tasteInfo.split("`")[0],
 								link : tasteInfo.split("`")[1],
 								telephone: tasteInfo.split("`")[2],
 								date : dateNow.substring(2,8),
-								flag : "common"
-							},
+								"original" : inputparam2,
+								flag : "common",
+								"selectedFriendList" : selectedFriendList
+							}),
 							success : function(data){
+								inputparam2="";
 								location.href="diary";
 								spinnerEnd();
 								selectedFriendList = new Array();
@@ -2650,6 +2664,7 @@ function directMVTimeSelect(){
 function directTastyListSelect(num){
 	$("#tastyModal").modal('hide');
 	tasteInfo = $("#tastyselect"+num).attr('value');
+	console.log(tasteInfo);
 	var html="";
 	 if(returnData.FLAG=='movie'){
 		   if(returnData.MVLIST!=''){
